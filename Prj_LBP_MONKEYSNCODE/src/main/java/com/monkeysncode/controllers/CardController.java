@@ -75,14 +75,13 @@ public class CardController {
 		 	param.put("set", set);
 		 	param.put("types", types);
 		 	param.put("name", name);
-		 	param.put("rarity", rarity != null ? rarity : "");
-		 	param.put("supertype", supertype );
+		 	param.put("rarity", rarity);
+		 	param.put("supertype", supertype);
 		 	param.put("subtypes", subtypes);
 		 	param.put("sort", sort);
 		 	param.put("desc", desc!= true ? "false" : "true");
 		 	model.addAttribute("param", param);
-		 	
-		 	System.out.println(param);
+
 	        return "cards";
 	        
 	 }

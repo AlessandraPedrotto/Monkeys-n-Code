@@ -7,7 +7,9 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            margin: 20px;
+            width:80%;
+            margin-right:10%;
+            margin-left:10%;
         }
         .card {
             border: 1px solid #ccc;
@@ -26,14 +28,26 @@
         	transform:scale(1.8);
         }
         
-        .pagination {
+        .up{
+        	position: fixed;
+        	top:50px;
+        	right:50px;
             margin-top: 20px;
+            margin-left:50px;
+        }
+        .down{
+        	position: fixed;
+        	bottom:50px;
+        	right:50px;
+            margin-top: 20px;
+            margin-left:50px;
         }
         .pagination a {
             margin: 0 5px;
+            background-color:grey;
+            color: white;
             text-decoration: none;
             padding: 5px 10px;
-            border: 1px solid #ccc;
             border-radius: 5px;
         }
         .pagination a.current {
@@ -115,10 +129,10 @@
             <div>
                 <label for="supertype">Supertype:</label>
                 <select id="supertype" name="supertype">
-                    <option value="" th:selected="${param.supertype == ''}"></option>
-                    <option value="Pokémon" th:selected="${param.supertype == 'Pokémon'}">Pokémon</option>
-                    <option value="Trainer" th:selected="${param.supertype == 'Trainer'}">Trainer</option>
-                    <option value="Energy" th:selected="${param.supertype == 'Energy'}">Energy</option>
+                    <option value="" ></option>
+                    <option value="Pokémon" >Pokémon</option>
+                    <option value="Trainer" >Trainer</option>
+                    <option value="Energy" >Energy</option>
                 </select>
             </div>
 
@@ -147,8 +161,7 @@
 
 			    <!-- Checkbox per la direzione di ordinamento -->
 			    <label for="desc">Order descend:</label>
-			    <input type="checkbox" id="desc" name="desc"  
-			           th:checked="${param.desc == 'false'}">
+			    <input type="checkbox" id="desc" name="desc">
 		     </div>
             
             <div>
@@ -158,7 +171,7 @@
         </form>
     </div>
 
-	<div class="pagination">
+	<div class="pagination up">
         <a th:if="${currentPage > 0}"
            th:href="@{/cards(page=${currentPage - 1}, size=${size})}">Previous</a>
            <a th:if="${currentPage < totalPages - 1}"
@@ -178,7 +191,7 @@
     </div>
 
     <!-- Sezione di paginazione -->
-    <div class="pagination">
+    <div class="pagination down">
         <a th:if="${currentPage > 0}"
            th:href="@{/cards(page=${currentPage - 1}, size=${size})}">Previous</a>
 
@@ -198,6 +211,21 @@
             var menu = document.getElementById("filterMenu");
             menu.classList.toggle("active");
         }
+        
+        var supertype = "[[${param.supertype}]]";
+        var subtypes = "[[${param.subtypes}]]";
+        var rarity = "[[${param.rarity}]]";
+        var sort = "[[${param.sort}]]";
+        var desc = "[[${param.desc}]]";
+        
+        document.getElementById("supertype").value = supertype;
+        document.getElementById("subtypes").value = subtypes;
+        document.getElementById("rarity").value = rarity;
+        document.getElementById("sort").value = sort;
+        if(desc)
+        	document.getElementById("desc").checked = true;
+        else document.getElementById("desc").checked = false;
+        
     </script>
 </body>
 </html>
