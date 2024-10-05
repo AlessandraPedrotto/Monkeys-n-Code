@@ -42,7 +42,7 @@ public class CardService {
 			return lista;
 		
 		//per ogni parametro inserito viene applicato il filtro richiesto
-		
+
 		if(set != null && set!="") {
 			for (Card carta : lista){
 				if(containsIgnoreCase(carta.getSet(), set))
@@ -125,6 +125,24 @@ public class CardService {
 		if (subtypes != null)
 			i++;
 		return i;
+	}
+	
+	public List<Card> getCardsByPage(List<Card> allCards,int i,int cardsPage){
+		if(i<1)
+			i=1;
+		i--;
+		i=i*cardsPage;
+		List<Card> result=new ArrayList<Card>();
+		for(int j=i;j<=i+cardsPage;j++) {
+			result.add(allCards.get(j));
+		}
+		return result;
+	}
+	
+	public int totPages(List<Card> cards,int cardsPage) {
+		int quantity=cards.size();
+		return quantity/cardsPage;
+		
 	}
 	
 
