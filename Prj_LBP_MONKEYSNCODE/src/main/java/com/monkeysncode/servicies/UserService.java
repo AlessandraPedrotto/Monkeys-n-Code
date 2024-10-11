@@ -128,11 +128,11 @@ public class UserService  implements UserDetailsService{
                 userCardDAO.delete(card); 
             }
         }
-        // Elimina l'immagine del profilo se presente
-        if (user.getUserImg() != null) {
-            userImgDAO.delete(user.getUserImg());
-        }
-        userDAO.deleteById(id);
+//        // Elimina l'immagine del profilo se presente
+//        if (user.getUserImg() != null) {
+//            userImgDAO.delete(user.getUserImg());
+//       }
+       userDAO.deleteById(id);
     }
     public User userCheck(Object principal) {
         if (principal instanceof UserDetails) {

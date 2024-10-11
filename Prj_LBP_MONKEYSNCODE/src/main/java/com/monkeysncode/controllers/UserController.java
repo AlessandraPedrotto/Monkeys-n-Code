@@ -118,14 +118,14 @@ public class UserController
             return "Errore: " + e.getMessage();
         }
     }
-    @GetMapping("/delete")
+    @GetMapping("/deleteUser")
     public String deleteUserView(@AuthenticationPrincipal Object principal, Model model) {
     	User user = userService.userCheck(principal);
     	model.addAttribute("userId",user.getId());
     	return "deleteUser";
     }
     
-    @PostMapping("/delete")
+    @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam String userId) {
             userService.DeleteUser(userId);
             return "redirect:/logout";
