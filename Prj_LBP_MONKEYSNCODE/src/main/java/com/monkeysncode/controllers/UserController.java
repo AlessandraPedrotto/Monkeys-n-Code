@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.monkeysncode.entites.Deck;
 import com.monkeysncode.entites.User;
 import com.monkeysncode.entites.UserImg;
-import com.monkeysncode.servicies.UserService;
+import com.monkeysncode.services.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
