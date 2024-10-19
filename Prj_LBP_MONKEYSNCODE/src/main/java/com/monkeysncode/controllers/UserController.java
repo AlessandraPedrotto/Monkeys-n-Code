@@ -27,8 +27,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.monkeysncode.entites.Deck;
 import com.monkeysncode.entites.User;
+import com.monkeysncode.entites.UserCards;
 import com.monkeysncode.entites.UserImg;
-import com.monkeysncode.servicies.UserImgService;
+import com.monkeysncode.repos.UserCardDAO;
 import com.monkeysncode.servicies.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,20 +37,19 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/profile")
-public class UserController 
+public class UserController // Controller who manages the user profile
 {
 	@Autowired
 	private UserService userService;
+	
 	@Autowired
-	private UserImgService imgService;
+	private UserCardDAO userCardDAO;
 	
-	// Variabile statica per la validazione 
-	private static final String REGEX_CHANGE_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-	
+	private static final String REGEX_CHANGE_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"; //static variable where the regex for the password is set
+
 	Deck deck = new Deck();
 	
-
-	//Crea una lista di immagini per quanto riguarda lo starter 
+	// Create a list of images regarding the starter
 	private List<UserImg> getFavouriteStarter()
 	{
 		List<UserImg> images = userService.getAllUserImg();
@@ -57,64 +57,60 @@ public class UserController
 	    return images;
 	}
 	
-	// Mostra il profilo utente con le immagini disponibili
+	// Show user profile with available images
     @GetMapping("")
     public String showProfile(@AuthenticationPrincipal Object principal, Model model) throws Exception
     {
-    	//Controlla se l'utente è registrato
+    	// Checks if user is register
         User user = userService.userCheck(principal);
         
         List<Deck> userDecks = user.getDecks();
-        long img =  userService.getUserProfileImage(user.getId());
         
+
         model.addAttribute("followers",userService.getNumFollowers(user.getId()));
-		model.addAttribute("following",userService.getNumFollowing(user.getId()));
+		    model.addAttribute("following",userService.getNumFollowing(user.getId()));
         model.addAttribute("username", user.getName()); // Aggiunge il nome utente al model
         model.addAttribute("email", user.getEmail()); // Aggiunge l'email dell'utente al model
         model.addAttribute("id", user.getId()); // Aggiunge id dell'utente al model
         model.addAttribute("deck", deck.getNameDeck() ); // Aggiunge il nome del mazzo al model
+
         model.addAttribute("userImg", user.getUserImg()); // Assuming userImg is defined
         model.addAttribute("user",user);
         
-
-        // Aggiunge la lista delle immagini per la scelta
+        // Adds image list for choice
         model.addAttribute("starterImages", getFavouriteStarter());
         
-        //Aggiunge la lista dei deck al model
+        // Add the deck list to the model
         model.addAttribute("userDecks", userDecks);
         
-        return "userProfile"; // Template per il profilo utente
+        return "userProfile";
     }
 
-
-    // Gestisce la selezione dell'immagine del Pokémon da parte dell'utente
+    // Manages the user's selection of the Pokémon image    
     @PostMapping("profile-image")
     public String updateProfileImage( @RequestParam("userId") String userId, @RequestParam("id") Long imageId, RedirectAttributes redirectAttributes) {
         try {
-            userService.updateProfileImage(userId, imageId);  // Aggiorna l'immagine profilo dell'utente
+            userService.updateProfileImage(userId, imageId); // Update the user's profile picture
             redirectAttributes.addFlashAttribute("successMessage", "Immagine del profilo aggiornata con successo!");
-            
-        
-        } catch (Exception e) {
+            } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Errore durante l'aggiornamento dell'immagine del profilo.");
         }
-        return "redirect:/profile";  // Reindirizza l'utente alla pagina del profilo
+        return "redirect:/profile"; // Redirect the user to the profile page
     }
 
-    
     @GetMapping("/profile-image")
     public String setImg(Model model) {
-    	List<UserImg> imgList=imgService.getAll();
+    	List<UserImg> imgList = userService.getAllUserImg();
     	imgList.remove(imgList.size() - 1);
-    	Collections.shuffle(imgList, new Random());
+    	Collections.shuffle(imgList, new Random()); // Randomize the list of images
     	model.addAttribute("images",imgList.stream().limit(24).collect(Collectors.toList()));
     	return "profileImg";
     }
 
-    //cambio password
+    // Method to change password
     @GetMapping("/change-password")
-    public String changePasswordView(@AuthenticationPrincipal Object principal,Model model) {
-    	User user=userService.userCheck(principal);
+    public String changePasswordView(@AuthenticationPrincipal Object principal, Model model) {
+    	User user = userService.userCheck(principal);
         if(user.getPassword()!=null) {
         	model.addAttribute("passNULL",false);
         }
@@ -134,57 +130,54 @@ public class UserController
         try {
             String oldPassword = formData.get("oldPassword");
             String newPassword = formData.get("newPassword");
-            System.out.println("new password è : "+newPassword);
             
             String confirmPassword = formData.get("confirmPassword");
-            System.out.println("new password è : "+confirmPassword);
             
+            // Check if the new password you entered is correct
             if (!newPassword.equals(confirmPassword)) {
                 redirectAttributes.addFlashAttribute("error", "Le nuove password non corrispondono.");
                 return "redirect:/profile/change-password";
             }
             
-           
-
-
             userService.changePassword(user.getId(), oldPassword, newPassword);
 
-            
             session.invalidate(); 
             
-
             redirectAttributes.addFlashAttribute("success", "Password cambiata con successo! Accedi di nuovo.");
-            return "redirect:/"; // Reindirizza alla pagina di login per richiedere una nuova autenticazione
+            return "redirect:/"; // Redirect to the login page to request re-authentication
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/profile/change-password";
         }
     }
-    
-    // Restituisce tutte le immagini del profilo disponibili (link preesistenti)
-    @GetMapping("/available-profile-images")
-    public List<UserImg> getAvailableProfileImages() {
-        return userService.getAllUserImg();
-    }
 
+    // Confirmation method to delete your account
     @GetMapping("/delete")
-    public String deleteUserView(@AuthenticationPrincipal Object principal,Model model) {
-    	User user=userService.userCheck(principal);
-    	model.addAttribute("userId",user.getId());
+    public String deleteUserView(@AuthenticationPrincipal Object principal, Model model) { 
+    	User user = userService.userCheck(principal);
+        List<Deck> decks = user.getDecks();
+        List<UserCards> userCards = userCardDAO.findByUserId(user.getId());
+        
+        String userId = user.getId(); // Assicurati che getId() restituisca il tipo corretto
+        model.addAttribute("userId", userId);
+        model.addAttribute("userName", user.getName());
+        model.addAttribute("userEmail", user.getEmail());
+        model.addAttribute("decks", decks);
+        model.addAttribute("userCards", userCards);
+        Integer totalCards = userCardDAO.countTotalCardsByUserId(userId);
+        
+        model.addAttribute("totalCards", totalCards);
     	return "deleteUser";
     }
     
+    // Method to delete your account
     @PostMapping("/delete")
-    public String deleteUser(@RequestParam String userId) {
+    public String deleteUser(@RequestParam String userId) { 
             userService.DeleteUser(userId);
-            System.out.println("è arrivato al controller");
             return "redirect:/logout";
-        
-    }
-    
-    
-    
-    //Modifica del nickname
+        }
+   
+    // Edit nickname
     @GetMapping("/profile")
     public String getProfile(Model model, @AuthenticationPrincipal Object principal, HttpServletRequest request) {
         User user = userService.userCheck(principal);
@@ -198,10 +191,12 @@ public class UserController
         return "profile";
     }
     
+    // Update nickname
     @PostMapping("/update-nickname")
     public ResponseEntity<String> updateNickname(@AuthenticationPrincipal Object principal,
                                                  @RequestBody Map<String, String> requestBody,
                                                  HttpServletRequest request) {
+    	
         User user = userService.userCheck(principal);
         String newNickname = requestBody.get("nickname");
 

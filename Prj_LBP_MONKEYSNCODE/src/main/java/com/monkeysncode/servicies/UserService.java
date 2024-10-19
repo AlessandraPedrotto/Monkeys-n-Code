@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,13 +15,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.monkeysncode.entites.Deck;
-import com.monkeysncode.entites.DeckCards;
 import com.monkeysncode.entites.Role;
 import com.monkeysncode.entites.User;
 import com.monkeysncode.entites.UserCards;
 import com.monkeysncode.entites.UserImg;
-import com.monkeysncode.repos.DeckCardDAO;
-import com.monkeysncode.repos.DeckDAO;
 import com.monkeysncode.repos.UserCardDAO;
 import com.monkeysncode.repos.UserDAO;
 import com.monkeysncode.repos.UserImgDAO;
@@ -33,8 +29,6 @@ public class UserService  implements UserDetailsService{
 	private final UserDAO userDAO;
 	private final UserImgDAO userImgDAO;
 	private final UserCardDAO userCardDAO;
-	private final DeckDAO deckDAO;
-	private final DeckCardDAO deckCardDAO;
 	private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
@@ -44,13 +38,11 @@ public class UserService  implements UserDetailsService{
 	
 
 
-    public UserService(UserDAO userDAO,UserImgDAO userImgDAO,PasswordEncoder passwordEncoder, UserCardDAO userCardDAO, DeckDAO deckDAO, DeckCardDAO deckCardDAO) {
+    public UserService(UserDAO userDAO,UserImgDAO userImgDAO,PasswordEncoder passwordEncoder, UserCardDAO userCardDAO) {
         this.userDAO = userDAO;
 		this.userImgDAO = userImgDAO;
         this.passwordEncoder=passwordEncoder;
         this.userCardDAO = userCardDAO;
-        this.deckDAO = deckDAO;
-        this.deckCardDAO = deckCardDAO;
     }
     
     @Override
