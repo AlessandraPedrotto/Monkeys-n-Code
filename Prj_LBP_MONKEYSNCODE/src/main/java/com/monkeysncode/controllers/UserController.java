@@ -67,7 +67,8 @@ public class UserController
         List<Deck> userDecks = user.getDecks();
         long img =  userService.getUserProfileImage(user.getId());
         
-        
+        model.addAttribute("followers",userService.getNumFollowers(user.getId()));
+		model.addAttribute("following",userService.getNumFollowing(user.getId()));
         model.addAttribute("username", user.getName()); // Aggiunge il nome utente al model
         model.addAttribute("email", user.getEmail()); // Aggiunge l'email dell'utente al model
         model.addAttribute("id", user.getId()); // Aggiunge id dell'utente al model
@@ -217,5 +218,7 @@ public class UserController
             return ResponseEntity.internalServerError().body("Errore durante l'aggiornamento del nickname.");
         }
     }
+    
+    
 
 }
