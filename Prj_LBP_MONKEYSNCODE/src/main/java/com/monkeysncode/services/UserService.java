@@ -53,7 +53,8 @@ public class UserService  implements UserDetailsService{
         return org.springframework.security.core.userdetails.User.builder()
             .username(user.getEmail())
             .password(user.getPassword())
-            .roles("USER")
+            .roles("ADMIN")
+            //.roles("USER")
             .build();
     }
     
@@ -81,6 +82,7 @@ public class UserService  implements UserDetailsService{
             user.setUserImg(imgDefault);
             List<Role> roles = new ArrayList<>();
             roles.add(new Role("1", "ROLE_USER"));
+            roles.add(new Role("2", "ROLE_ADMIN"));
             user.setRoles(roles);
             user.setOnline(true);
         }
@@ -102,6 +104,7 @@ public class UserService  implements UserDetailsService{
         user.setUserImg(imgDefault);
         List<Role> roles = new ArrayList<>();
         roles.add(new Role("1", "ROLE_USER"));
+        roles.add(new Role("2", "ROLE_ADMIN"));
         user.setRoles(roles);
         user.setOnline(true);
 
