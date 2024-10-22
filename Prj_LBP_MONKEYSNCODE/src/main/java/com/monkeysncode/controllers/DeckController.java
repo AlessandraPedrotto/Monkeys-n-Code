@@ -82,17 +82,21 @@ public class DeckController { // Controller who manages the user deck
 
     @PostMapping("/create")
     public String createPost(@AuthenticationPrincipal Object principal, @RequestParam String deckName, @RequestParam Long deckImgId) {
-    	
+        
+        // Retrieve the current user from the authenticated principal
         User user = userService.userCheck(principal);
         
         // Retrieve the selected image by its ID from the DAO
-        Optional<DeckImg> selectedImg = deckImgService.getDeckImgById(deckImgId);
+        DeckImg selectedImg = deckImgService.getDeckImgById(deckImgId)
+                .orElseThrow(() -> new IllegalArgumentException("Image not found"));
+
+        // Create user deck based on image and name, passing null for deck ID since it's a new deck
+        deckService.saveOrUpdateDeck(user.getId(), deckName, null, selectedImg);
         
-        //Create user deck based on image and name, required and deck id optional
-        deckService.saveOrUpdateDeck(user.getId(), deckName, Optional.empty(), selectedImg);
-        
+        // Redirect to the decks page after creation
         return "redirect:/decks";
     }
+
 
     @GetMapping("/deletedeck/{deckId}")
     public String deleteDeck(@PathVariable("deckId") Long deckId, Model model) {
@@ -210,6 +214,51 @@ public class DeckController { // Controller who manages the user deck
         return validationResult;
     }
     
-    
+    //Form for edit deck
+    @GetMapping("/editdeck/{deckId}")
+    public String editDeck(@PathVariable("deckId") Long deckId, Model model) {
+        // Retrieve the deck by ID; throw an exception if not found
+        Deck deck = deckService.getDeckById(deckId)
+                .orElseThrow(() -> new IllegalArgumentException("Deck not found"));
+        
+        // Get all available images
+        List<DeckImg> images = deckImgService.getAll();
 
+        // Add the deck and images to the model
+        model.addAttribute("deck", deck);
+        model.addAttribute("images", images);
+
+        // Return the edit deck view
+        return "editdeck";
+    }
+
+
+    @PostMapping("/update")
+    public String updateDeck(
+            @AuthenticationPrincipal Object principal,  // Add principal to get the current user
+            @RequestParam("deckId") Long deckId,
+            @RequestParam("deckName") String deckName,
+            @RequestParam("deckImgId") Long deckImgId) {
+
+        // Retrieve the current user
+        User user = userService.userCheck(principal);
+        
+        // Retrieve the existing deck
+        Deck deck = deckService.getDeckById(deckId)
+                .orElseThrow(() -> new IllegalArgumentException("Deck not found"));
+        
+        // Retrieve the selected image
+        DeckImg selectedImage = deckImgService.getDeckImgById(deckImgId)
+                .orElseThrow(() -> new IllegalArgumentException("Image not found"));
+
+        // Update the deck's data (pass userId, deck name, deck ID, and selected image)
+        deckService.saveOrUpdateDeck(user.getId(), deckName, deckId, selectedImage);
+
+        // Redirect to the decks page
+        return "redirect:/decks";
+    }
+
+ 		
 }
+    
+    
