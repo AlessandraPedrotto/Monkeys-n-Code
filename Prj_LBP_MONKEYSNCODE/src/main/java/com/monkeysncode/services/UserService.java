@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,15 +51,27 @@ public class UserService  implements UserDetailsService{
     
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userDAO.findByEmail(email).orElseThrow(() ->
+        
+    	User user = userDAO.findByEmail(email).orElseThrow(() ->
             new UsernameNotFoundException("User not found"));
-
-        return org.springframework.security.core.userdetails.User.builder()
-            .username(user.getEmail())
-            .password(user.getPassword())
-            .roles("ADMIN")
-            //.roles("USER")
-            .build();
+//    	Set<GrantedAuthority> authorities = user.getRoles().stream()
+//    	        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+//    	        .collect(Collectors.toSet());
+//    	if(user.getRoles().size()==1) {
+//    		return org.springframework.security.core.userdetails.User.builder()
+//    				.username(user.getEmail())
+//    				.password(user.getPassword())
+//    				//.roles("ADMIN")
+//    				.roles("USER")
+//    				.build();    		
+//    	}
+    	
+    	return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                //.roles("ADMIN")
+                .roles("ADMIN")
+                .build();
     }
     
 
@@ -81,7 +97,7 @@ public class UserService  implements UserDetailsService{
             user.setName(name);
             user.setUserImg(imgDefault);
             List<Role> roles = new ArrayList<>();
-            roles.add(new Role("1", "ROLE_USER"));
+            //roles.add(new Role("1", "ROLE_USER"));
             roles.add(new Role("2", "ROLE_ADMIN"));
             user.setRoles(roles);
             user.setOnline(true);
@@ -103,7 +119,7 @@ public class UserService  implements UserDetailsService{
         user.setPassword(password);
         user.setUserImg(imgDefault);
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role("1", "ROLE_USER"));
+        //roles.add(new Role("1", "ROLE_USER"));
         roles.add(new Role("2", "ROLE_ADMIN"));
         user.setRoles(roles);
         user.setOnline(true);
