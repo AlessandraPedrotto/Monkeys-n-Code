@@ -25,12 +25,14 @@ public class AdminController {
 
     @GetMapping("/formStat")
     public String getAssignStatsForm(@RequestParam(required = false) String query, Model model) {
-        if (query != null && !query.isEmpty()) {
+    	List<User> users = List.of();
+    	if (query != null && !query.isEmpty()) {
             // Perform search by partial email match
-        	List<User> users = userDAO.findByEmailContainingIgnoreCase(query);
+        	users = userDAO.findByEmailContainingIgnoreCase(query);
             model.addAttribute("users", users);
         }
         model.addAttribute("query", query);
+        
         return "formStat";  // Render the form-stat.html page
     }
 
@@ -38,6 +40,7 @@ public class AdminController {
     @PostMapping("/formStat")
     public String assignStatistics(@RequestParam String userId,
                                    @RequestParam int win,
+                                   @RequestParam int lose,
                                    Model model) {
         try {
             // Find the user by ID
@@ -47,16 +50,19 @@ public class AdminController {
             }
 
             User user = userOpt.get();
-
+            // Calculate the points for wins and losses
+            int winPoints = win * 50;   
+            int losePoints = lose * -10; 
             // Add new wins to existing values
             user.setWin(user.getWin() + win);
-
-            // Save the updated user with new statistics
+            user.setLose(user.getLose() + lose);  // Assuming `user.getLose()` exists
+            int totalPoints = (user.getWin() * 50) + (user.getLose() * -10);
             userDAO.save(user);
 
             // Add success message to the model
             model.addAttribute("success-stat", "fatto");
             model.addAttribute("user", user);
+            model.addAttribute("totalPoints", totalPoints); 
 
         } catch (Exception e) {
             // Handle the exception and send the error message to the model
