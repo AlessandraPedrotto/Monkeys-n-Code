@@ -104,7 +104,7 @@ public class UserCardsService {
                 comparator = Comparator.comparing(Card::getRarity);  // Sort by card rarity
                 break;
             default:
-                throw new IllegalArgumentException("Invalid sort attribute: " + sortBy);  // Handle invalid sorting attribute
+                throw new IllegalArgumentException("Attributo di ordinamento non valido: " + sortBy);  // Handle invalid sorting attribute
         }
 
         // Reverse the order if desc is true
