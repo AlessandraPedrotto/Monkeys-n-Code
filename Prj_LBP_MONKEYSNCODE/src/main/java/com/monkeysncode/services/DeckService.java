@@ -3,19 +3,18 @@ package com.monkeysncode.services;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+
 import com.monkeysncode.entites.Deck;
 import com.monkeysncode.entites.DeckImg;
 import com.monkeysncode.entites.User;
-
 import com.monkeysncode.repos.DeckDAO;
 import com.monkeysncode.repos.UserDAO;
 
 @Service
 public class DeckService {
-    
     private final UserDAO userDAO;  // DAO for user data access
     private final DeckDAO deckDAO;  // DAO for deck data access
-    
+
     // Constructor for dependency injection of DAOs
     public DeckService(UserDAO userDAO, DeckDAO deckDAO) {
         this.deckDAO = deckDAO;
@@ -23,46 +22,49 @@ public class DeckService {
     }
 
     // Method for saving or updating a deck, depending on whether the deck ID is provided
-    public void saveOrUpdateDeck(String userId, String nameDeck, Optional<Long> deckId, Optional<DeckImg> deckImg) {
-        
-        // Retrieve user and create a new deck or update an existing one
+    public void saveOrUpdateDeck(String userId, String nameDeck, Long deckId, DeckImg deckImg) {
+        // Retrieve the user from the database
         User user = userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (deckId.isEmpty()) {
-            // Create new deck if no ID is provided
-            Deck newDeck = new Deck();
-            deckImg.ifPresent(newDeck::setDeckImg); 
-            newDeck.setNameDeck(nameDeck);           
-            newDeck.setUser(user);                  
-            deckDAO.save(newDeck);                  
-        } else {
-            // Update existing deck if ID is provided
-            Deck existingDeck = deckDAO.findById(deckId.get())
-                .orElseThrow(() -> new RuntimeException("Deck not found"));
+        Deck deck;
 
-            deckImg.ifPresent(existingDeck::setDeckImg);  
-            existingDeck.setNameDeck(nameDeck);           
-            deckDAO.save(existingDeck);                  
+        if (deckId == null) {
+            // If no deck ID is provided, create a new deck
+            deck = new Deck();
+            deck.setUser(user);  // Associate the deck with the user
+        } else {
+            // If a deck ID is provided, update the existing deck
+            deck = deckDAO.findById(deckId)
+                .orElseThrow(() -> new RuntimeException("Deck not found"));
         }
+
+        // Set the name and image of the deck (if provided)
+        deck.setNameDeck(nameDeck);
+        if (deckImg != null) {
+            deck.setDeckImg(deckImg);
+        }
+
+        // Save the deck (both for creation and update)
+        deckDAO.save(deck);
     }
 
     // Method to delete a deck by its ID
     public boolean DeleteDeck(Long deckId) {
-        Optional<Deck> deck = this.deckDAO.findById(deckId); 
+        Optional<Deck> deck = deckDAO.findById(deckId);
         if (deck.isPresent()) {
-            this.deckDAO.delete(deck.get());  
+            deckDAO.delete(deck.get());
             return true;
         }
-        return false; 
+        return false;
     }
 
     // Method to retrieve a deck by its ID
     public Optional<Deck> getDeckById(Long id) {
-        return deckDAO.findById(id); 
+        return deckDAO.findById(id);
     }
 
     // Method to retrieve a deck by its name and the associated user
     public Optional<Deck> getDeckByNameDeck(User user, String nameDeck) {
-        return deckDAO.findByUserAndNameDeck(user, nameDeck); 
+        return deckDAO.findByUserAndNameDeck(user, nameDeck);
     }
 }

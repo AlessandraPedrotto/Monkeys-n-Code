@@ -1,67 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Conferma Cancellazione Mazzo</title>
     <link rel="icon" sizes="48x48" href="/icona_pokedecks.ico">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .confirmation-container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 40px; /* Aumentato il padding per spaziatura verticale */
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-<!-- Begin body -->
-    <!-- Begin navBar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="http://localhost:8080">
-            <img src="/logo.png" alt="Logo" width="150" height="50" class="d-inline-block align-text-top"> 
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/cards">Carte</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/decks">Mazzi</a>
-                </li>
-				<li>
-                    <a class="nav-link" href="http://localhost:8080/profile">Profilo</a>
-                </li>
-                <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/deckRules">Regolamento</a>
-                </li>
-            </ul>
-            <div class="ms-auto d-flex align-items-center">
-
-                <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.name}" style="margin-right: 15px;">User</a>
-                
-                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;">Logout</a>
-            
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="http://localhost:8080">
+                <img src="/logo.png" alt="Logo" width="150" height="50" class="d-inline-block align-text-top"> 
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8080/cards">Carte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8080/decks">Mazzi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8080/profile">Profilo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8080/deckRules">Regole</a>
+                    </li>
+                </ul>
+                <div class="ms-auto d-flex align-items-center">
+                    <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.name}" style="margin-right: 15px;">Utente</a>
+                    <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;">Logout</a>
+                </div>
             </div>
         </div>
+    </nav>
+
+    <div class="confirmation-container">
+        <h1 class="text-center">Conferma Cancellazione mazzo</h1>
+        <div class="text-center">Sei sicuro di voler cancellare il mazzo: <strong><span th:text="${deck}"></span></strong>?</div>
+        
+        <div class="text-center mt-3">
+            <form id="deleteForm" th:action="@{/decks/deletedeck/{deckId}(deckId=${deckId})}" method="post" onsubmit="return confirmDeletion(event)">
+                <input type="hidden" name="deckId" th:value="${deckId}" />
+
+                <div class="form-group text-center">
+                    <button type="submit" name="confirm" value="true" class="btn btn-danger">Conferma Cancellazione</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/decks'">Annulla</button>
+                </div>
+            </form>
+        </div>
     </div>
-</nav>
-<!-- End navBar -->
 
-    <div class="container mt-5">
-        <h1>Conferma Cancellazione Mazzo</h1>
-        <h2>Sei sicuro di voler cancellare il mazzo: <span th:text="${deck}"></span>?</h2>
-
-        <form th:action="@{/decks/deletedeck/{deckId}(deckId=${deckId})}" method="post">
-            <input type="hidden" name="deckId" th:value="${deckId}" />
-
-            <div class="form-group">
-                <button type="submit" name="confirm" value="true" class="btn btn-danger">Conferma Cancellazione</button>
-                <button type="submit" name="confirm" value="false" class="btn btn-secondary">Annulla</button>
-            </div>
-        </form>
-    </div>
-<!-- Begin script -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-<!-- End script -->
-<!-- End body -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDeletion(event) {
+            event.preventDefault(); // Impedisce l'invio immediato del modulo
+            const form = document.getElementById('deleteForm');
+            Swal.fire({
+                title: 'Sei sicuro?',
+                text: 'Questa azione non può essere annullata!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sì, cancella!',
+                cancelButtonText: 'Annulla'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Invia il modulo se confermato
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
