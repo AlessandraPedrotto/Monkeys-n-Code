@@ -1,6 +1,8 @@
 package com.monkeysncode.config;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +18,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.monkeysncode.entites.Role;
 import com.monkeysncode.entites.User;
 import com.monkeysncode.repos.UserDAO;
 import com.monkeysncode.services.UserService;
@@ -86,19 +90,23 @@ public class SecurityConfig {
 
             	String username=serviceUser.findByEmail(oAuth2User.getAttribute("email")).getName();
             	String userId=serviceUser.findByEmail(oAuth2User.getAttribute("email")).getId();
+            	List<Role> role =serviceUser.findByEmail(oAuth2User.getAttribute("email")).getRoles();
             	User user=serviceUser.findById(userId);
             	user.setOnline(true);
             	userDAO.save(user);
             	request.getSession().setAttribute("name", username);
             	request.getSession().setAttribute("userId", userId);
+            	request.getSession().setAttribute("role", role);
             }else {
             	String username = oAuth2User.getAttribute("name");//puts in session the user name
             	String userId = oAuth2User.getAttribute("userId");
+            	String role = oAuth2User.getAttribute("role");
             	User user=serviceUser.findById(userId);
             	user.setOnline(true);
             	userDAO.save(user);
             	request.getSession().setAttribute("name", username);
             	request.getSession().setAttribute("userId", userId);
+            	request.getSession().setAttribute("role", role);
             }
             response.sendRedirect("/");
         };
@@ -108,13 +116,29 @@ public class SecurityConfig {
         return (request, response, authentication) -> {
         	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         	String email = userDetails.getUsername(); //email
-        	String fullName = userDAO.findByEmail(email).get().getName();
-        	String userId = userDAO.findByEmail(email).get().getId();
-        	User user=serviceUser.findById(userId);
-        	user.setOnline(true);
-        	userDAO.save(user);
-            request.getSession().setAttribute("name", fullName);
-            request.getSession().setAttribute("userId", userId);
+        	Optional<User> optionalUser = userDAO.findByEmail(email);
+        	System.out.println("///////SEI ENTRATO//////////////");
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                String fullName = user.getName();
+                String userId = user.getId();
+                List<String> role = authentication.getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList());
+
+                // Set user online
+                user.setOnline(true);
+                userDAO.save(user);
+
+                // Set attributes in session
+                request.getSession().setAttribute("name", fullName);
+                request.getSession().setAttribute("userId", userId);
+                request.getSession().setAttribute("role", role);  // Set the role in the session
+                for (String roles : role) {
+					System.out.println("///////////////////////questo è il tuo ruoloooooo "+ roles);
+				}
+            }
             
             response.sendRedirect("/");
         };

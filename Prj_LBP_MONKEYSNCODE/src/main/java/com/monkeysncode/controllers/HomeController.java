@@ -8,7 +8,7 @@ public class HomeController { // Controller who manages the home
 	
 	@GetMapping("/")
 	public String Home() {
-		return "Home1";
+		return "home1";
 	}
 	
 	@GetMapping("/secured")
