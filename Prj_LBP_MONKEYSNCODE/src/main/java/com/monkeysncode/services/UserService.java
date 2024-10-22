@@ -51,23 +51,11 @@ public class UserService implements UserDetailsService {
     	User user = userDAO.findByEmail(email).orElseThrow(() ->
 
             new UsernameNotFoundException("User not found"));
-//    	Set<GrantedAuthority> authorities = user.getRoles().stream()
-//    	        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
-//    	        .collect(Collectors.toSet());
-//    	if(user.getRoles().size()==1) {
-//    		return org.springframework.security.core.userdetails.User.builder()
-//    				.username(user.getEmail())
-//    				.password(user.getPassword())
-//    				//.roles("ADMIN")
-//    				.roles("USER")
-//    				.build();    		
-//    	}
-    	
     	return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
                 //.roles("ADMIN")
-                .roles("ADMIN")
+                .roles(user.getRoles().get(0).getName().substring(5))
                 .build();
     }
 
@@ -95,7 +83,7 @@ public class UserService implements UserDetailsService {
             user.setUserImg(imgDefault);
             List<Role> roles = new ArrayList<>();
             //roles.add(new Role("1", "ROLE_USER"));
-            roles.add(new Role("2", "ROLE_ADMIN"));
+            roles.add(new Role("1", "ROLE_USER"));
             user.setRoles(roles);
             user.setOnline(true);
         }
@@ -118,7 +106,7 @@ public class UserService implements UserDetailsService {
         user.setUserImg(imgDefault);
         List<Role> roles = new ArrayList<>();
         //roles.add(new Role("1", "ROLE_USER"));
-        roles.add(new Role("2", "ROLE_ADMIN"));
+        roles.add(new Role("1", "ROLE_USER"));
         user.setRoles(roles);
         user.setOnline(true);
 
