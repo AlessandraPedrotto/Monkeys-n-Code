@@ -3,10 +3,13 @@ package com.monkeysncode.services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.monkeysncode.entites.Card;
@@ -36,8 +39,18 @@ public class UserCardsService {
         return dao.findByUserId(userId);  // Return all cards for the given user
     }
     
+    
+    public HashMap<String,Integer> getCollectionById(String userId) {
+        List<UserCards> userCards = dao.findByUserId(userId);
+        HashMap<String,Integer> ownedCards = new HashMap<String, Integer>();
+        for (UserCards userCard : userCards) {
+        	ownedCards.put(userCard.getCard().getId(),userCard.getCardQuantity());  // Add card ID to the list
+        }
+        return ownedCards;
+    }
+    
     // Method to get a list of card IDs owned by the user
-    public List<String> getCollectionById(String userId) {
+    public List<String> getCollectionBy(String userId) {
         List<UserCards> userCards = dao.findByUserId(userId);
         List<String> ids = new ArrayList<>();
         for (UserCards userCard : userCards) {
@@ -116,8 +129,9 @@ public class UserCardsService {
         cleanDb(user.getId());  // Clean up database by removing cards with zero quantity
     }
     
-    // Method to add or remove a certain quantity of a card for the user
-    public void addOrRemoveCard(User user, Card card, int quantity) {
+    //async method to add or remove a certain quantity of a card for the user
+    @Async
+    public CompletableFuture<String> addOrRemoveCard(User user, Card card, int quantity) {
         UserCards collection = dao
                 .findByUserAndCard(user, card)
                 .orElse(new UserCards());
@@ -128,6 +142,7 @@ public class UserCardsService {
 
         dao.save(collection);  // Save changes to the database
         cleanDb(user.getId());  // Clean up cards with zero quantity
+        return CompletableFuture.completedFuture("Collection updated");
     }
     
     // Method to remove cards with zero quantity from the database

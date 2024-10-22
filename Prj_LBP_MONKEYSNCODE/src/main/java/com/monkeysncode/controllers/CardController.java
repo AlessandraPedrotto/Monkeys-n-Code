@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import com.monkeysncode.entites.User;
 import com.monkeysncode.services.CardService;
 import com.monkeysncode.services.UserCardsService;
 import com.monkeysncode.services.UserService;
+import com.nimbusds.jose.shaded.gson.Gson;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,7 +71,11 @@ public class CardController { // Controller who manages the user card collection
 	 	param.put("subtypes", subtypes);
 	 	
 		List<Card> cards = new ArrayList<Card>();
-		List<String> ownedCards = usercardService.getCollectionById(user.getId()); // Creates the collection of all cards owned by the user
+		HashMap<String,Integer> ownedCards = usercardService.getCollectionById(user.getId()); // Creates the collection of all cards owned by the user
+		System.out.println(ownedCards);
+		Gson gson = new Gson();
+		String json = gson.toJson(ownedCards);
+		System.out.println(json);
 		
 		// Based on the owned parameter it takes the list from two different services
 	 	if(owned == true)
@@ -117,20 +124,20 @@ public class CardController { // Controller who manages the user card collection
 	
 	@PostMapping("/collection/add")
     @ResponseBody
-    public ResponseEntity<String> addCardToCollection(@AuthenticationPrincipal Object principal, @RequestParam String cardId) {
+    @Async
+    public CompletableFuture<String> addCardToCollection(@AuthenticationPrincipal Object principal, @RequestParam String cardId) {
 		User user = userService.userCheck(principal);
 		Card card = cardService.findById(cardId);
-		usercardService.addOrRemoveCard(user, card, 1); // Based on the user's collection, this adds the card
-		return ResponseEntity.ok("Carta aggiunta alla collezione");
+		return usercardService.addOrRemoveCard(user, card, 1);
     }
 	
 	@PostMapping("/collection/remove")
     @ResponseBody
-    public ResponseEntity<String> removeCard(@AuthenticationPrincipal Object principal, @RequestParam String cardId) {
+    @Async
+    public CompletableFuture<String> removeCard(@AuthenticationPrincipal Object principal, @RequestParam String cardId) {
 		User user = userService.userCheck(principal);
 		Card card = cardService.findById(cardId);
-		usercardService.addOrRemoveCard(user, card, -1); // Based on the user's collection, this removes the card
-		return ResponseEntity.ok("Carta rimossa dalla collezione");
+		return usercardService.addOrRemoveCard(user, card, -1);
     }
 	
 	 @GetMapping("/card/{cardId}")
