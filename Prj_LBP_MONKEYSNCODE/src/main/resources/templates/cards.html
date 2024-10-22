@@ -36,6 +36,12 @@
         	/*position: absolute;*/
         	transform:scale(1.7);
         	z-index:8;
+        	.card-buttons, .quantity-box {
+	        	display: flex;               
+			    gap: 15px;                   
+			    z-index: 10;
+        	}
+        	
         }
         .card-buttons {
             display: none;
@@ -43,12 +49,21 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
+            
         }
-        .card-buttons {
-		    display: flex;               
-		    gap: 50px;                   
-		    z-index: 10;                 
-		}
+        .quantity-box{
+        	display: none;
+        	padding-left: 10px;
+        	padding-right: 10px;
+        	border: 1px solid black;
+        	border-radius: 10px; 
+        	background-color: white;
+        	color: black;
+        	cursor: pointer;             
+		    opacity: 0;                 
+		    transition: opacity 0.4s ease;
+        }
+       
 		.card-buttons button {
 		    font-size: 16px;             
 		    color: white;            
@@ -58,11 +73,10 @@
 		    transition: opacity 0.4s ease; 
 		}
 		
-		.card:hover .card-buttons button {
+		.card:hover .card-buttons button, .quantity-box {
 		    opacity: 0.5;                
 		}
-		.card .card-buttons button:hover {
-			color: white;
+		.card .card-buttons button:hover, .quantity-box:hover {
 		    opacity: 1;                  
 		}
         .pagination a {
@@ -374,11 +388,10 @@
                 <div class="card-buttons">
                     <!-- Add to collection -->
                     <button class="btn add-to-collection" th:data-card-id="${card.id}" style="background-color: green;"><i class="bi bi-plus-lg"></i></button>
+                    <!-- Show quantity -->
+                    <p class="quantity-box" th:data-card-id="${card.id}">0</p> 
                     <!-- Remove from collection -->
-                    <a th:href="@{/card/{cardId}(cardId=${card.id})}">
-                    	<button th:if=${owned} class="btn" th:data-card-id="${card.id}" style="background-color: grey;"><i class="bi bi-dash-lg"></i></button>
                     	<button class="btn remove" th:data-card-id="${card.id}" style="background-color: red;"><i class="bi bi-dash-lg"></i></button>
-                	</a>
                 </div>
             </div>
         </div>
@@ -389,7 +402,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-        //variabili passate alla pagina in forma di hashmap
+        //filtri passati alla pagina in forma di hashmap
         var name = "[[${param.name}]]";
         var set = "[[${param.set}]]";
         var supertype = "[[${param.supertype}]]";
@@ -399,9 +412,26 @@
         var desc = "[[${param.desc}]]";
         var types = "[[${param.types}]]";
         var owned = "[[${param.owned}]]";
-        var collection = "[[${ownedCards}]]";
         
-        //usate per settare i valori della precedente ricerca nel form
+        //collezione passata alla pagina in forma di stringa
+        var collection = JSON.parse(ricodifica("[[${ownedCards}]]"));
+        var ownedCards = Object.keys(collection);
+        
+        //questa funzione formatta la stringa ricevuta dal controller in modo che sia utilizzabile da javascript
+        function ricodifica(input) {
+            let senzaParentesi = input.slice(1, -1);
+            let risultato = senzaParentesi
+                .split(', ')
+                .map(item => {
+                    let [chiave, valore] = item.split('=');
+                    return `"${chiave}":${valore}`;
+                })
+                .join(',');
+            return `{${risultato}}`;
+        }
+
+
+        //i valori dei singoli filtri vengono usati per settare il default al menù, mostrando i paarmetri dell'ultima ricerca
 		document.getElementById("name").value = name;
 		document.getElementById("set").value = set;
 		document.getElementById("supertype").value = supertype;
@@ -423,102 +453,107 @@
 		
 		
 	    $(document).ready(function () {
-    // Configurazione per SweetAlert2 Toast
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    });
-
-    // Aggiungi carta alla collezione
-    $('.add-to-collection').click(function () {
-        var cardId = $(this).data('card-id');
-
-        // Invio richiesta AJAX per aggiungere la carta alla collezione
-        $.post('/collection/add', { cardId: cardId })
-            .done(function (data) {
-                Toast.fire({
-                    icon: "success",
-                    title: "Carta aggiunta!"
-                });
-                setTimeout(function () {
-                    location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
-                }, 2000);
-            })
-            .fail(function () {
-                alert('Errore durante l\'aggiunta della carta.');
-            });
-    });
-
-    // Rimuovi carta dalla collezione
-    $('.remove').click(function (event) {
-        event.preventDefault(); // Impedisce il comportamento predefinito del link
-        var cardId = $(this).data('card-id');
-        
-        if (collection.includes(cardId)){
-        // Invio richiesta AJAX per rimuovere la carta dalla collezione
-        $.post('/collection/remove', { cardId: cardId })
-            .done(function (data) {
-                Toast.fire({
-                    icon: "error",
-                    title: "Carta rimossa!"
-                });
-                setTimeout(function () {
-                    location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
-                }, 2000);
-            })
-            .fail(function () {
-                alert('Errore durante la rimozione della carta.');
-            });
-        }
-        else {
-            Toast.fire({
-                    icon: "question",
-                    title: "Carta non presente"
-                });
-                setTimeout(function () {
-                    location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
-                }, 2000);
-        }
-    });
-});
-//Mostra la pagina della collezione personale
- document.addEventListener("DOMContentLoaded", function () {
-     // Ottieni l'URL della pagina
-     const urlParams = new URLSearchParams(window.location.search);
-     const fromCollection = urlParams.get('from');
-     const userId = document.querySelector("meta[name='user-id']").getAttribute("content");
-  	
-     // Cambia il titolo della pagina solo se 'from=myCollection' è presente
-     if (fromCollection === 'myCollection') {
-         document.title = "Collezione";
-         document.querySelector("h1").textContent = "Collezione";
-
-         // Nascondi il filtro per le carte "owned"
-         const ownedFilter = document.getElementById('owned-filter');
-         if (ownedFilter) {
-             ownedFilter.style.display = 'none';
-         }
-     }
- });
-
- function resetFilters(){
-    var ownedField = document.getElementById('owned').value;
-    document.getElementById('filter').reset();
-    setTimeout(function() {
-    	const urlParams = new URLSearchParams(window.location.search);
-    	const fromCollection = urlParams.get('from');
-        if (fromCollection === 'myCollection') {
-        	document.getElementById('owned').checked = ownedField;
-        }
-      }, 0);
- }
+	    // Configurazione per SweetAlert2 Toast
+	    const Toast = Swal.mixin({
+	        toast: true,
+	        position: "top-end",
+	        showConfirmButton: false,
+	        timer: 2000,
+	        timerProgressBar: true,
+	        didOpen: (toast) => {
+	            toast.onmouseenter = Swal.stopTimer;
+	            toast.onmouseleave = Swal.resumeTimer;
+	        }
+	    });
+	    
+	    //mostra quantità della carta
+	    $('.quantity-box').each(function(){
+	    	var cardId = $(this).data('card-id');
+	    	if (ownedCards.includes(cardId)){
+	    		$(this).text(collection[cardId]); 
+	    	}
+	    });
+	
+	    // Aggiungi carta alla collezione
+	    $('.add-to-collection').click(function () {
+	        var cardId = $(this).data('card-id');
+	        $.post('/collection/add', { cardId: cardId })
+	            .done(function (data) {
+	                Toast.fire({
+	                    icon: "success",
+	                    title: "Aggiunta carta..."
+	                });
+	                setTimeout(function () {
+	                    location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
+	                }, 1500);
+	            })
+	            .fail(function () {
+	                alert('Errore durante l\'aggiunta della carta.');
+	            });
+	    });
+	
+	    // Rimuovi carta dalla collezione
+	    $('.remove').click(function (event) {
+	        event.preventDefault(); // Impedisce il comportamento predefinito del link
+	        var cardId = $(this).data('card-id');
+	        
+	        if (ownedCards.includes(cardId)){
+	        $.post('/collection/remove', { cardId: cardId })
+	            .done(function (data) {
+	                Toast.fire({
+	                    icon: "error",
+	                    title: "Rimozione carta..."
+	                });
+	                setTimeout(function () {
+	                    location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
+	                }, 1500);
+	            })
+	            .fail(function () {
+	                alert('Errore durante la rimozione della carta.');
+	            });
+	        }
+	        else {
+	            Toast.fire({
+	                    icon: "question",
+	                    title: "Carta non presente"
+	                });
+	                setTimeout(function () {
+	                    //location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
+	                }, 1500);
+	        }
+	    });
+	});
+	//Mostra la pagina della collezione personale
+	 document.addEventListener("DOMContentLoaded", function () {
+	     // Ottieni l'URL della pagina
+	     const urlParams = new URLSearchParams(window.location.search);
+	     const fromCollection = urlParams.get('from');
+	     const userId = document.querySelector("meta[name='user-id']").getAttribute("content");
+	  	
+	     // Cambia il titolo della pagina solo se 'from=myCollection' è presente
+	     if (fromCollection === 'myCollection') {
+	         document.title = "Collezione";
+	         document.querySelector("h1").textContent = "Collezione";
+	
+	         // Nascondi il filtro per le carte "owned"
+	         const ownedFilter = document.getElementById('owned-filter');
+	         if (ownedFilter) {
+	             ownedFilter.style.display = 'none';
+	         }
+	     }
+	 });
+	
+	 function resetFilters(){
+	    var ownedField = document.getElementById('owned').value;
+	    document.getElementById('filter').reset();
+	    setTimeout(function() {
+	    	const urlParams = new URLSearchParams(window.location.search);
+	    	const fromCollection = urlParams.get('from');
+	        if (fromCollection === 'myCollection') {
+	        	document.getElementById('owned').checked = ownedField;
+	        }
+	      }, 0);
+	 }
 </script>
 <script src="/script/script_cards.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
