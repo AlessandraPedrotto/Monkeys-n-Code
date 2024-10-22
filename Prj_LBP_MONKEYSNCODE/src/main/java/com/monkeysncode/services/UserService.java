@@ -1,6 +1,8 @@
 package com.monkeysncode.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,31 +30,31 @@ import com.monkeysncode.repos.UserDAO;
 import com.monkeysncode.repos.UserImgDAO;
 
 import jakarta.persistence.EntityNotFoundException;
+
 @Service
-public class UserService  implements UserDetailsService{
-	private final UserDAO userDAO;
-	private final UserImgDAO userImgDAO;
-	private final UserCardDAO userCardDAO;
-	private final PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private DeckService deckService;
-	@Autowired
-	private DeckCardsService deckCardsService;
-	
+public class UserService implements UserDetailsService {
+    private final UserDAO userDAO;
+    private final UserImgDAO userImgDAO;
+    private final UserCardDAO userCardDAO;
+    private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private DeckService deckService;
+    @Autowired
+    private DeckCardsService deckCardsService;
 
-    public UserService(UserDAO userDAO,UserImgDAO userImgDAO,PasswordEncoder passwordEncoder, UserCardDAO userCardDAO) {
+    public UserService(UserDAO userDAO, UserImgDAO userImgDAO, PasswordEncoder passwordEncoder, UserCardDAO userCardDAO) {
         this.userDAO = userDAO;
-		this.userImgDAO = userImgDAO;
-        this.passwordEncoder=passwordEncoder;
+        this.userImgDAO = userImgDAO;
+        this.passwordEncoder = passwordEncoder;
         this.userCardDAO = userCardDAO;
     }
-    
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         
     	User user = userDAO.findByEmail(email).orElseThrow(() ->
+
             new UsernameNotFoundException("User not found"));
 //    	Set<GrantedAuthority> authorities = user.getRoles().stream()
 //    	        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
@@ -73,9 +75,9 @@ public class UserService  implements UserDetailsService{
                 .roles("ADMIN")
                 .build();
     }
-    
 
     public void saveOrUpdateUser(OAuth2User oAuth2User) {
+        // Save or update user information from OAuth2 provider
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
         String oauthProviderId = oAuth2User.getName();
@@ -88,11 +90,11 @@ public class UserService  implements UserDetailsService{
                 user.setId(oauthProviderId);
             }
         } else {
-        	Optional<UserImg> imgOptional = getUserImgById((long) 5121);
+            Optional<UserImg> imgOptional = getUserImgById((long) 5121);
             UserImg imgDefault = imgOptional.orElseThrow(() -> new RuntimeException("Image not found!"));
-        	// Se non esiste, crea un nuovo utente
+            // If user does not exist, create a new user
             user = new User();
-            user.setId(oauthProviderId);  // Imposta l'ID del provider OAuth2
+            user.setId(oauthProviderId); // Set OAuth2 provider ID
             user.setEmail(email);
             user.setName(name);
             user.setUserImg(imgDefault);
@@ -103,16 +105,17 @@ public class UserService  implements UserDetailsService{
             user.setOnline(true);
         }
 
-        // Salva l'utente nel database
+        // Save user to the database
         userDAO.save(user);
     }
-    public void register(User user) {//registra i dati mandati dall'utente nel db criptando anche la pass
-    	String id = UUID.randomUUID().toString();
+
+    public void register(User user) { // Register new user with encrypted password
+        String id = UUID.randomUUID().toString();
         String name = user.getName();
         String email = user.getEmail();
         Optional<UserImg> imgOptional = getUserImgById((long) 5121);
         UserImg imgDefault = imgOptional.orElseThrow(() -> new RuntimeException("Image not found!"));
-        String password=passwordEncoder.encode(user.getPassword());
+        String password = passwordEncoder.encode(user.getPassword());
         user.setId(id);
         user.setName(name);
         user.setEmail(email);
@@ -124,118 +127,130 @@ public class UserService  implements UserDetailsService{
         user.setRoles(roles);
         user.setOnline(true);
 
+        // Save the user to the database
         userDAO.save(user);
     }
+
     public void assignRoles(User user, List<Role> roles) {
+        // Assign roles to a user, ensuring valid role count
         if (roles.size() < 1 || roles.size() > 2) {
             throw new IllegalArgumentException("User must have at least 1 role and a maximum of 2 roles.");
         }
         user.setRoles(roles);
         userDAO.save(user);
     }
-    public boolean exists(User user) {//check se esiste la mail nel db durante la registrazione
-    	String id=user.getEmail();
-    	List<User>listaUser=userDAO.findAll();
-    	for (User user2 : listaUser) {
-			if(user2.getEmail().toLowerCase().equals(id.toLowerCase()))
-				return true;
-		}
-    	return false;
-    	}
-    public User getUserById(String id) {
 
-    	List<User>userList= userDAO.findAll();
-    	for (User user : userList) {
-			if(user.getId().equals(id)) {
-				return user;
-			}
-		}
-    	return null;
+    public boolean exists(User user) { // Check if email already exists in the database during registration
+        String id = user.getEmail();
+        List<User> listaUser = userDAO.findAll();
+        for (User user2 : listaUser) {
+            if (user2.getEmail().toLowerCase().equals(id.toLowerCase()))
+                return true;
+        }
+        return false;
     }
-    
-    public void changePassword(String userId, String oldPassword, String newPassword) throws Exception {
-        // Trova l'utente nel database
-        User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
 
-        // Verifica che la vecchia password inserita sia corretta
+    public User getUserById(String id) {
+        // Retrieve user by ID
+        List<User> userList = userDAO.findAll();
+        for (User user : userList) {
+            if (user.getId().equals(id)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public void changePassword(String userId, String oldPassword, String newPassword) throws Exception {
+        // Change user's password after verifying the old password
+        User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Verify old password is correct
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            throw new Exception("La vecchia password è errata.");
+            throw new Exception("The old password is incorrect.");
         }
 
-        // Codifica la nuova password e aggiorna l'utente
+        // Encode new password and update user
         String encodedNewPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedNewPassword);
 
-        // Salva l'utente con la nuova password
+        // Save user with new password
         userDAO.save(user);
     }
 
     public User findByEmail(String email) {
+        // Find user by email
         return userDAO.findByEmail(email).orElse(null);
     }
+
     public User findByName(String name) {
+        // Find user by name
         return userDAO.findByEmail(name).orElse(null);
     }
+
     public User findById(String Id) {
+        // Find user by ID
         return userDAO.findById(Id).orElse(null);
     }
-    public void DeleteUser(String id) throws UsernameNotFoundException {
-        // Controlla se l'utente esiste
-        User user = userDAO.findById(id).orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
 
-        // Elimina i mazzi collegati all'utente
+    public void DeleteUser(String id) throws UsernameNotFoundException {
+        // Delete user and associated data
+        User user = userDAO.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Delete decks associated with the user
         if (user.getDecks() != null) {
             for (Deck deck : user.getDecks()) {
-            	deckCardsService.deleteCardsFromDeck(deck.getId());
-            	deckService.DeleteDeck(deck.getId());
+                deckCardsService.deleteCardsFromDeck(deck.getId());
+                deckService.DeleteDeck(deck.getId());
             }
-
         }
 
-        
-        // Elimina le UserCards collegate all'utente
+        // Delete user cards associated with the user
         List<UserCards> userCards = userCardDAO.findByUserId(id);
         if (userCards != null) {
             for (UserCards card : userCards) {
-            	System.out.println("la carta è: "+ card.getId());
-                userCardDAO.delete(card); 
+                userCardDAO.delete(card);
             }
         }
+        
+        // Remove user from followers and following lists
         for (User follower : user.getFollowers()) {
-            follower.getFollowing().remove(user); // Rimuovi l'utente dalla lista dei seguiti
+            follower.getFollowing().remove(user); // Remove user from followers' following list
         }
         
         for (User following : user.getFollowing()) {
-            following.getFollowers().remove(user); // Rimuovi l'utente dalla lista dei follower
+            following.getFollowers().remove(user); // Remove user from following's followers list
         }
         
-        user.getRoles().clear();
-        user.getDecks().clear();
-        userDAO.save(user);
+        user.getRoles().clear(); // Clear user's roles
+        user.getDecks().clear(); // Clear user's decks
+        userDAO.save(user); // Save user state
 
-        userDAO.deleteById(id);
+        userDAO.deleteById(id); // Delete user from database
     }
 
     public User userCheck(Object principal) {
+        // Check the user based on the principal object
         if (principal instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) principal;
             return findByEmail(userDetails.getUsername());
-            // Handle form login logic
-        } else{
+        } else {
             OAuth2User oAuth2User = (OAuth2User) principal;
             return findByEmail(oAuth2User.getAttribute("email"));
         }
-        
     }
     
-    // Restituisce tutte le immagini disponibili
+    // Retrieve all available user images
     public List<UserImg> getAllUserImg() {
         return userImgDAO.findAll();
     }
+
     public Optional<UserImg> getUserImgById(Long id) {
+        // Retrieve user image by ID
         return userImgDAO.findById(id);
     }
-    // Seleziona un'immagine del profilo per l'utente
+
+    // Update user's profile image
     public void updateProfileImage(String id, Long userImgId) throws Exception {
         Optional<User> optionalUser = userDAO.findById(id);
         Optional<UserImg> optionalImage = userImgDAO.findById(userImgId);
@@ -244,93 +259,99 @@ public class UserService  implements UserDetailsService{
             User user = optionalUser.get();
             UserImg userImg = optionalImage.get();
 
-            // Assegna l'immagine del profilo all'utente
+            // Assign profile image to user
             user.setUserImg(userImg);
-            userDAO.save(user);  // Salva l'utente con la nuova immagine del profilo
+            userDAO.save(user); // Save user with new profile image
         } else {
             throw new Exception("User or Image not found");
         }
     }
 
-    // Restituisce l'immagine del profilo di un utente
+    // Retrieve user's profile image
     public long getUserProfileImage(String id) throws Exception {
         Optional<User> optionalUser = userDAO.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (user.getUserImg() != null) {
-                return user.getUserImg().getId();
+                return user.getUserImg().getId(); // Return profile image ID
             } else {
-            	throw new Exception("img not found");
+                throw new Exception("Image not found");
             }
         } else {
             throw new Exception("User not found");
         }
-        }
-    public List<Role> getUserRoles(String idUser){
-    	Optional<User> user=userDAO.findById(idUser);
-    	if (user.isPresent()) {
+    }
+
+    public List<Role> getUserRoles(String idUser) {
+        // Retrieve roles associated with a user
+        Optional<User> user = userDAO.findById(idUser);
+        if (user.isPresent()) {
             return user.get().getRoles(); // Return the roles associated with the user
         }
         throw new EntityNotFoundException("User not found with ID: " + idUser);
     }
     
     public void updateNickname(String userId, String newNickname) { 
+        // Update user's nickname
         User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
        
         if (newNickname == null || newNickname.trim().isEmpty()) {
-            throw new IllegalArgumentException("Il nickname non può essere vuoto.");
+            throw new IllegalArgumentException("Nickname cannot be empty.");
         }
       
         user.setName(newNickname);
-        userDAO.save(user);
+        userDAO.save(user); // Save user with updated nickname
     }
+
     public void followUser(String loggedUser, String followingId) {
+        // Allow user to follow another user
         User follower = userDAO.findById(loggedUser).orElseThrow();
         User following = userDAO.findById(followingId).orElseThrow();
 
-        follower.getFollowing().add(following);
-        userDAO.save(follower);
+        follower.getFollowing().add(following); // Add following user to the follower's list
+        userDAO.save(follower); // Save the follower's updated following list
     }
 
-    // Smettere di seguire un utente
+    // Stop following a user
     public void unfollowUser(String loggedUser, String followingId) {
         User follower = userDAO.findById(loggedUser).orElseThrow();
         User following = userDAO.findById(followingId).orElseThrow();
 
-        follower.getFollowing().remove(following);
-        userDAO.save(follower);
+        follower.getFollowing().remove(following); // Remove following user from the follower's list
+        userDAO.save(follower); // Save the follower's updated following list
     }
-    //vedi se segui utente
+
+    // Check if a user is following another user
     public boolean isFollowing(String loggedUser, String followingId) {
-    	Set<User> list=getFollowers(followingId);
-    	if(list.contains(getUserById(loggedUser)))
-    		return true;
-    	else
-    		return false;
-    				
+        Set<User> followers = getFollowers(followingId); // Retrieve followers of the user being followed
+        return followers.contains(getUserById(loggedUser)); // Return true if logged user is in followers list, otherwise false
     }
 
-    // Ottenere la lista di follower di un utente
+    // Retrieve the list of followers for a specified user
     public Set<User> getFollowers(String userId) {
-        User user = userDAO.findById(userId).orElseThrow();
-        return user.getFollowers();
-    }
- // Ottenere numero di follower di un utente
-    public int getNumFollowers(String userId) {
-        User user = userDAO.findById(userId).orElseThrow();
-        return user.getFollowers().size();
+        User user = userDAO.findById(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
+        return user.getFollowers(); // Return the set of followers associated with the user
     }
 
-    // Ottenere la lista di utenti seguiti
+    // Retrieve the number of followers for a specified user
+    public int getNumFollowers(String userId) {
+        User user = userDAO.findById(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
+        return user.getFollowers().size(); // Return the count of followers
+    }
+
+    // Retrieve the list of users followed by a specified user
     public Set<User> getFollowing(String userId) {
-        User user = userDAO.findById(userId).orElseThrow();
-        return user.getFollowing();
+        User user = userDAO.findById(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
+        return user.getFollowing(); // Return the set of users that the specified user is following
     }
     
-    // Ottenere numero di utenti seguiti
+    // Retrieve the number of users followed by a specified user
     public int getNumFollowing(String userId) {
-        User user = userDAO.findById(userId).orElseThrow();
-        return user.getFollowing().size();
+        User user = userDAO.findById(userId)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
+        return user.getFollowing().size(); // Return the count of users followed
     }
-
 }

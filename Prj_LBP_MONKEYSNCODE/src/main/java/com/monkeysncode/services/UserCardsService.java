@@ -17,136 +17,133 @@ import com.monkeysncode.repos.UserCardDAO;
 
 @Service
 public class UserCardsService {
-		@Autowired
-		private UserCardDAO dao;
-		
-		public int getTotalCards(String userId) {
-		    List<UserCards> userCards = dao.findByUserId(userId);
+    
+    @Autowired
+    private UserCardDAO dao;  // DAO for accessing user card collection
 
-		    if (userCards == null || userCards.isEmpty()) {
-		        return 0; 
-		    }
+    // Method to get the total number of cards for a user
+    public int getTotalCards(String userId) {
+        List<UserCards> userCards = dao.findByUserId(userId);
 
-		    return userCards.stream().mapToInt(UserCards::getCardQuantity).sum();
-		}
-		
-		public List<UserCards> getUserCollection(String userId){
-			return dao.findByUserId(userId);
-		}
-	
-		//ritorna una lista di id delle carte possedute dall'utente
-		public List<String> getCollectionById(String userId){
-			List<UserCards> userCards = dao.findByUserId(userId);
-			List<String> ids = new ArrayList<String>();
-			for (UserCards userCard : userCards) {
-				ids.add(userCard.getCard().getId());
-			}
-			return ids;
-		}
-		//ritorna la lista delle carte possedute, ordinata per un certo parametro
-		public List<Card> getSortedCollection(String userId, String sort, boolean desc){
-			List<UserCards> userCards = dao.findByUserId(userId);
-			List<Card> cards = new ArrayList<Card>();
-			for (UserCards userCard : userCards) {
-				cards.add(userCard.getCard());
-			}
-			cards = sortByParam(cards,sort,desc);
-			return cards;
-			
-		}
-		
-		public List<Card> sortByParam(List<Card> cards, String sortBy, boolean desc) {
-	        Comparator<Card> comparator;
+        if (userCards == null || userCards.isEmpty()) {
+            return 0;  // Return 0 if the user has no cards
+        }
 
-	        // Seleziona il comparatore in base all'attributo sortBy
-	        switch (sortBy) {
-	            case "name":
-	                comparator = Comparator.comparing(Card::getName);
-	                break;
-	            case "level":
-	            	comparator = Comparator.comparingInt(card -> {
-	                    String level = card.getLevel();
-	                    // If the level is empty or invalid, use a default value (e.g., 0)
-                    	if(level.isEmpty() && (card.getSupertypes().equals("Trainer") || card.getSupertypes().equals("Energy") ))
-                    		return 0;
-                    	else {
-                    		if(level.isEmpty())
-                    			return 1;
-                    		if(level.equalsIgnoreCase("X"))
-                    			return 1000;
-                    	}
-                        return Integer.parseInt(level);
-	                    }); 
-	            	comparator = comparator.reversed();
-	                break;
-	            case "nationalPokedexNumbers":
-	                comparator = Comparator.comparingInt(card -> {
-	                    String nationalPokedexNumbers = card.getNationalPokedexNumbers();
-	                    // If the level is empty or invalid, use a default value (e.g., 0)
-                    	if(nationalPokedexNumbers.isEmpty() && (card.getSupertypes().equals("Trainer") || card.getSupertypes().equals("Energy") ))
-                    		return 1000;
-                        return Integer.parseInt(nationalPokedexNumbers);
-	                    }); 
-	                break;
-	            case "rarity":
-	                comparator = Comparator.comparing(Card::getRarity);
-	                break;
-	            default:
-	                throw new IllegalArgumentException("Invalid sort attribute: " + sortBy);
-	        }
+        return userCards.stream().mapToInt(UserCards::getCardQuantity).sum();  // Sum of all card quantities
+    }
+    
+    // Method to retrieve the user's card collection
+    public List<UserCards> getUserCollection(String userId) {
+        return dao.findByUserId(userId);  // Return all cards for the given user
+    }
+    
+    // Method to get a list of card IDs owned by the user
+    public List<String> getCollectionById(String userId) {
+        List<UserCards> userCards = dao.findByUserId(userId);
+        List<String> ids = new ArrayList<>();
+        for (UserCards userCard : userCards) {
+            ids.add(userCard.getCard().getId());  // Add card ID to the list
+        }
+        return ids;
+    }
 
-	        // Ordina in base al flag desc
-	        if (desc) {
-	            comparator = comparator.reversed();
-	        }
+    // Method to get the user's card collection, sorted by a specified parameter
+    public List<Card> getSortedCollection(String userId, String sort, boolean desc) {
+        List<UserCards> userCards = dao.findByUserId(userId);
+        List<Card> cards = new ArrayList<>();
+        for (UserCards userCard : userCards) {
+            cards.add(userCard.getCard());  // Add card to the list
+        }
+        cards = sortByParam(cards, sort, desc);  // Sort the cards by the given parameter
+        return cards;
+    }
+    
+    // Method to sort cards based on a specific attribute (name, level, Pokedex number, etc.)
+    public List<Card> sortByParam(List<Card> cards, String sortBy, boolean desc) {
+        Comparator<Card> comparator;
 
-	        Collections.sort(cards, comparator);
-	        return cards;
-	    }
-	
-		
-		public void addOrUpdateCard(User user,Card card,int quantity) {
-			UserCards collection = dao
-					.findByUserAndCard(user, card)
-					.orElse(new UserCards());
-			collection.setUser(user);
-			collection.setCard(card);
-			collection.setCardQuantity(quantity);
-			
-			dao.save(collection);
-			cleanDb(user.getId());
-		}
-		
-		public void addOrRemoveCard(User user,Card card,int quantity) {
-			UserCards collection = dao
-					.findByUserAndCard(user, card)
-					.orElse(new UserCards());
-			int prevQuantity = collection.getCardQuantity();
-			collection.setUser(user);
-			collection.setCard(card);
-			collection.setCardQuantity(prevQuantity + quantity);
-			System.out.println("ok");
-			dao.save(collection);
-			cleanDb(user.getId());
-		}
-		
-		public void cleanDb(String userId) {
-			List<UserCards> lista=dao.findByUserId(userId);
-			for (UserCards userCards : lista) {
-				if(userCards.getCardQuantity()<=0) {
-					dao.delete(userCards);
-				}
-			}
-		}
-		public int getQuantityByCardUser(User user, Card card) {
-		    Optional<UserCards> userCards = dao.findByUserAndCard(user, card);
-		    if (userCards.isPresent()) {
-		        return userCards.get().getCardQuantity();
-		    } else {
-		        return 0;
-		    }
-		}
-	
-	
+        // Determine the comparator based on the sortBy attribute
+        switch (sortBy) {
+            case "name":
+                comparator = Comparator.comparing(Card::getName);  // Sort by card name
+                break;
+            case "level":
+                comparator = Comparator.comparingInt(card -> {
+                    String level = card.getLevel();
+                    // Handle cards with empty or invalid levels
+                    if (level.isEmpty() && (card.getSupertypes().equals("Trainer") || card.getSupertypes().equals("Energy")))
+                        return 0;
+                    if (level.isEmpty()) return 1;
+                    if (level.equalsIgnoreCase("X")) return 1000;  // Special handling for level "X"
+                    return Integer.parseInt(level);
+                });
+                comparator = comparator.reversed();  // Reverse the sorting for level
+                break;
+            case "nationalPokedexNumbers":
+                comparator = Comparator.comparingInt(card -> {
+                    String nationalPokedexNumbers = card.getNationalPokedexNumbers();
+                    // Handle invalid or empty Pokedex numbers
+                    if (nationalPokedexNumbers.isEmpty() && (card.getSupertypes().equals("Trainer") || card.getSupertypes().equals("Energy")))
+                        return 1000;
+                    return Integer.parseInt(nationalPokedexNumbers);
+                });
+                break;
+            case "rarity":
+                comparator = Comparator.comparing(Card::getRarity);  // Sort by card rarity
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sort attribute: " + sortBy);  // Handle invalid sorting attribute
+        }
 
-	}
+        // Reverse the order if desc is true
+        if (desc) {
+            comparator = comparator.reversed();
+        }
+
+        Collections.sort(cards, comparator);  // Sort the list of cards
+        return cards;
+    }
+    
+    // Method to add or update a card for the user
+    public void addOrUpdateCard(User user, Card card, int quantity) {
+        UserCards collection = dao
+                .findByUserAndCard(user, card)
+                .orElse(new UserCards());  // Retrieve existing or create a new card for the user
+        collection.setUser(user);
+        collection.setCard(card);
+        collection.setCardQuantity(quantity);  // Set the quantity of the card
+
+        dao.save(collection);  // Save to the database
+        cleanDb(user.getId());  // Clean up database by removing cards with zero quantity
+    }
+    
+    // Method to add or remove a certain quantity of a card for the user
+    public void addOrRemoveCard(User user, Card card, int quantity) {
+        UserCards collection = dao
+                .findByUserAndCard(user, card)
+                .orElse(new UserCards());
+        int prevQuantity = collection.getCardQuantity();  // Get previous card quantity
+        collection.setUser(user);
+        collection.setCard(card);
+        collection.setCardQuantity(prevQuantity + quantity);  // Update card quantity
+
+        dao.save(collection);  // Save changes to the database
+        cleanDb(user.getId());  // Clean up cards with zero quantity
+    }
+    
+    // Method to remove cards with zero quantity from the database
+    public void cleanDb(String userId) {
+        List<UserCards> list = dao.findByUserId(userId);  // Retrieve user's card list
+        for (UserCards userCards : list) {
+            if (userCards.getCardQuantity() <= 0) {
+                dao.delete(userCards);  // Delete cards with zero quantity
+            }
+        }
+    }
+
+    // Method to get the quantity of a specific card for a user
+    public int getQuantityByCardUser(User user, Card card) {
+        Optional<UserCards> userCards = dao.findByUserAndCard(user, card);
+        return userCards.map(UserCards::getCardQuantity).orElse(0);  // Return quantity or 0 if not found
+    }
+}
