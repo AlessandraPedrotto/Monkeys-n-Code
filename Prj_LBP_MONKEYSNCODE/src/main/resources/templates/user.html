@@ -7,6 +7,7 @@
     <link rel="icon" sizes="48x48" href="/icona_pokedecks.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Styling generale */
         body {
@@ -249,6 +250,36 @@
             </div>
         </div>
     </div>
+    <div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title section-title">Statistiche Utente</h3>
+                    <div class="row text-center mb-4">
+                        <!-- Matches Won -->
+                        <div class="col-md-3">
+                            <h5>Partite Vinte</h5>
+                            <p class="m-0 text-success" th:text="${user.win != null ? user.win : 0}">0</p>
+                        </div>
+                        <!-- Matches Lost -->
+                        <div class="col-md-3">
+                            <h5>Partite Perse</h5>
+                            <p class="m-0 text-danger" th:text="${user.lose != null ? user.lose : 0}">0</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h5>Punti Totali</h5> 
+                            <p th:text="(${user.win}*50)-(${user.lose}*10)"></p>
+                        </div>
+                        <div class="col-md-3">
+                            <canvas id="userStatsPieChart" style="width:250px;max-width:250px"></canvas>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Dettagli Utente -->
     <div class="row mt-4">
@@ -265,7 +296,51 @@
     </div>
 </div>
 <!-- Fine sezione Profilo Utente -->
+<script>
+    // Get the win and lose values from Thymeleaf variables
+    let wins = [[${user.win != null ? user.win : 0}]];
+    let loses = [[${user.lose != null ? user.lose : 0}]];
 
+    // Data for the Pie Chart
+    const data = {
+        labels: ['Vittorie', ' Sconfitte'], // Labels for the chart
+        datasets: [{
+            data: [wins, loses], // Data for wins and losses
+            backgroundColor: ['#28a745', '#dc3545'],  // Green for wins, red for losses
+            hoverOffset: 4
+        }]
+    };
+
+    // Configuration for the Pie Chart
+    const config = {
+        type: 'pie',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            let total = wins + loses;
+                            let value = tooltipItem.raw;
+                            let percentage = total > 0 ? ((value / total) * 100).toFixed(2) : 0;
+                            return `${tooltipItem.label}: ${value} (${percentage}%)`; // Custom tooltip displaying value and percentage
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    // Render the Pie Chart
+    const userStatsPieChart = new Chart(
+        document.getElementById('userStatsPieChart'), // Ensure you have this canvas element in your HTML
+        config
+    );
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Fine script -->
 </body>

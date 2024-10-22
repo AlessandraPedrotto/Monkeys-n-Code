@@ -23,6 +23,8 @@ public class User {
     private String email;
     private String password;
     private int win;
+    private int lose;
+
     //relationship between user and decks
     @OneToMany(mappedBy = "user")
     private List<Deck> decks;
@@ -132,7 +134,12 @@ public class User {
 	public void setWin(int win) {
 		this.win = win;
 	}
-
-    
+	public int getLose() {
+		return lose;
+	}
+	public void setLose(int lose) {
+		this.lose = lose;
+	}
+	
     
 }

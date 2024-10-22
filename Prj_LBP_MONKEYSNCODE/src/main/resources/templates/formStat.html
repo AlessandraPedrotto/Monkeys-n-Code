@@ -71,15 +71,22 @@
             <ul class="list-group mb-4">
                 <li th:each="user : ${users}" class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
-                        <strong>Email:</strong> <span th:text="${user.email}"></span><br>
-                        <strong>Name:</strong> <span th:text="${user.name}"></span><br>
-                        <strong>Vittorie:</strong> <span th:text="${user.win}"></span>
+                        <strong>Email: </strong> <span th:text="${user.email}"></span><br>
+                        <strong>Name: <a th:href="@{/user/{userId}(userId=${user.id})}" th:text="${user.name}"></a></strong><br>
+                        <strong>Vittorie: </strong> <span th:text="${user.win}"></span>
+                        <strong>Sconfitte: </strong> <span th:text="${user.lose}"></span>
+                        <strong>Punti Totali: </strong> <span th:text="(${user.win}*50)-(${user.lose}*10)"></span>
                     </div>
+                        
                     <form th:action="@{/admin/formStat}" method="post" class="d-flex align-items-center">
                         <input type="hidden" name="userId" th:value="${user.id}" />
                         <div class="input-group me-3">
-                            <label for="win" class="visually-hidden">Add Wins:</label>
+                            <label for="win" class="visually-hidden">Add Win:</label>
                             <input type="number" name="win" class="form-control" min="0" placeholder="aggiungi vittorie" required />
+                        </div>
+                        <div class="input-group me-3">
+                            <label for="lose" class="visually-hidden">Add lose:</label>
+                            <input type="number" name="lose" class="form-control" min="0" placeholder="aggiungi sconfitte" required />
                         </div>
                         <button class="btn btn-success" type="submit">Invia</button>
                     </form>
