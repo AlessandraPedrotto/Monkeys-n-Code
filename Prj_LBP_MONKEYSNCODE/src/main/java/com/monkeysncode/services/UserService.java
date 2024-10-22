@@ -1,18 +1,13 @@
 package com.monkeysncode.services;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -353,5 +348,9 @@ public class UserService implements UserDetailsService {
         User user = userDAO.findById(userId)
             .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
         return user.getFollowing().size(); // Return the count of users followed
+    }
+    public List<User> getAllUsersOrderedByWin() {
+        // Trova tutti gli utenti e ordina per vittorie in ordine decrescente
+        return userDAO.findAll(Sort.by(Sort.Direction.DESC, "win"));
     }
 }

@@ -31,12 +31,12 @@ public class SecurityConfig {
 
     private final UserService serviceUser;
 
-    public SecurityConfig(@Lazy UserService serviceUser) {//Lazy used to bypass circular reference between userservice and securityconfig
+    public SecurityConfig(@Lazy UserService serviceUser) { // Lazy used to bypass circular reference between userservice and securityconfig
         this.serviceUser = serviceUser;
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();  // pass encoder
+        return new BCryptPasswordEncoder();  // Pass encoder
     }
 
     @Bean
@@ -46,13 +46,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/","/logo.png", "/login", "/register", "/style/**", "/script/**","/image/**","/traduzioni/**").permitAll();  // Accesso libero a home, login, registrazione e risorse statiche
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
-                    auth.anyRequest().authenticated();  // all other pages require auth
+                    auth.anyRequest().authenticated();  // All other pages require auth
                 })
                 .formLogin(form -> form
-                    .loginPage("/")  // Definisci la pagina di login personalizzata
-                    .defaultSuccessUrl("/", true)  // redirect to form based login
+                    .loginPage("/")  // Define your custom login page
+                    .defaultSuccessUrl("/", true)  // Redirect to form based login
                     .loginProcessingUrl("/login")
-                    .usernameParameter("email")  //sets email as username
+                    .usernameParameter("email")  // Sets email as username
                     .passwordParameter("password")
                     .successHandler(customAuthenticationSuccessHandler())
                     .permitAll()
@@ -69,7 +69,7 @@ public class SecurityConfig {
                             if (authentication != null) {
                             	User user=serviceUser.userCheck(authentication.getPrincipal());
                             	if(user!=null) {
-                            		user.setOnline(false);  // sets the user offline
+                            		user.setOnline(false);  // Sets the user offline
                             		userDAO.save(user);
                             		
                             	}
@@ -98,7 +98,7 @@ public class SecurityConfig {
             	request.getSession().setAttribute("userId", userId);
             	request.getSession().setAttribute("role", role);
             }else {
-            	String username = oAuth2User.getAttribute("name");//puts in session the user name
+            	String username = oAuth2User.getAttribute("name");// Puts in session the user name
             	String userId = oAuth2User.getAttribute("userId");
             	String role = oAuth2User.getAttribute("role");
             	User user=serviceUser.findById(userId);

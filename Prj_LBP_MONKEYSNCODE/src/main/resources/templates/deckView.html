@@ -74,6 +74,9 @@
                         <a class="nav-link" href="http://localhost:8080/deckRules">Regolamento</a>
                 </li>  
                 <li class="nav-item">
+                     <a class="nav-link" href="http://localhost:8080/classification">Classifica</a>
+                </li>
+                <li class="nav-item">
                         <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat">Statistiche</a>
                 </li>               
             </ul>

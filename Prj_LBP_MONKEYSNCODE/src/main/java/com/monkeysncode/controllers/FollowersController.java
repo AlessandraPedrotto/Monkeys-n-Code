@@ -19,9 +19,11 @@ import com.monkeysncode.entites.User;
 import com.monkeysncode.services.DeckCardsService;
 import com.monkeysncode.services.DeckService;
 import com.monkeysncode.services.UserService;
+
 @RequestMapping("/user")
 @Controller
-public class FollowersController {
+public class FollowersController { // Controller that manages followers
+	
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -29,49 +31,55 @@ public class FollowersController {
 	@Autowired
 	DeckService deckService;
 	
-	@GetMapping("/{userId}")
-	public String user(@AuthenticationPrincipal Object principal,@PathVariable String userId,Model model) {
-		User user=userService.getUserById(userId);
-		User loggedUser=userService.userCheck(principal);
-		System.out.println("ha questi follower: "+userService.getNumFollowers(userId));
-		System.out.println("la persona loggata lo segue? :"+userService.isFollowing(loggedUser.getId(), userId));
-		model.addAttribute("user",user);
-		model.addAttribute("followers",userService.getNumFollowers(userId));
-		model.addAttribute("following",userService.getNumFollowing(userId));
-		model.addAttribute("isFollowing",userService.isFollowing(loggedUser.getId(), userId));
+	@GetMapping("/{userId}") // Check if the user is logged in
+	public String user(@AuthenticationPrincipal Object principal, @PathVariable String userId, Model model) {
+		User user = userService.getUserById(userId);
+		User loggedUser = userService.userCheck(principal);
+		model.addAttribute("user", user);
+		model.addAttribute("followers", userService.getNumFollowers(userId));
+		model.addAttribute("following", userService.getNumFollowing(userId));
+		model.addAttribute("isFollowing", userService.isFollowing(loggedUser.getId(), userId));
 		if(loggedUser.getId().equals(userId)) {
 			return "redirect:/profile";
 		}
 		return "user";
 	}
 	
-	@PostMapping("/follow")
-    public String follow(@AuthenticationPrincipal Object principal,@RequestParam String user) {
+	// Method that concerns when you press the follow button
+	@PostMapping("/follow") 
+    public String follow(@AuthenticationPrincipal Object principal, @RequestParam String user) {
 
-    	User loggedUser=userService.userCheck(principal);
+    	User loggedUser = userService.userCheck(principal);
     	userService.followUser(loggedUser.getId(),user);
-    	return "redirect:/user/"+user;
+    	return "redirect:/user/" + user;
     	
     }
+	
+	// Method that shows followers
 	@GetMapping("/{userId}/followers")
-	public String seeFollowers(@PathVariable String userId,Model model) {
-		model.addAttribute("followersList",userService.getFollowers(userId));
+	public String seeFollowers(@PathVariable String userId, Model model) {
+		model.addAttribute("followersList", userService.getFollowers(userId));
 		return "seeUserFollowers";
 	}
+
+    // Method that shows the users you follow
 	@GetMapping("/{userId}/following")
-	public String seeFollowing(@PathVariable String userId,Model model) {
-		Set<User> list=userService.getFollowing(userId);
-		model.addAttribute("followingList",list);
+	public String seeFollowing(@PathVariable String userId, Model model) {
+		Set<User> list = userService.getFollowing(userId);
+		model.addAttribute("followingList", list);
 		return "seeUserFollowing";
 	}
+	
+	// Method that concerns when you press the unfollow button
 	@PostMapping("/unfollow")
     public String unFollow(@AuthenticationPrincipal Object principal,@RequestParam String user) {
 
-    	User loggedUser=userService.userCheck(principal);
-    	userService.unfollowUser(loggedUser.getId(),user);
+    	User loggedUser = userService.userCheck(principal);
+    	userService.unfollowUser(loggedUser.getId(), user);
     	return "redirect:/user/"+user;
     	
     }
+	
 	@GetMapping("/deck/{deckId}")
 	public String deckView(@PathVariable Long deckId,Model model) {
 		List<DeckCards> originalCards = deckCardsService.getDeckCards(deckId);
