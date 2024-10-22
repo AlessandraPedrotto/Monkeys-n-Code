@@ -12,43 +12,43 @@ import com.monkeysncode.repos.UserDAO;
 
 @Service
 public class DeckService {
-    
-    private final UserDAO userDAO;
-    private final DeckDAO deckDAO;
+    private final UserDAO userDAO;  // DAO for user data access
+    private final DeckDAO deckDAO;  // DAO for deck data access
 
+    // Constructor for dependency injection of DAOs
     public DeckService(UserDAO userDAO, DeckDAO deckDAO) {
         this.deckDAO = deckDAO;
         this.userDAO = userDAO;
     }
 
-    // Metodo per creare o aggiornare un deck
+    // Method for saving or updating a deck, depending on whether the deck ID is provided
     public void saveOrUpdateDeck(String userId, String nameDeck, Long deckId, DeckImg deckImg) {
-        // Recupera l'utente dal database
-        User user = userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User non trovato"));
+        // Retrieve the user from the database
+        User user = userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         Deck deck;
 
         if (deckId == null) {
-            // Se non viene fornito un ID del deck, crea un nuovo deck
+            // If no deck ID is provided, create a new deck
             deck = new Deck();
-            deck.setUser(user);  // Associa il mazzo all'utente
+            deck.setUser(user);  // Associate the deck with the user
         } else {
-            // Se viene fornito un ID del deck, aggiorna il deck esistente
+            // If a deck ID is provided, update the existing deck
             deck = deckDAO.findById(deckId)
-                .orElseThrow(() -> new RuntimeException("Deck non trovato"));
+                .orElseThrow(() -> new RuntimeException("Deck not found"));
         }
 
-        // Imposta il nome e l'immagine del deck (se fornita)
+        // Set the name and image of the deck (if provided)
         deck.setNameDeck(nameDeck);
         if (deckImg != null) {
             deck.setDeckImg(deckImg);
         }
 
-        // Salva il deck (sia per creazione che per aggiornamento)
+        // Save the deck (both for creation and update)
         deckDAO.save(deck);
     }
 
-    // Metodo per eliminare un deck
+    // Method to delete a deck by its ID
     public boolean DeleteDeck(Long deckId) {
         Optional<Deck> deck = deckDAO.findById(deckId);
         if (deck.isPresent()) {
@@ -58,12 +58,12 @@ public class DeckService {
         return false;
     }
 
-    // Recupera un deck per ID
+    // Method to retrieve a deck by its ID
     public Optional<Deck> getDeckById(Long id) {
         return deckDAO.findById(id);
     }
 
-    // Recupera un deck per nome e utente
+    // Method to retrieve a deck by its name and the associated user
     public Optional<Deck> getDeckByNameDeck(User user, String nameDeck) {
         return deckDAO.findByUserAndNameDeck(user, nameDeck);
     }
