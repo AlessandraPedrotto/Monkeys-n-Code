@@ -117,7 +117,6 @@ public class SecurityConfig {
         	UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         	String email = userDetails.getUsername(); //email
         	Optional<User> optionalUser = userDAO.findByEmail(email);
-        	System.out.println("///////SEI ENTRATO//////////////");
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 String fullName = user.getName();
@@ -135,9 +134,6 @@ public class SecurityConfig {
                 request.getSession().setAttribute("name", fullName);
                 request.getSession().setAttribute("userId", userId);
                 request.getSession().setAttribute("role", role);  // Set the role in the session
-                for (String roles : role) {
-					System.out.println("///////////////////////questo è il tuo ruoloooooo "+ roles);
-				}
             }
             
             response.sendRedirect("/");
