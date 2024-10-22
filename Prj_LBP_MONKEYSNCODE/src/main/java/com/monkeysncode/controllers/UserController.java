@@ -1,11 +1,8 @@
 package com.monkeysncode.controllers;
 
-
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.regex.Matcher;
 
 import java.util.Random;
 import java.util.Map;
@@ -45,7 +42,6 @@ public class UserController // Controller who manages the user profile
 	@Autowired
 	private UserCardDAO userCardDAO;
 	
-	private static final String REGEX_CHANGE_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=])(?=\\S+$).{8,}$"; //static variable where the regex for the password is set
 
 	Deck deck = new Deck();
 	
@@ -68,7 +64,7 @@ public class UserController // Controller who manages the user profile
         
 
         model.addAttribute("followers",userService.getNumFollowers(user.getId()));
-		    model.addAttribute("following",userService.getNumFollowing(user.getId()));
+	    model.addAttribute("following",userService.getNumFollowing(user.getId()));
         model.addAttribute("username", user.getName()); // Aggiunge il nome utente al model
         model.addAttribute("email", user.getEmail()); // Aggiunge l'email dell'utente al model
         model.addAttribute("id", user.getId()); // Aggiunge id dell'utente al model

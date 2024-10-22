@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.monkeysncode.entites.Card;
 import com.monkeysncode.entites.User;
 import com.monkeysncode.entites.UserCards;
-import com.monkeysncode.repos.CardsDAO;
 import com.monkeysncode.repos.UserCardDAO;
 
 @Service
