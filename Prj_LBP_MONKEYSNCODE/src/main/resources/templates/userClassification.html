@@ -84,15 +84,19 @@
                             <th>Username</th>
                             <th>Email</th>
                             <th>Vittorie</th>
+                            <th>Sconfitte</th>
+                            <th>Punti</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Iterating on users from the controller -->
-                        <tr th:each="user, iterStat : ${listUsers}">
+                        <tr th:each="user, iterStat : ${listUsers}" th:class="${session.name == user.name} ? 'table-success' : ''">
                             <td th:text="${iterStat.index + 1}"></td> <!-- Position -->
                             <td><a th:href="@{/user/{userId}(userId=${user.id})}" th:text="${user.name}"></a></td> <!-- Username -->
                             <td th:text="${user.email}"></td> <!-- Email -->
                             <td th:text="${user.win}"></td> <!-- Victories -->
+                            <td th:text="${user.lose}"></td> <!-- Loses -->
+                            <td th:text="(${user.win}*50)-(${user.lose}*10)"></td> <!-- Points -->
                         </tr>
                     </tbody>
                 </table>

@@ -62,16 +62,32 @@ public class UserController // Controller who manages the user profile
         
         List<Deck> userDecks = user.getDecks();
         
+        List<User> allUsers = userService.getAllUsersOrderedByWin();
+        
+        // Search user position
+        int position = -1;
+        for (int i = 0; i < allUsers.size(); i++) {
+            if (allUsers.get(i).getName().equals(user.getName())) {
+                position = i + 1; // Index start to 0, position to 1
+                break;
+            }
+        }
 
         model.addAttribute("followers",userService.getNumFollowers(user.getId()));
 	    model.addAttribute("following",userService.getNumFollowing(user.getId()));
-        model.addAttribute("username", user.getName()); // Aggiunge il nome utente al model
-        model.addAttribute("email", user.getEmail()); // Aggiunge l'email dell'utente al model
-        model.addAttribute("id", user.getId()); // Aggiunge id dell'utente al model
-        model.addAttribute("deck", deck.getNameDeck() ); // Aggiunge il nome del mazzo al model
+        model.addAttribute("username", user.getName()); // Add username to model
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("id", user.getId()); 
+        model.addAttribute("deck", deck.getNameDeck() ); 
+        model.addAttribute("position", position); // Add user position to model
+        model.addAttribute("victories", user.getWin()); // Add user victories
+        model.addAttribute("loses", user.getLose());// Add user loses
+        model.addAttribute("points", user.getWin() - user.getLose() * 10); // Add user points
 
         model.addAttribute("userImg", user.getUserImg()); // Assuming userImg is defined
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
+        
+        model.addAttribute("listUsers", allUsers);
         
         // Adds image list for choice
         model.addAttribute("starterImages", getFavouriteStarter());
