@@ -24,7 +24,7 @@ public class DeckService {
     // Method for saving or updating a deck, depending on whether the deck ID is provided
     public void saveOrUpdateDeck(String userId, String nameDeck, Long deckId, DeckImg deckImg) {
         // Retrieve the user from the database
-        User user = userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    	User user = userDAO.findById(userId).orElseThrow(() -> new RuntimeException("User non trovato"));
 
         Deck deck;
 
@@ -35,7 +35,7 @@ public class DeckService {
         } else {
             // If a deck ID is provided, update the existing deck
             deck = deckDAO.findById(deckId)
-                .orElseThrow(() -> new RuntimeException("Deck not found"));
+            	.orElseThrow(() -> new RuntimeException("Deck non trovato"));
         }
 
         // Set the name and image of the deck (if provided)

@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
         
     	User user = userDAO.findByEmail(email).orElseThrow(() ->
 
-            new UsernameNotFoundException("User not found"));
+            new UsernameNotFoundException("Utente non trovato"));
     	return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
@@ -74,7 +74,7 @@ public class UserService implements UserDetailsService {
             }
         } else {
             Optional<UserImg> imgOptional = getUserImgById((long) 5121);
-            UserImg imgDefault = imgOptional.orElseThrow(() -> new RuntimeException("Image not found!"));
+            UserImg imgDefault = imgOptional.orElseThrow(() -> new RuntimeException("Immagine non trovata!"));
             // If user does not exist, create a new user
             user = new User();
             user.setId(oauthProviderId); // Set OAuth2 provider ID
@@ -97,7 +97,7 @@ public class UserService implements UserDetailsService {
         String name = user.getName();
         String email = user.getEmail();
         Optional<UserImg> imgOptional = getUserImgById((long) 5121);
-        UserImg imgDefault = imgOptional.orElseThrow(() -> new RuntimeException("Image not found!"));
+        UserImg imgDefault = imgOptional.orElseThrow(() -> new RuntimeException("Immagine non trovata!"));
         String password = passwordEncoder.encode(user.getPassword());
         user.setId(id);
         user.setName(name);
@@ -117,7 +117,7 @@ public class UserService implements UserDetailsService {
     public void assignRoles(User user, List<Role> roles) {
         // Assign roles to a user, ensuring valid role count
         if (roles.size() < 1 || roles.size() > 2) {
-            throw new IllegalArgumentException("User must have at least 1 role and a maximum of 2 roles.");
+            throw new IllegalArgumentException("L'utente deve avere almeno 1 ruolo e un massimo di 2 ruoli.");
         }
         user.setRoles(roles);
         userDAO.save(user);
@@ -146,11 +146,11 @@ public class UserService implements UserDetailsService {
 
     public void changePassword(String userId, String oldPassword, String newPassword) throws Exception {
         // Change user's password after verifying the old password
-        User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
 
         // Verify old password is correct
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            throw new Exception("The old password is incorrect.");
+            throw new Exception("La vecchia password è sbagliata");
         }
 
         // Encode new password and update user
@@ -178,7 +178,7 @@ public class UserService implements UserDetailsService {
 
     public void DeleteUser(String id) throws UsernameNotFoundException {
         // Delete user and associated data
-        User user = userDAO.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userDAO.findById(id).orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
 
         // Delete decks associated with the user
         if (user.getDecks() != null) {
@@ -246,7 +246,7 @@ public class UserService implements UserDetailsService {
             user.setUserImg(userImg);
             userDAO.save(user); // Save user with new profile image
         } else {
-            throw new Exception("User or Image not found");
+            throw new Exception("Utente o immagine non trovata");
         }
     }
 
@@ -258,10 +258,10 @@ public class UserService implements UserDetailsService {
             if (user.getUserImg() != null) {
                 return user.getUserImg().getId(); // Return profile image ID
             } else {
-                throw new Exception("Image not found");
+                throw new Exception("Immagine non trovata");
             }
         } else {
-            throw new Exception("User not found");
+            throw new Exception("Utente non trovato");
         }
     }
 
@@ -271,15 +271,15 @@ public class UserService implements UserDetailsService {
         if (user.isPresent()) {
             return user.get().getRoles(); // Return the roles associated with the user
         }
-        throw new EntityNotFoundException("User not found with ID: " + idUser);
+        throw new EntityNotFoundException("Utente non trovato con ID: " + idUser);
     }
     
     public void updateNickname(String userId, String newNickname) { 
         // Update user's nickname
-        User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userDAO.findById(userId).orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
        
         if (newNickname == null || newNickname.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nickname cannot be empty.");
+            throw new IllegalArgumentException("Il nickname non può essere vuoto");
         }
       
         user.setName(newNickname);
@@ -313,28 +313,28 @@ public class UserService implements UserDetailsService {
     // Retrieve the list of followers for a specified user
     public Set<User> getFollowers(String userId) {
         User user = userDAO.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
+            .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato")); // Ensure the user exists
         return user.getFollowers(); // Return the set of followers associated with the user
     }
 
     // Retrieve the number of followers for a specified user
     public int getNumFollowers(String userId) {
         User user = userDAO.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
+            .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato")); // Ensure the user exists
         return user.getFollowers().size(); // Return the count of followers
     }
 
     // Retrieve the list of users followed by a specified user
     public Set<User> getFollowing(String userId) {
         User user = userDAO.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
+            .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato")); // Ensure the user exists
         return user.getFollowing(); // Return the set of users that the specified user is following
     }
     
     // Retrieve the number of users followed by a specified user
     public int getNumFollowing(String userId) {
         User user = userDAO.findById(userId)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found")); // Ensure the user exists
+            .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato")); // Ensure the user exists
         return user.getFollowing().size(); // Return the count of users followed
     }
     public List<User> getAllUsersOrderedByWin() {
