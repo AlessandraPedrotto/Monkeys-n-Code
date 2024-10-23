@@ -526,12 +526,13 @@
 	        }
 	    });
 	});
+	    </script>
+<script>
 	//Mostra la pagina della collezione personale
 	 document.addEventListener("DOMContentLoaded", function () {
 	     // Ottieni l'URL della pagina
 	     const urlParams = new URLSearchParams(window.location.search);
 	     const fromCollection = urlParams.get('from');
-	     const userId = document.querySelector("meta[name='user-id']").getAttribute("content");
 	  	
 	     // Cambia il titolo della pagina solo se 'from=myCollection' è presente
 	     if (fromCollection === 'myCollection') {

@@ -92,7 +92,7 @@
                             <td th:text="${iterStat.index + 1}"></td> <!-- Position -->
                             <td><a th:href="@{/user/{userId}(userId=${user.id})}" th:text="${user.name}"></a></td> <!-- Username -->
                             <td th:text="${user.email}"></td> <!-- Email -->
-                            <td th:text="${user.win}"></td> <!-- Victories -->
+                            <td th:text="(${user.win}*50)-(${user.lose}*10)"></td> <!-- Victories -->
                         </tr>
                     </tbody>
                 </table>

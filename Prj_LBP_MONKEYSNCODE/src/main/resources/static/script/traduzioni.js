@@ -16,7 +16,15 @@ function changeLanguage(lang) {
           element.textContent = translations[key];
         }
       });
-
+      const allGreetings = document.querySelectorAll('#userGreeting span');
+            allGreetings.forEach(span => {
+                if (span.getAttribute('data-lang') === lang) {
+                    span.style.display = 'inline';  // Show the selected language's greeting
+                } else {
+                    span.style.display = 'none';    // Hide other greetings
+                }
+            });
+	  updateLabels(lang);
       // Change the slogan image based on the selected language
       const sloganImage = document.getElementById("immagine-slogan");
       if (lang === 'it') {

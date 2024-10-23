@@ -30,6 +30,7 @@ public class ClassificationController { // Controller that manage the classifica
 		model.addAttribute("username", user.getName());
 		model.addAttribute("mail", user.getEmail());
 		model.addAttribute("winUser", user.getWin());
+		model.addAttribute("loseUser", user.getLose());
 		model.addAttribute("listUsers", allUsers);
 		
 		return "userClassification";
@@ -48,6 +49,7 @@ public class ClassificationController { // Controller that manage the classifica
 		model.addAttribute("username", user.getName());
 		model.addAttribute("email", user.getEmail());
 		model.addAttribute("winUser", user.getWin());
+		model.addAttribute("loseUser", user.getLose());
 		model.addAttribute("listUsers", allUsers);
 		
 		
