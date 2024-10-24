@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -69,6 +68,7 @@ public class CardController { // Controller who manages the user card collection
 	 	param.put("rarity", rarity);
 	 	param.put("supertype", supertype);
 	 	param.put("subtypes", subtypes);
+	 	param.put("page", String.valueOf(page));
 	 	
 		List<Card> cards = new ArrayList<Card>();
 		HashMap<String,Integer> ownedCards = usercardService.getCollectionById(user.getId()); // Creates the collection of all cards owned by the user
@@ -113,8 +113,8 @@ public class CardController { // Controller who manages the user card collection
 	    model.addAttribute("finePagina", finePagina);
 	    model.addAttribute("bloccoCorrente", blocco);
 	    model.addAttribute("ultimoBlocco", ultimoBlocco); 
-        
-        param.put("sort", sort);
+	    
+	    param.put("sort", sort);
 	 	param.put("desc", desc!= true ? "false" : "true");
 	 	param.put("owned", owned!= true ? "false" : "true");
 	 	model.addAttribute("param", param);
@@ -139,6 +139,7 @@ public class CardController { // Controller who manages the user card collection
 		Card card = cardService.findById(cardId);
 		return usercardService.addOrRemoveCard(user, card, -1);
     }
+
 	
 	 @GetMapping("/card/{cardId}")
 	 public String viewCard(@AuthenticationPrincipal Object principal, @PathVariable("cardId") String cardId, Model model) {

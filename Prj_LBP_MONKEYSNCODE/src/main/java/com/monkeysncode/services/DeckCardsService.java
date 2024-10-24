@@ -68,12 +68,12 @@ public class DeckCardsService {
 
                 // Save the updated or newly created relationship
                 this.deckCardDAO.save(deckCard);
-                return CompletableFuture.completedFuture("Card added successfully!");
+                return CompletableFuture.completedFuture("Carta aggiunta correttamente");
             }
         }
         
         // Return an error message if the deck does not exist
-        return CompletableFuture.completedFuture("Deck error!");
+        return CompletableFuture.completedFuture("Errore mazzo!");
     }
     
     // Asynchronous method to remove a card from the deck
@@ -106,19 +106,19 @@ public class DeckCardsService {
                     }
                 }
             }
-            return CompletableFuture.completedFuture("Card removed successfully!");
+            return CompletableFuture.completedFuture("Carta rimossa correttamente!");
         }
         // Return an error message if the deck does not exist
-        return CompletableFuture.completedFuture("Deck error!");
+        return CompletableFuture.completedFuture("Errore mazzo!");
     }
     
     // Method to format validation errors into a bullet-point list
     private String formatValidationErrors(List<String> violations) {
         if (violations.isEmpty()) {
-            return "The deck is valid!";
+            return "Il mazzo è valido!";
         }
 
-        StringBuilder formattedErrors = new StringBuilder("Errors found in deck validation:<br><br>");
+        StringBuilder formattedErrors = new StringBuilder("Errori trovati nella convalida del mazzo:<br><br>");
 
         // Append each violation to the formatted string
         for (String violation : violations) {
@@ -136,13 +136,13 @@ public class DeckCardsService {
 
         // Check if the deck is empty
         if (deckCards.isEmpty()) {
-            violations.add("The deck is empty."); 
+            violations.add("Il mazzo è vuoto"); 
         }
 
         // Check that the deck does not exceed the maximum limit of 60 cards
         int totalCards = deckCards.stream().mapToInt(DeckCards::getCardQuantity).sum();
         if (totalCards != 60) {
-            violations.add("The deck must contain exactly 60 cards. Cards in the deck: " + totalCards);
+        	violations.add("Il mazzo deve contenere esattamente 60 carte. Carte nel mazzo: " + totalCards);
         }
 
         // Initialize counter for basic Pokémon and a map for tracking copies of cards
@@ -181,13 +181,13 @@ public class DeckCardsService {
 
         // Validation rules
         if (basicPokemonCount == 0) {
-            violations.add("The deck must include at least one basic Pokémon.");
+        	violations.add("Il mazzo deve includere almeno un Pokémon base.");
         }
 
         // Ensure no card (excluding Energy) has more than 4 copies
         boolean noExcessCopies = cardCountMap.values().stream().allMatch(count -> count <= 4);
         if (!noExcessCopies) {
-            violations.add("You cannot have more than 4 copies of a card (except Energy).");
+        	violations.add("Non è possibile avere più di 4 copie per carta (eccetto Energy).");
         }
 
         // Verify that every evolution has its corresponding basic Pokémon
@@ -199,15 +199,15 @@ public class DeckCardsService {
         }
 
         if (!missingBases.isEmpty()) {
-            violations.add("Some evolutions do not have the corresponding basic Pokémon: " + String.join(", ", missingBases));
+        	violations.add("Alcune evoluzioni non hanno il Pokémon base corrispondente: " + String.join(", ", missingBases));
         }
 
         // If there are missing cards, add a personalized message
         if (!missingCards.isEmpty()) {
             if (missingCards.size() == 1) {
-                violations.add("The deck includes " + missingCards.get(0) + " which you do not yet have in your collection.");
+            	violations.add("Nel mazzo è presente " + missingCards.get(0) + " che non hai ancora nella tua collezione.");
             } else {
-                violations.add("The deck contains cards that you do not own."); 
+            	violations.add("Nel mazzo sono presenti carte che non hai nella tua collezione."); 
             }
         }
 

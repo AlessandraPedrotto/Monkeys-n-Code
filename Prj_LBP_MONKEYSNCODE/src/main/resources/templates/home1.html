@@ -115,6 +115,7 @@
         <a th:if="${session.name}!=null" href="http://localhost:8080/deckRules" class="bottone-menu" data-translate="regolamento"></a>
         <a th:if="${session.name}!=null" href="http://localhost:8080/classification" class="bottone-menu" data-translate="tasto-navbar-classifica"></a>
       	<a th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat" class="bottone-menu" data-translate="tasto-navbar-statistiche"></a>
+
       </div>
     </div>
     <div th:if="${session.name}==null" id="sidebar2" class="sidebar closed2">
