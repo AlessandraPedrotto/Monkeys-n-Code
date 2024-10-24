@@ -172,10 +172,7 @@
         border-radius: 12px;
     }
 
-    .fas {
-        color: #fff;
-        font-size: 20px;
-    }
+    
         
     </style>
     
@@ -328,58 +325,61 @@
     <div class="text-center mt-4">
     	<a href="/cards?owned=true&from=myCollection" class="btn btn-success" id="myCollectionBtn" data-title="La mia collezione" data-translate="tasto-mia-collezione"></a>
 	</div>
-	<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
+	<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg rounded-lg border-0">
+                <div class="card-body p-4">
                     <h3 class="card-title section-title" data-translate="statistiche"></h3>
                     <div class="row text-center mb-4">
+
                         <!-- Position -->
                         <div class="col-md-3 mb-3">
                             <div class="stat-box p-4 shadow-sm rounded-lg bg-gradient-primary text-white position-relative">
                                 <i class="fas fa-trophy stat-icon position-absolute top-0 start-0 p-2"></i>
-                                <h6 class="text-uppercase">Posizione</h6>
+                                <h6 class="text-uppercase" data-translate="posizione">Posizione</h6>
                                 <h4 class="font-weight-bold" th:text="${position}"></h4>
                             </div>
                         </div>
-                        <!-- Matches Won -->
-                        <div class="col-md-3">
-                            <h5 data-translate="vittorie"></h5>
-                            <p class="m-0 text-success" th:text="${user.win != null ? user.win : 0}">0</p>
+                        <!-- Victories -->
+                        <div class="col-md-3 mb-3">
+                            <div class="stat-box p-4 shadow-sm rounded-lg bg-gradient-success text-white position-relative">
+                                <i class="fas fa-check-circle stat-icon position-absolute top-0 start-0 p-2"></i>
+                                <h6 class="text-uppercase" data-translate="vittorie">Partite Vinte</h6>
+                                <h4 th:text="${user.win != null ? user.win : 0}" class="font-weight-bold">0</h4>
+                            </div>
                         </div>
-                        <!-- Matches Lost -->
-                        <div class="col-md-3">
-                            <h5 data-translate="sconfitte"></h5>
-                            <p class="m-0 text-danger" th:text="${user.lose != null ? user.lose : 0}">0</p>
+
+                        <!-- Loses -->
+                        <div class="col-md-3 mb-3">
+                            <div class="stat-box p-4 shadow-sm rounded-lg bg-gradient-danger text-white position-relative">
+                                <i class="fas fa-times-circle stat-icon position-absolute top-0 start-0 p-2"></i>
+                                <h6 class="text-uppercase" data-translate="sconfitte">Partite Perse</h6>
+                                <h4 th:text="${user.lose != null ? user.lose : 0}" class="font-weight-bold">0</h4>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <h5 data-translate="totale-punti"></h5> 
-                            <p th:text="(${user.win}*50)-(${user.lose}*10)"></p>
-                        </div>
-                        <!-- Points -->
+                        <!-- Total Points (New Version) -->
                         <div class="col-md-3 mb-3">
                             <div class="stat-box p-4 shadow-sm rounded-lg bg-gradient-info text-white position-relative">
                                 <i class="fas fa-star stat-icon position-absolute top-0 start-0 p-2"></i>
-                                <h6 class="text-uppercase">Punti Totali</h6>
+                                <h6 class="text-uppercase" data-translate="totale-punti">Punti Totali</h6>
                                 <h4 th:text="${(user.win * 50) - (user.lose * 10)}" class="font-weight-bold">0</h4>
                             </div>
                         </div>
+                        <!-- Centered Pie Chart -->
+	                    <div class="row justify-content-center">
+	                        <div class="col-md-4">
+	                            <div class="d-flex justify-content-center">
+	                                <canvas id="userStatsPieChart" style="width:250px;max-width:250px"></canvas>
+	                            </div>
+	                        </div>
+	                    </div>
                     </div>
-                    <hr class="my-4">
-					<!-- Pie chart-->
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="chart-container bg-light p-4 rounded-lg shadow-sm">
-                                <canvas id="userStatsPieChart" style="width:100%;max-width:400px;"></canvas>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <!-- User Details -->
     <div class="row mt-4">
