@@ -9,6 +9,7 @@
         .card-container {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
             gap: 20px;
         }
         .selected {
@@ -369,6 +370,7 @@
 
 
 </div>
+
     
     <div class="row my-5">
     <div class="col-1"></div>
@@ -407,10 +409,9 @@
 </div>
     <div class="col-1"></div>
 </div>
-</div>
 
 	<!-- Pagination -->
-	<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3">
+	<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3"> 
 
 
      <!-- First page -->
@@ -450,7 +451,6 @@
     <a th:if="${finePagina < totalPages}" 
        th:href="@{/cards(page=${totalPages}, blocco=${(totalPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
        class="btn btn-outline-primary mx-1">Ultima pagina</a>
-
 
 </div>
 
