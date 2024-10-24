@@ -141,9 +141,9 @@
 		  height: 25px;
 		  margin-right: 10px;
 		}
-		.not-owned img{
-   		opacity: 0.5; 
-    	filter: grayscale(100%); 
+		.gray-filter {
+    	filter: grayscale(100%);
+    	opacity: 0.5;
 		}
 		#back-to-top {
             z-index: 1000;
@@ -233,6 +233,11 @@
 
         <div class="col-2"></div>
         <div class="col">
+         <form action="/cards" method="GET">
+    		<input type="hidden" name="grayFilter" th:value="${grayFilter ? 'false' : 'true'}" />
+   			 <button type="submit" th:text="${grayFilter ? 'Disattiva Filtro Grigio' : 'Attiva Filtro Grigio'}"></button>
+		</form>
+
         <!-- Button to open the filter menu -->
         <button class="filter-button btn btn-primary" onclick="toggleFilterMenu()" data-translate="filtra"></button>
 	
@@ -257,13 +262,14 @@
                             <option value="level">Level</option>
                         </select>
                     </div>
+                   
+                    
                     <!-- Checkbox as a button for "desc" -->
                     <div class="form-check">
                         <input class="btn-check" type="checkbox" id="desc" name="desc" autocomplete="off">
                         <label class="btn btn-outline-primary" for="desc"><i class="bi bi-sort-up"></i></label>
                     </div>
                 </div>
-                
                 <div class="col-md-3">
                     <label for="name" class="form-label">Name:</label>
                     <input type="text" class="form-control" id="name" name="name">
@@ -438,7 +444,7 @@
                     sort=${param.sort}, 
                     desc=${param.desc}, 
                     page=${param.page})}">
-                    <img th:src="${card.img}" alt="Card Image"/>
+                    <img th:src="${card.img}"  th:classappend="${grayFilter and !ownedCards.containsKey(card.id)} ? 'gray-filter'"  alt="Card Image"/>
                 </a>
 
                 <div class="card-buttons">
@@ -675,6 +681,32 @@
 	        var type2 = document.getElementById('types2').value;
 	        var types = type1 && type2 ? type1 + ',' + type2 : (type1 || type2);
 	        document.getElementById('types').value = types;
+	    });
+	
+	  
+	    document.addEventListener("DOMContentLoaded", function() {
+	        const toggleButton = document.getElementById('toggleGray');
+	        let grayCardsVisible = true;  // Inizialmente le carte non possedute sono grigie
+
+	        toggleButton.addEventListener('click', function() {
+	            const notOwnedCards = document.querySelectorAll('.card.not-owned');
+
+	            notOwnedCards.forEach(card => {
+	                if (grayCardsVisible) {
+	                    // Rimuove lo stato grigio (mostra normalmente)
+	                    card.classList.remove('not-owned');
+	                } else {
+	                    // Aggiunge lo stato grigio
+	                    card.classList.add('not-owned');
+	                }
+	            });
+
+	            // Inverte lo stato (attiva/disattiva)
+	            grayCardsVisible = !grayCardsVisible;
+
+	            // Cambia il testo del pulsante per riflettere l'azione
+	            toggleButton.textContent = grayCardsVisible ? 'Nascondi carte non possedute' : 'Mostra carte non possedute';
+	        });
 	    });
 	
 
