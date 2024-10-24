@@ -140,6 +140,11 @@
 		  height: 25px;
 		  margin-right: 10px;
 		}
+		.not-owned img{
+   		opacity: 0.5; 
+    	filter: grayscale(100%); 
+		}
+		
     </style>
 </head>
 <body>
@@ -348,6 +353,7 @@
                     <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
                 </div>
             </form>
+
     </div>
 </div>
 
@@ -401,8 +407,7 @@
 
 </div>
 
-    
-    <div class="row my-5">
+  <div class="row my-5">
     <div class="col-1"></div>
     <div class="col card-container">
         <div th:if="${#lists.isEmpty(cards)}">
@@ -411,20 +416,20 @@
 
         <!-- Thymeleaf loop -->
         <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1" th:each="card : ${cards}">
-            <div class="card">
-               <a th:href="@{/card/{cardId}(cardId=${card.id}, 
-                owned=${param.owned}, 
-                name=${param.name}, 
-                set=${param.set}, 
-                types=${param.types}, 
-                rarity=${param.rarity}, 
-                supertype=${param.supertype}, 
-                subtypes=${param.subtypes}, 
-                sort=${param.sort}, 
-                desc=${param.desc}, 
-                page=${param.page})}">
-    <img th:src="${card.img}" alt="Card Image"/>
-</a>
+            <div class="card" th:classappend="${ownedCards[card.id] == null} ? 'not-owned' : ''">
+                <a th:href="@{/card/{cardId}(cardId=${card.id}, 
+                    owned=${param.owned}, 
+                    name=${param.name}, 
+                    set=${param.set}, 
+                    types=${param.types}, 
+                    rarity=${param.rarity}, 
+                    supertype=${param.supertype}, 
+                    subtypes=${param.subtypes}, 
+                    sort=${param.sort}, 
+                    desc=${param.desc}, 
+                    page=${param.page})}">
+                    <img th:src="${card.img}" alt="Card Image"/>
+                </a>
 
                 <div class="card-buttons">
                     <!-- Add to collection -->
@@ -432,13 +437,15 @@
                     <!-- Show quantity -->
                     <p class="quantity-box" th:data-card-id="${card.id}">0</p> 
                     <!-- Remove from collection -->
-                    	<button class="btn remove" th:data-card-id="${card.id}" style="background-color: red;"><i class="bi bi-dash-lg"></i></button>
+                    <button class="btn remove" th:data-card-id="${card.id}" style="background-color: red;"><i class="bi bi-dash-lg"></i></button>
                 </div>
             </div>
         </div>
+
 </div>
 
 <div class="col-1" ></div>
+
 </div>
 
 	<!-- Pagination -->
