@@ -73,6 +73,24 @@
         </div>
     </nav>
     <!-- End navBar -->
+    <div class="container mt-5">
+    <!-- Sezione per visualizzare i parametri salvati -->
+    <div class="row mb-4">
+        <div class="col">
+            <h5>Filtri attivi:</h5>
+            <ul>
+                <li th:if="${param.owned != null}">Carte possedute: <span th:text="${param.owned}"></span></li>
+                <li th:if="${param.name != null}">Nome: <span th:text="${param.name}"></span></li>
+                <li th:if="${param.set != null}">Set: <span th:text="${param.set}"></span></li>
+                <li th:if="${param.types != null}">Tipo: <span th:text="${param.types}"></span></li>
+                <li th:if="${param.rarity != null}">Rarità: <span th:text="${param.rarity}"></span></li>
+                <li th:if="${param.supertype != null}">Supertipo: <span th:text="${param.supertype}"></span></li>
+                <li th:if="${param.subtypes != null}">Sottotipo: <span th:text="${param.subtypes}"></span></li>
+                <li th:if="${param.sort != null}">Ordina per: <span th:text="${param.sort}"></span></li>
+                <li th:if="${param.desc != null}">Ordine: <span th:text="${param.desc == 'true' ? 'Decrescente' : 'Crescente'}"></span></li>
+            </ul>
+        </div>
+    </div>
 
     <div class="container mt-5">
         <div class="row">
@@ -85,11 +103,37 @@
 	                        <label for="quantity" class="form-label">Aggiorna quantità:</label>
 	                        <input type="number" name="quantity" th:value="${inCollection}" id="quantity" class="form-control" min="0" required />
 	                    </div>
-	                    <button type="submit" class="btn btn-primary">Aggiungi Carta</button>
-	                    <a href="http://localhost:8080/cards" class="btn btn-secondary btn-back">Torna a Carte</a>
+	                     	<input type="hidden" name="from" th:value="${param.from != null ? param.from : ''}" />
+                    		<input type="hidden" name="owned" th:value="${param.owned != null ? param.owned : false}" />
+                    		<input type="hidden" name="name" th:value="${param.name != null ? param.name : ''}" />
+                    		<input type="hidden" name="set" th:value="${param.set != null ? param.set : ''}" />
+                    		<input type="hidden" name="types" th:value="${param.types != null ? param.types : ''}" />
+                    		<input type="hidden" name="rarity" th:value="${param.rarity != null ? param.rarity : ''}" />
+                    		<input type="hidden" name="supertype" th:value="${param.supertype != null ? param.supertype : ''}" />
+                    		<input type="hidden" name="subtypes" th:value="${param.subtypes != null ? param.subtypes : ''}" />
+                    		<input type="hidden" name="sort" th:value="${param.sort != null ? param.sort : 'name'}" />
+                   			<input type="hidden" name="desc" th:value="${param.desc != null ? param.desc : false}" />
+                    		<input type="hidden" name="page" th:value="${param.page != null ? param.page : 1}" />
+	                   		<button type="submit" class="btn btn-primary">Aggiungi Carta</button>
+                    	<a th:href="@{/cards(
+   										 from=${param.from != null ? param.from : ''}, 
+    									owned=${param.owned != null ? param.owned : false}, 
+    									name=${param.name != null ? param.name : ''}, 
+    									set=${param.set != null ? param.set : ''}, 
+    									types=${param.types != null ? param.types : ''}, 
+    									rarity=${param.rarity != null ? param.rarity : ''}, 
+    									supertype=${param.supertype != null ? param.supertype : ''}, 
+    									subtypes=${param.subtypes != null ? param.subtypes : ''}, 
+    									sort=${param.sort != null ? param.sort : 'name'}, 
+   										desc=${param.desc != null ? param.desc : false}, 
+    									page=${param.page != null ? param.page : 1})}" 
+   								 		class="btn btn-secondary btn-back">Torna a Carte</a>
+
 	                </form>
                 </div>
             </div>
+            <div class="container mt-5">
+    </div>
             <div class="col-lg-8 col-md-6 card-details">
                 <h2>Informazioni Generali</h2>
                 <p><strong>Nome:</strong> <span th:text="${card.name != null ? card.name : 'N/A'}"></span></p>
@@ -108,6 +152,64 @@
         </div>
     </div>
     <!-- Begin script -->
+
+<script>
+function addCard(cardId) {
+    console.log("Adding card with ID:", cardId);  // Stampa il cardId prima di inviare la richiesta
+    $.post('/collection/add', {
+        cardId: cardId,
+        owned: '${param.owned}',
+        name: '${param.name}',
+        set: '${param.set}',
+        types: '${param.types}',
+        rarity: '${param.rarity}',
+        supertype: '${param.supertype}',
+        subtypes: '${param.subtypes}',
+        sort: '${param.sort}',
+        desc: '${param.desc}',
+        page: '${param.page}'
+    }).done(function(response) {
+        console.log("Response from addCard:", response);  // Stampa la risposta nella console
+        updateParams(response);
+    }).fail(function(error) {
+        console.error("Error while adding card:", error);  // Stampa l'errore in caso di fallimento
+    });
+}
+
+function removeCard(cardId) {
+    $.post('/collection/remove', {
+        cardId: cardId,
+        owned: '${param.owned}',
+        name: '${param.name}',
+        set: '${param.set}',
+        types: '${param.types}',
+        rarity: '${param.rarity}',
+        supertype: '${param.supertype}',
+        subtypes: '${param.subtypes}',
+        sort: '${param.sort}',
+        desc: '${param.desc}',
+        page: '${param.page}'
+    }).done(function(response) {
+        // Aggiorna i parametri sulla pagina in base alla risposta
+        updateParams(response);
+    }).fail(function(error) {
+        console.error("Errore durante la rimozione della carta:", error);
+    });
+}
+
+function updateParams(response) {
+    // Aggiorna i parametri sulla pagina
+    console.log(response);
+    
+    // Qui puoi aggiornare la tua UI o fare altre operazioni necessarie
+    // Esempio:
+    $('#owned').val(response.owned);
+    $('#name').val(response.name);
+    $('#set').val(response.set);
+    $('#types').val(response.types);
+    // Continua per gli altri parametri
+}
+</script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
