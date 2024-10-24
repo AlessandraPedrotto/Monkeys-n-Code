@@ -140,6 +140,11 @@
 		  height: 25px;
 		  margin-right: 10px;
 		}
+		.not-owned img{
+   		opacity: 0.5; 
+    	filter: grayscale(100%); 
+		}
+		
     </style>
 </head>
 <body>
@@ -249,113 +254,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-3">
-                    <label for="name" class="form-label">Name:</label>
-                    <input type="text" class="form-control" id="name" name="name">
-                </div>
-                <div class="col-md-2">
-                    <label for="set" class="form-label">Set:</label>
-                    <input type="text" class="form-control" id="set" name="set">
-                </div>
-                <div class="col-md-2">
-                    <label for="types" class="form-label">Choose a type:</label>
-                    <select name="types" id="types1" class="form-select">
-                        <option value=""></option>
-                        <option value="Colorless">Colorless</option>
-                        <option value="Grass">Grass</option>
-                        <option value="Fire">Fire</option>
-                        <option value="Water">Water</option>
-                        <option value="Lightning">Lightning</option>
-                        <option value="Fighting">Fighting</option>
-                        <option value="Psychic">Psychic</option>
-                        <option value="Darkness">Darkness</option>
-                        <option value="Metal">Metal</option>
-                        <option value="Dragon">Dragon</option>
-                        <option value="Fairy">Fairy</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label for="types2" class="form-label">Secondary type:</label>
-                    <select name="types2" id="types2" class="form-select">
-                        <option value=""></option>
-                        <option value="Colorless">Colorless</option>
-                        <option value="Grass">Grass</option>
-                        <option value="Fire">Fire</option>
-                        <option value="Water">Water</option>
-                        <option value="Lightning">Lightning</option>
-                        <option value="Fighting">Fighting</option>
-                        <option value="Psychic">Psychic</option>
-                        <option value="Darkness">Darkness</option>
-                        <option value="Metal">Metal</option>
-                        <option value="Dragon">Dragon</option>
-                        <option value="Fairy">Fairy</option>
-                    </select>
-                    <input type="hidden" name="types" id="types">
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <label for="rarity" class="form-label">Rarity:</label>
-                    <select id="rarity" name="rarity" th:value="${param.rarity}" class="form-select">
-                        <option value=""></option>
-                        <option value="Classic Collection">Classic Collection</option>
-                        <option value="Common">Common</option>
-                        <option value="LEGEND">LEGEND</option>
-                        <option value="Promo">Promo</option>
-                        <option value="Rare">Rare</option>
-                        <option value="Rare ACE">Rare ACE</option>
-                        <option value="Rare Holo">Rare Holo</option>
-                        <option value="Rare Holo EX">Rare Holo EX</option>
-                        <option value="Rare Holo GX">Rare Holo GX</option>
-                        <option value="Rare Holo LV.X">Rare Holo LV.X</option>
-                        <option value="Rare Holo Star">Rare Holo Star</option>
-                        <option value="Rare Holo V">Rare Holo V</option>
-                        <option value="Rare Holo VMAX">Rare Holo VMAX</option>
-                        <option value="Rare Holo VSTAR">Rare Holo VSTAR</option>
-                        <option value="Rare Prime">Rare Prime</option>
-                        <option value="Rare Rainbow">Rare Rainbow</option>
-                        <option value="Rare Secret">Rare Secret</option>
-                        <option value="Rare Shining">Rare Shining</option>
-                        <option value="Rare Shiny">Rare Shiny</option>
-                        <option value="Rare Shiny GX">Rare Shiny GX</option>
-                        <option value="Rare Ultra">Rare Ultra</option>
-                        <option value="Rare Prism Star">Rare Prism Star</option>
-                        <option value="Uncommon">Uncommon</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label for="supertype" class="form-label">Supertype:</label>
-                    <select id="supertype" name="supertype" class="form-select">
-                        <option value=""></option>
-                        <option value="Pokémon">Pokémon</option>
-                        <option value="Trainer">Trainer</option>
-                        <option value="Energy">Energy</option>
-                    </select>
-                </div>
-            </div>
-            
-            <!-- Sorting options -->
-            <div class="col-md-4 d-flex align-items-end">
-                <div>
-                    <label for="sort" class="form-label">Order:</label>
-                    <select id="sort" name="sort" class="form-select" th:value="${param.sort}">
-                        <option value="name">Name</option>
-                        <option value="nationalPokedexNumbers">Pokedex n.</option>
-                        <option value="level">Level</option>
-                    </select>
-                </div>
-
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                    <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
-
-
-                <!-- Checkbox for "desc" -->
-                <div class="form-check">
-                    <input class="btn-check" type="checkbox" id="desc" name="desc" th:checked="${param.desc == 'true'}">
-                    <label class="btn btn-outline-primary" for="desc"><i class="bi bi-sort-up"></i></label>
-
-                </div>
-            </div>
+               
 
             <!-- Name filter -->
             <div class="col-md-3">
@@ -501,8 +400,7 @@
 
 </div>
 
-    
-    <div class="row my-5">
+  <div class="row my-5">
     <div class="col-1"></div>
     <div class="col card-container">
         <div th:if="${#lists.isEmpty(cards)}">
@@ -511,20 +409,20 @@
 
         <!-- Thymeleaf loop -->
         <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1" th:each="card : ${cards}">
-            <div class="card">
-               <a th:href="@{/card/{cardId}(cardId=${card.id}, 
-                owned=${param.owned}, 
-                name=${param.name}, 
-                set=${param.set}, 
-                types=${param.types}, 
-                rarity=${param.rarity}, 
-                supertype=${param.supertype}, 
-                subtypes=${param.subtypes}, 
-                sort=${param.sort}, 
-                desc=${param.desc}, 
-                page=${param.page})}">
-    <img th:src="${card.img}" alt="Card Image"/>
-</a>
+            <div class="card" th:classappend="${ownedCards[card.id] == null} ? 'not-owned' : ''">
+                <a th:href="@{/card/{cardId}(cardId=${card.id}, 
+                    owned=${param.owned}, 
+                    name=${param.name}, 
+                    set=${param.set}, 
+                    types=${param.types}, 
+                    rarity=${param.rarity}, 
+                    supertype=${param.supertype}, 
+                    subtypes=${param.subtypes}, 
+                    sort=${param.sort}, 
+                    desc=${param.desc}, 
+                    page=${param.page})}">
+                    <img th:src="${card.img}" alt="Card Image"/>
+                </a>
 
                 <div class="card-buttons">
                     <!-- Add to collection -->
@@ -532,11 +430,11 @@
                     <!-- Show quantity -->
                     <p class="quantity-box" th:data-card-id="${card.id}">0</p> 
                     <!-- Remove from collection -->
-                    	<button class="btn remove" th:data-card-id="${card.id}" style="background-color: red;"><i class="bi bi-dash-lg"></i></button>
+                    <button class="btn remove" th:data-card-id="${card.id}" style="background-color: red;"><i class="bi bi-dash-lg"></i></button>
                 </div>
             </div>
         </div>
-</div>
+    </div>
     <div class="col-1"></div>
 </div>
 
