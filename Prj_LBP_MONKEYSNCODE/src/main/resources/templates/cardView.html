@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -100,22 +100,6 @@
     <!-- End navBar -->
     <div class="container mt-5">
     <!-- Sezione per visualizzare i parametri salvati -->
-    <div class="row mb-4">
-        <div class="col">
-            <h5>Filtri attivi:</h5>
-            <ul>
-                <li th:if="${param.owned != null}">Carte possedute: <span th:text="${param.owned}"></span></li>
-                <li th:if="${param.name != null}">Nome: <span th:text="${param.name}"></span></li>
-                <li th:if="${param.set != null}">Set: <span th:text="${param.set}"></span></li>
-                <li th:if="${param.types != null}">Tipo: <span th:text="${param.types}"></span></li>
-                <li th:if="${param.rarity != null}">Rarità: <span th:text="${param.rarity}"></span></li>
-                <li th:if="${param.supertype != null}">Supertipo: <span th:text="${param.supertype}"></span></li>
-                <li th:if="${param.subtypes != null}">Sottotipo: <span th:text="${param.subtypes}"></span></li>
-                <li th:if="${param.sort != null}">Ordina per: <span th:text="${param.sort}"></span></li>
-                <li th:if="${param.desc != null}">Ordine: <span th:text="${param.desc == 'true' ? 'Decrescente' : 'Crescente'}"></span></li>
-            </ul>
-        </div>
-    </div>
 
     <div class="container mt-5">
         <div class="row">
