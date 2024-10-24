@@ -30,6 +30,11 @@
             height: auto;
             border-radius: 10px;
         }
+        .bandiera {
+		  width: 25px;
+		  height: 25px;
+		  margin-right: 10px;
+		}
     </style>
 </head>
 
@@ -47,31 +52,51 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/cards">Carte</a>
+                        <a class="nav-link" href="http://localhost:8080/cards" data-translate="tasto-navbar-carte"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/decks">Mazzi</a>
+                        <a class="nav-link" href="http://localhost:8080/decks" data-translate="tasto-navbar-mazzi"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/profile">Profilo</a>
+                        <a class="nav-link" href="http://localhost:8080/profile" data-translate="tasto-navbar-profilo"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/deckRules">Regolamento</a>
+                        <a class="nav-link" href="http://localhost:8080/deckRules" data-translate="tasto-navbar-regolamento"></a>
                     </li>
                     <li class="nav-item">
-                     <a class="nav-link" href="http://localhost:8080/classification">Classifica</a>
+                     <a class="nav-link" href="http://localhost:8080/classification" data-translate="tasto-navbar-classifica"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat">Statistiche</a>
+                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat" data-translate="tasto-navbar-statistiche"></a>
                     </li> 
                 </ul>
                 <div class="ms-auto d-flex align-items-center">
-                    <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.name}" style="margin-right: 15px;">User</a>
-                    <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;">Logout</a>
+                    <a id="userGreeting" class="nav-link" href="http://localhost:8080/profile" style="margin-right: 15px;">
+				        <!-- Italian Greeting -->
+				        <span data-lang="it" th:text="'Benvenuto, ' + ${session.name}" style="display: none;"></span>
+				        <!-- English Greeting -->
+				        <span data-lang="en" th:text="'Welcome, ' + ${session.name}" style="display: none;"></span>
+				        <!-- Spanish Greeting -->
+				        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
+				    </a>
+                    <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
                 </div>
             </div>
         </div>
     </nav>
+    <!-- Language Dropdown Outside Navbar -->
+	<div class="language-dropdown" style="position: absolute; top: 120px; right: 0px;">
+	    <div class="dropdown">
+	        <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+	            <span data-translate="menuLingua">Language</span>
+	        </button>
+	        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
+	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
+	        </ul>
+	    </div>
+	</div>
     <!-- End navBar -->
 
     <div class="container mt-5">
@@ -82,32 +107,33 @@
 	                <form action="/userCard" method="POST" class="mt-4">
 	                    <input type="hidden" name="cardId" th:value="${card.id}" />
 	                    <div class="mb-5">
-	                        <label for="quantity" class="form-label">Aggiorna quantità:</label>
+	                        <label for="quantity" class="form-label" data-translate="aggiorna-quantita"></label>
 	                        <input type="number" name="quantity" th:value="${inCollection}" id="quantity" class="form-control" min="0" required />
 	                    </div>
-	                    <button type="submit" class="btn btn-primary">Aggiungi Carta</button>
-	                    <a href="http://localhost:8080/cards" class="btn btn-secondary btn-back">Torna a Carte</a>
+	                    <button type="submit" class="btn btn-primary" data-translate="aggiungi-carta"></button>
+	                    <a href="http://localhost:8080/cards" class="btn btn-secondary btn-back" data-translate="tasto-indietro"></a>
 	                </form>
                 </div>
             </div>
             <div class="col-lg-8 col-md-6 card-details">
-                <h2>Informazioni Generali</h2>
-                <p><strong>Nome:</strong> <span th:text="${card.name != null ? card.name : 'N/A'}"></span></p>
-                <p><strong>Serie:</strong> <span th:text="${card.series != null ? card.series : 'N/A'}"></span></p>
-                <p><strong>Editore:</strong> <span th:text="${card.publisher != null ? card.publisher : 'N/A'}"></span></p>
-                <p><strong>Generazione:</strong> <span th:text="${card.generation != null ? card.generation : 'N/A'}"></span></p>
-                <p><strong>Data di Rilascio:</strong> <span th:text="${card.release_date != null ? card.release_date : 'N/A'}"></span></p>
-                <p><strong>Artista:</strong> <span th:text="${card.artist != null ? card.artist : 'N/A'}"></span></p>
-                <p><strong>Numero di Set:</strong> <span th:text="${card.set_num != null ? card.set_num : 'N/A'}"></span></p>
-                <p><strong>HP:</strong> <span th:text="${card.hp != null ? card.hp : 'N/A'}"></span></p>
-                <p><strong>Rarità:</strong> <span th:text="${card.rarity != null ? card.rarity : 'N/A'}"></span></p>
-                <p><strong>Flavor Text:</strong> <span th:text="${card.flavorText != null ? card.flavorText : 'N/A'}"></span></p>
-                <p><strong>Nella tua collezione:</strong> <span th:text="${inCollection != null ? inCollection : 'N/A'}"></span></p>
+                <h2 data-translate="info-generali">Informazioni Generali</h2>
+                <p><strong ><span data-translate="nome"></span></strong> <span th:text="${card.name != null ? card.name : 'N/A'}"></span></p>
+                <p><strong><span data-translate="serie"></span></strong> <span th:text="${card.series != null ? card.series : 'N/A'}"></span></p>
+                <p><strong><span data-translate="editore"></span></strong> <span th:text="${card.publisher != null ? card.publisher : 'N/A'}"></span></p>
+                <p><strong><span data-translate="generazione"></span></strong> <span th:text="${card.generation != null ? card.generation : 'N/A'}"></span></p>
+                <p><strong><span data-translate="data-rilascio"></span></strong> <span th:text="${card.release_date != null ? card.release_date : 'N/A'}"></span></p>
+                <p><strong><span data-translate="artista"></span></strong> <span th:text="${card.artist != null ? card.artist : 'N/A'}"></span></p>
+                <p><strong><span data-translate="num-set"></span></strong> <span th:text="${card.set_num != null ? card.set_num : 'N/A'}"></span></p>
+                <p><strong><span data-translate="hp"></span></strong> <span th:text="${card.hp != null ? card.hp : 'N/A'}"></span></p>
+                <p><strong><span data-translate="rarita"></span></strong> <span th:text="${card.rarity != null ? card.rarity : 'N/A'}"></span></p>
+                <p><strong><span data-translate="flavor-text"></span></strong> <span th:text="${card.flavorText != null ? card.flavorText : 'N/A'}"></span></p>
+                <p><strong><span data-translate="in-collezione"></span></strong> <span th:text="${inCollection != null ? inCollection : 'N/A'}"></span></p>
 
             </div>
         </div>
     </div>
     <!-- Begin script -->
+    <script src="/script/traduzioni.js"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

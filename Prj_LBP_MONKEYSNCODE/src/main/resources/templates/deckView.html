@@ -47,6 +47,11 @@
             border-radius: 5px;
             margin-left: 30px;
         }
+        .bandiera {
+		  width: 25px;
+		  height: 25px;
+		  margin-right: 10px;
+		}
 </style>
 <body>
     <!-- Begin body -->
@@ -62,44 +67,63 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="http://localhost:8080/cards">Carte</a>
+                    <a class="nav-link active" href="http://localhost:8080/cards" data-translate="tasto-navbar-carte"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/decks">Mazzi</a>
+                    <a class="nav-link" href="http://localhost:8080/decks" data-translate="tasto-navbar-mazzi"></a>
                 </li>
                 <li>
-                    	<a class="nav-link" href="http://localhost:8080/profile">Profilo</a>
+                    	<a class="nav-link" href="http://localhost:8080/profile" data-translate="tasto-navbar-profilo"></a>
                 </li>
                 <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/deckRules">Regolamento</a>
+                        <a class="nav-link" href="http://localhost:8080/deckRules" data-translate="tasto-navbar-regolamento"></a>
                 </li>  
                 <li class="nav-item">
-                     <a class="nav-link" href="http://localhost:8080/classification">Classifica</a>
+                     <a class="nav-link" href="http://localhost:8080/classification" data-translate="tasto-navbar-classifica"></a>
                 </li>
                 <li class="nav-item">
-                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat">Statistiche</a>
+                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat" data-translate="tasto-navbar-statistiche"></a>
                 </li>               
             </ul>
             <div class="ms-auto d-flex align-items-center">
 
-                <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.name}" style="margin-right: 15px;">User</a>
-                
-                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;">Logout</a>
+                <a id="userGreeting" class="nav-link" href="http://localhost:8080/profile" style="margin-right: 15px;">
+			        <!-- Italian Greeting -->
+			        <span data-lang="it" th:text="'Benvenuto, ' + ${session.name}" style="display: none;"></span>
+			        <!-- English Greeting -->
+			        <span data-lang="en" th:text="'Welcome, ' + ${session.name}" style="display: none;"></span>
+			        <!-- Spanish Greeting -->
+			        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
+			    </a>
+                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
             
             </div>
         </div>
     </div>
 </nav>
+<!-- Language Dropdown Outside Navbar -->
+<div class="language-dropdown" style="position: absolute; top: 120px; right: 0px;">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <span data-translate="menuLingua">Language</span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
+        </ul>
+    </div>
+</div>
 <!-- End navBar -->
 <div class="row">
        
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Nome del Mazzo: <span th:text="${deckName}"></span></h1>
-        <button class="btn btn-warning validate-deck" th:data-deck-id="${deckId}">Convalida Mazzo</button>
+        <h1><span data-translate="nome-mazzo"></span> <span th:text="${deckName}"></span></h1>
+        <button class="btn btn-warning validate-deck" th:data-deck-id="${deckId}" style="position: absolute; top: 180px; right: 0px;" data-translate="convalida-mazzo"></button>
     </div>
 
-    <h2>Carte nel Mazzo</h2>
+    <h2 data-translate="carte-nel-mazzo"></h2>
     <div class="bg-light border rounded p-5 shadow-lg my-5"> 
         <div class="row" id="deckCards">
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 col-xxl-1" style =" width: 100%; max-width: 150px;" th:each="deckCard : ${deckCards}">
@@ -113,7 +137,7 @@
 
  <div class="col">
             <!-- Button to open the filter menu -->
-            <button class="filter-button" onclick="toggleFilterMenu()">Filtra</button>
+            <button class="filter-button" onclick="toggleFilterMenu()" data-translate="filtra"></button>
       
        <!-- Dropdown menu for filtering and sorting -->
         <div id="filterMenu" class="filter-menu">
@@ -363,7 +387,7 @@
                     </div>
                     
                     <div>
-                        <button type="submit">Applica</button>
+                        <button type="submit">Search</button>
                         <button type="reset">Reset</button>
                     </div>
                 </form>
@@ -380,12 +404,12 @@
     <!-- First pages -->
     <a th:if="${currentPage > 1}" 
        th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}" 
-       class="btn btn-outline-primary mx-1">Prima pagina</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-prima-pag"></a>
 
     <!-- Previous -->
     <a th:if="${currentPage > 1}" 
        th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${currentPage - 1},blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
-       class="btn btn-outline-primary mx-1">Prec</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-precedente-pag"></a>
 
 
     <!-- Ellissi for the previous pages -->
@@ -409,16 +433,16 @@
     <!-- Next -->
     <a th:if="${currentPage < totPages}" 
        th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${currentPage + 1},  blocco=${((currentPage) / bloccoDimensione) + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}" 
-       class="btn btn-outline-primary mx-1">Succ</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-successiva-pag"></a>
 
     <!-- Last page -->
     <a th:if="${finePagina < totPages}" 
        th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${totPages }, blocco=${(totPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}" 
-       class="btn btn-outline-primary mx-1">Ultima pagina</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-ultima-pag"></a>
 
 </div>
 
-<h2 class="text-center mb-3">Tutte le Carte</h2>
+<h2 class="text-center mb-3" data-translate="tutte-carte"></h2>
         
 <div th:if="${!#lists.isEmpty(cards)}" class="container-fluid bg-light border rounded p-4 shadow-sm"> <!-- Aggiunto overflow-hidden -->
     <div class="row g-3" id="allCards"> <!-- Rimosso mx-n1 -->
@@ -434,7 +458,7 @@
     <div class="col-1"></div>
     <div class="col card-container">
         <div th:if="${#lists.isEmpty(cards)}">
-            <p>No cards found</p>
+            <p data-translate="no-carte-trovate"></p>
         </div>
         
 <!-- Begin script for handling asynchronous operations -->
@@ -538,7 +562,7 @@
                         // Mostra il risultato in un popup
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Risultato della Validazione',
+                            title: swalTranslations.successTitle,
                             html: result,
                             toast: false,
                             position: 'center',
@@ -558,8 +582,8 @@
                     })
                     .fail(function () {
                         Swal.fire({
-                            title: 'Errore',
-                            text: 'Si è verificato un errore durante la validazione del mazzo.',
+                            title: swalTranslations.errorTitle,
+                            text: swalTranslations.errorMessage, 
                             icon: 'error',
                             toast: false,
                             position: 'center',
@@ -580,6 +604,7 @@
             });
         });
     </script>
+    <script src="/script/traduzioni.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- End script -->
 <!-- End body -->
