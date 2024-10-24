@@ -46,6 +46,11 @@
         .btn-outline-danger, .btn-outline-success {
             transition: background-color 0.3s, color 0.3s; 
         }
+        .bandiera {
+		  width: 25px;
+		  height: 25px;
+		  margin-right: 10px;
+		}
     </style>
 </head>
 <body>
@@ -61,27 +66,34 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/cards">Carte</a>
+                        <a class="nav-link" href="http://localhost:8080/cards" data-translate="tasto-navbar-carte"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/decks">Mazzi</a>
+                        <a class="nav-link" href="http://localhost:8080/decks" data-translate="tasto-navbar-mazzi"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/profile">Profilo</a>
+                        <a class="nav-link" href="http://localhost:8080/profile" data-translate="tasto-navbar-profilo"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="http://localhost:8080/deckRules">Regolamento</a>
+                        <a class="nav-link active" href="http://localhost:8080/deckRules" data-translate="tasto-navbar-regolamento"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/classification">Classifica</a>
+                        <a class="nav-link" href="http://localhost:8080/classification" data-translate="tasto-navbar-classifica"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat">Statistiche</a>
+                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat" data-translate="tasto-navbar-statistiche"></a>
                     </li>                 
                 </ul>
                 <div class="ms-auto d-flex align-items-center">
-                    <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.name}" style="margin-right: 15px;">User</a>
-                    <a href="http://localhost:8080/logout" class="btn btn-outline-danger">Logout</a>
+                    <a id="userGreeting" class="nav-link" href="http://localhost:8080/profile" style="margin-right: 15px;">
+				        <!-- Italian Greeting -->
+				        <span data-lang="it" th:text="'Benvenuto, ' + ${session.name}" style="display: none;"></span>
+				        <!-- English Greeting -->
+				        <span data-lang="en" th:text="'Welcome, ' + ${session.name}" style="display: none;"></span>
+				        <!-- Spanish Greeting -->
+				        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
+				    </a>
+                    <a href="http://localhost:8080/logout" class="btn btn-outline-danger" data-translate="tasto-navbar-logout"></a>
                     <div th:if="${session.name}==null" class="ms-auto"> 
                         <a href="http://localhost:8080/login" class="btn btn-outline-success me-2">Login</a>
                         <a href="http://localhost:8080/register" class="btn btn-primary">Registrati</a>
@@ -89,52 +101,66 @@
                 </div>
             </div>
         </nav>
+        <!-- Language Dropdown Outside Navbar -->
+		<div class="language-dropdown" style="position: absolute; top: 120px; right: 0px;">
+		    <div class="dropdown">
+		        <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+		            <span data-translate="menuLingua">Language</span>
+		        </button>
+		        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+		            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
+		            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+		            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
+		        </ul>
+		    </div>
+		</div>
         <!-- End NavBar -->
         <div class="container regolamento-container mt-5">
-            <h1 class="text-center mb-4">REGOLAMENTO</h1>
-            <p class="lead text-center mb-4 text-black">Benvenuti nel regolamento del gioco di carte Pokémon. Assicurati di seguire queste linee guida per una migliore esperienza di gioco:</p>
+            <h1 class="text-center mb-4" data-translate="tasto-navbar-regolamento"></h1>
+            <p class="lead text-center mb-4 text-black" data-translate="benvenuto-regole"></p>
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2 class="mb-0">Regole di Base</h2>
+                    <h2 class="mb-0" data-translate="subtitolo-regole1"></h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Il mazzo dovrà contenere esattamente 60 carte.</li>
-                    <li class="list-group-item">Oltre alle carte energia, potrai avere un massimo di quattro carte con lo stesso nome all’interno del tuo mazzo.</li>
-                    <li class="list-group-item">Il mazzo dovrà includere almeno un Pokémon base.</li>
-                    <li class="list-group-item">Il mazzo dovrà includere obbligatoriamente per ogni evoluzione il Pokémon base stesso.</li>
-                    <li class="list-group-item">Ogni partita inizia con 7 carte nella mano.</li>
-                    <li class="list-group-item">Ogni giocatore può avere un massimo di 6 Pokémon in gioco alla volta.</li>
-                    <li class="list-group-item">Se un giocatore non ha più carte nel mazzo, perde la partita.</li>
+                    <li class="list-group-item" data-translate="subtitolo1-reg-1"></li>
+                    <li class="list-group-item" data-translate="subtitolo1-reg-2"></li>
+                    <li class="list-group-item" data-translate="subtitolo1-reg-3"></li>
+                    <li class="list-group-item" data-translate="subtitolo1-reg-4"></li>
+                    <li class="list-group-item" data-translate="subtitolo1-reg-5"></li>
+                    <li class="list-group-item" data-translate="subtitolo1-reg-6"></li>
+                    <li class="list-group-item" data-translate="subtitolo1-reg-7"></li>
                 </ul>
             </div>
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2 class="mb-0">Consigli</h2>
+                    <h2 class="mb-0" data-translate="subtitolo-regole2"></h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Scegliere al massimo uno o due tipi di energia.</li>
-                    <li class="list-group-item">Nel mazzo, bisogna che ci siano almeno 12/15 carte energia.</li>
-                    <li class="list-group-item">Nel mazzo, bisogna che ci siano almeno 20/25 carte allenatore.</li>
-                    <li class="list-group-item">Se hai un Pokémon che si evolve, avere quattro copie del suo stadio evolutivo.</li>
+                    <li class="list-group-item" data-translate="subtitolo2-reg-1"></li>
+                    <li class="list-group-item" data-translate="subtitolo2-reg-2"></li>
+                    <li class="list-group-item" data-translate="subtitolo2-reg-3"></li>
+                    <li class="list-group-item" data-translate="subtitolo2-reg-4"></li>
                 </ul>
             </div>
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2 class="mb-0">Regole Avanzate</h2>
+                    <h2 class="mb-0" data-translate="subtitolo-regole3"></h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Le carte possono avere effetti speciali che influenzano il gioco.</li>
-                    <li class="list-group-item">Le carte Trainer possono essere giocate in qualsiasi momento.</li>
-                    <li class="list-group-item">Utilizza il tuo mazzo strategicamente per vincere contro il tuo avversario.</li>
+                    <li class="list-group-item" data-translate="subtitolo3-reg-1"></li>
+                    <li class="list-group-item" data-translate="subtitolo3-reg-2"></li>
+                    <li class="list-group-item" data-translate="subtitolo3-reg-3"></li>
                 </ul>
             </div>
 
-            <h2 class="text-center mb-4">Termini e Condizioni</h2>
-            <p class="text-center lead text-black">Divertiti!</p>
+            <h2 class="text-center mb-4" data-translate="termini-regole"></h2>
+            <p class="text-center lead text-black" data-translate="divertiti-regole"></p>
         </div>
+        <script src="/script/traduzioni.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- End script -->
     <!-- End body -->

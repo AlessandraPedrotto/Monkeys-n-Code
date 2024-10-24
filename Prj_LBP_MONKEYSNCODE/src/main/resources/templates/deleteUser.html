@@ -16,43 +16,60 @@
         .card-image:hover, .deck-img:hover {
             transform: scale(1.5); 
         }
+        .bandiera {
+		  width: 25px;
+		  height: 25px;
+		  margin-right: 10px;
+		}
     </style>
 </head>
 <body>
 <!-- Begin body -->
+<div class="language-dropdown" style="position: absolute; top: 120px; right: 0px;">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <span data-translate="menuLingua">Language</span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
+        </ul>
+    </div>
+</div>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
                     <div class="card-body text-center">
-                        <h4 class="card-title">Sei sicuro di voler cancellare l'account?</h4>
-                        <p class="card-text">Questa azione è irreversibile e non può essere annullata.</p>
+                        <h4 class="card-title" data-translate="domanda-cancella-user"></h4>
+                        <p class="card-text" data-translate="irreversibile-cancella"></p>
                         <br>
                         <!-- Form for account deletion -->
                         <form action="http://localhost:8080/profile/delete" method="post">
                             <!-- Thymeleaf: Hidden variable userId -->
                             <input type="hidden" name="userId" th:value="${userId}">
 
-                            <button type="submit" class="btn btn-danger">Cancella Account</button>
-                            <a href="http://localhost:8080/profile" class="btn btn-secondary">Annulla</a>
+                            <button type="submit" class="btn btn-danger" data-translate="tasto-cancella-account"></button>
+                            <a href="http://localhost:8080/profile" class="btn btn-secondary" data-translate="tasto-annulla"></a>
                             
                         </form>
                         <br>
-                        <h4>Stai andando a cancellare queste informazioni:</h4>
-                        <p>Nome utente: <span th:text="${userName}"></span></p>
-						<p>Email: <span th:text="${userEmail}"></span></p>
-                        <h6>Mazzi creati:</h6>
+                        <h4 data-translate="info-cancellazione"></h4>
+                        <p >User: <span th:text="${userName}"></span></p>
+						<p >Email: <span th:text="${userEmail}"></span></p>
+                        <h6 data-translate="deck-creati"></h6>
                         <table class="table">
 						    <thead>
 						        <tr>
-						        	<th>Immagine</th>
-						            <th>Nome Mazzo</th>
-						            <th>Valido</th>
+						        	<th data-translate="colonna-immagine"></th>
+						            <th data-translate="colonna-mazzo"></th>
+						            <th data-translate="colonna-valido"></th>
 						        </tr>
 						    </thead>
 							    <tbody>
 								    <tr th:if="${decks.size() == 0}">
-							            <td colspan="3" class="text-center">Non hai ancora dei mazzi</td>
+							            <td colspan="3" class="text-center" data-translate="no-mazzi"></td>
 							        </tr>
 							     	<tr th:each="deck : ${decks}">
 								    	<td>
@@ -60,16 +77,16 @@
 							                    <img th:src="@{${deck.deckImg.imgDeckPath}}" alt="Deck Image" class="img-fluid deck-img" onerror="this.onerror=null; this.src='path/to/default/image.jpg';">
 							                </a>
 							            </td>
-							            <td th:text="${deck.nameDeck}">Nome Mazzo</td>
-							            <td th:text="${deck.valid ? 'Sì' : 'No'}">Valido</td>
+							            <td th:text="${deck.nameDeck}" ></td>
+							            <td th:text="${deck.valid ? 'Sì' : 'No'}" ></td>
 							        </tr>
 							    </tbody>
 						</table>
 
-                        <h6>Carte nella collezione:</h6>
+                        <h6 data-translate="carte-collezione"></h6>
                         
-						<h6 th:if="${userCards.size() > 0}">Totale carte nella collezione: <span th:text="${totalCards}"></span></h6>
-                        <p th:if="${userCards.size() == 0}">Non possiedi ancora carte</p>
+						<h6 th:if="${userCards.size() > 0}" data-translate="totale-carte"><span th:text="${totalCards}"></span></h6>
+                        <p th:if="${userCards.size() == 0}" data-translate="no-carte"></p>
                         <div class="d-flex flex-wrap justify-content-start">
 						    <div th:each="userCard : ${userCards}" class="m-1" style="width: 10%;">
 						       
@@ -87,6 +104,7 @@
     </div>
 
 <!-- Begin script -->
+	<script src="/script/traduzioni.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- End script -->
 </body>

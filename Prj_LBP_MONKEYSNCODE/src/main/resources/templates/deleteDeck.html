@@ -19,6 +19,11 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+        .bandiera {
+		  width: 25px;
+		  height: 25px;
+		  margin-right: 10px;
+		}
     </style>
 </head>
 <body>
@@ -36,69 +41,70 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/cards">Carte</a>
+                    <a class="nav-link" href="http://localhost:8080/cards" data-translate="tasto-navbar-carte"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/decks">Mazzi</a>
+                    <a class="nav-link" href="http://localhost:8080/decks" data-translate="tasto-navbar-mazzi"></a>
                 </li>
 				<li>
-                    <a class="nav-link" href="http://localhost:8080/profile">Profilo</a>
+                    <a class="nav-link" href="http://localhost:8080/profile" data-translate="tasto-navbar-profilo"></a>
                 </li>
                 <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/deckRules">Regolamento</a>
+                        <a class="nav-link" href="http://localhost:8080/deckRules" data-translate="tasto-navbar-regolamento"></a>
                 </li>
                 <li class="nav-item">
-                     <a class="nav-link" href="http://localhost:8080/classification">Classifica</a>
+                     <a class="nav-link" href="http://localhost:8080/classification" data-translate="tasto-navbar-classifica"></a>
                 </li>
                 <li class="nav-item">
-                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat">Statistiche</a>
+                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat" data-translate="tasto-navbar-statistiche"></a>
                  </li> 
             </ul>
             <div class="ms-auto d-flex align-items-center">
 
-                <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.name}" style="margin-right: 15px;">User</a>
-                
-                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;">Logout</a>
+                <a id="userGreeting" class="nav-link" href="http://localhost:8080/profile" style="margin-right: 15px;">
+			        <!-- Italian Greeting -->
+			        <span data-lang="it" th:text="'Benvenuto, ' + ${session.name}" style="display: none;"></span>
+			        <!-- English Greeting -->
+			        <span data-lang="en" th:text="'Welcome, ' + ${session.name}" style="display: none;"></span>
+			        <!-- Spanish Greeting -->
+			        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
+			    </a>
+                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
             
             </div>
         </div>
     </nav>
-
+<div class="language-dropdown" style="position: absolute; top: 120px; right: 0px;">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <span data-translate="menuLingua">Language</span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
+        </ul>
+    </div>
+</div>
     <div class="confirmation-container">
-        <h1 class="text-center">Conferma Cancellazione mazzo</h1>
-        <div class="text-center">Sei sicuro di voler cancellare il mazzo: <strong><span th:text="${deck}"></span></strong>?</div>
+        <h1 class="text-center" data-translate="conferma-canc-mazzo-titolo">s</h1>
+        <div class="text-center" data-translate="conferma-canc-mazzo"><strong><span th:text="${deck}"></span></strong>?</div>
         
         <div class="text-center mt-3">
             <form id="deleteForm" th:action="@{/decks/deletedeck/{deckId}(deckId=${deckId})}" method="post" onsubmit="return confirmDeletion(event)">
                 <input type="hidden" name="deckId" th:value="${deckId}" />
 
                 <div class="form-group text-center">
-                    <button type="submit" name="confirm" value="true" class="btn btn-danger">Conferma Cancellazione</button>
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/decks'">Annulla</button>
+                    <button type="submit" name="confirm" value="true" class="btn btn-danger" data-translate="tasto-cancella-mazzo2"></button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='/decks'" data-translate="tasto-indietro"></button>
                 </div>
             </form>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function confirmDeletion(event) {
-            event.preventDefault(); // Impedisce l'invio immediato del modulo
-            const form = document.getElementById('deleteForm');
-            Swal.fire({
-                title: 'Sei sicuro?',
-                text: 'Questa azione non può essere annullata!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sì, cancella!',
-                cancelButtonText: 'Annulla'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // Invia il modulo se confermato
-                }
-            });
-        }
-    </script>
+    
+    <script src="/script/traduzioni.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

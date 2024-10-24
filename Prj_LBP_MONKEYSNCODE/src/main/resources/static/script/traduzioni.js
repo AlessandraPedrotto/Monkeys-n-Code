@@ -3,7 +3,7 @@ function changeLanguage(lang) {
   localStorage.setItem('selectedLanguage', lang);
 
   // Load the corresponding JSON file for the selected language
-  fetch(`../traduzioni/${lang}.json`)
+  fetch(`/traduzioni/${lang}.json`)
     .then(response => response.json())
     .then(translations => {
       // Find all elements with the data-translate attribute
@@ -13,10 +13,46 @@ function changeLanguage(lang) {
       elementsToTranslate.forEach(element => {
         const key = element.getAttribute("data-translate");
         if (translations[key]) {
-          element.textContent = translations[key];
-        }
-      });
+                    // Update text content for non-input elements
+                    if (element.tagName !== "INPUT" && element.tagName !== "TEXTAREA") {
+                        element.textContent = translations[key];
+                    } else {
+                        // Update the placeholder for input and textarea elements
+                        element.placeholder = translations[key];
+                    }
+                }
+      });swalTranslations = {
+                successTitle: translations["validate_success_title"],
+                errorTitle: translations["validate_error_title"],
+                successMessage: translations["validate_success_message"],
+                errorMessage: translations["validate_error_message"]
+            };
+         toastTranslations = {
+                addSuccess: translations["toast_add_success"],
+                removeSuccess: translations["toast_remove_success"],
+                cardNotPresent: translations["toast_card_not_present"],
+                addError: translations["toast_add_error"],
+                removeError: translations["toast_remove_error"]
+            }; 
+      const urlParams = new URLSearchParams(window.location.search);
+            const fromCollection = urlParams.get('from');
 
+            if (fromCollection === 'myCollection') {
+                document.title = translations['title_collection']; // Change the page title
+                const pageTitleElement = document.querySelector("h1");
+                if (pageTitleElement) {
+                    pageTitleElement.textContent = translations['title_collection']; // Change the H1 text
+                }
+            }
+      const allGreetings = document.querySelectorAll('#userGreeting span');
+            allGreetings.forEach(span => {
+                if (span.getAttribute('data-lang') === lang) {
+                    span.style.display = 'inline';  // Show the selected language's greeting
+                } else {
+                    span.style.display = 'none';    // Hide other greetings
+                }
+            });
+	  updateLabels(lang);
       // Change the slogan image based on the selected language
       const sloganImage = document.getElementById("immagine-slogan");
       if (lang === 'it') {

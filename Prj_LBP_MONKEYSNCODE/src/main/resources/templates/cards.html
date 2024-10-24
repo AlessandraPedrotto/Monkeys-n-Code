@@ -135,6 +135,11 @@
             height: auto;
             font-size: 14px;
         }
+        .bandiera {
+		  width: 25px;
+		  height: 25px;
+		  margin-right: 10px;
+		}
     </style>
 </head>
 <body>
@@ -151,63 +156,180 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="http://localhost:8080/cards">Carte</a>
+                    <a class="nav-link active" href="http://localhost:8080/cards" data-translate="tasto-navbar-carte"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/decks">Mazzi</a>
+                    <a class="nav-link" href="http://localhost:8080/decks" data-translate="tasto-navbar-mazzi"></a>
                 </li>
                 <li>
-                    	<a class="nav-link" href="http://localhost:8080/profile">Profilo</a>
+                    	<a class="nav-link" href="http://localhost:8080/profile" data-translate="tasto-navbar-profilo"></a>
                 </li>
                 <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/deckRules">Regolamento</a>
+                        <a class="nav-link" href="http://localhost:8080/deckRules" data-translate="tasto-navbar-regolamento"></a>
                 </li>  
                 <li class="nav-item">
-                     <a class="nav-link" href="http://localhost:8080/classification">Classifica</a>
+                     <a class="nav-link" href="http://localhost:8080/classification"  data-translate="tasto-navbar-classifica">Classifica</a>
                 </li>
-                <li class="nav-item" th:if="${session.role == 'ROLE_ADMIN'}">
-                    	<a class="nav-link" href="http://localhost:8080/admin/assign-stats">Statistiche</a>
-                </li>  
+                
                 <li class="nav-item">
-                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat">Statistiche</a>
+                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat" data-translate="tasto-navbar-statistiche"></a>
                  </li>              
             </ul>
             <div class="ms-auto d-flex align-items-center">
 
-                <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.name}" style="margin-right: 15px;">User</a>
-                
-                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;">Logout</a>
+                <a id="userGreeting" class="nav-link" href="http://localhost:8080/profile" style="margin-right: 15px;">
+			        <!-- Italian Greeting -->
+			        <span data-lang="it" th:text="'Benvenuto, ' + ${session.name}" style="display: none;"></span>
+			        <!-- English Greeting -->
+			        <span data-lang="en" th:text="'Welcome, ' + ${session.name}" style="display: none;"></span>
+			        <!-- Spanish Greeting -->
+			        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
+			    </a>
+                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
             
             </div>
         </div>
     </div>
 </nav>
+<!-- Language Dropdown Outside Navbar -->
+<div class="language-dropdown" style="position: absolute; top: 120px; right: 0px;">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <span data-translate="menuLingua">Language</span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
+        </ul>
+    </div>
+</div>
 <!-- End navBar -->
 
-    <div class="row"><h1>Elenco di Carte</h1></div>
+    <div class="row"><h1 data-translate="elenco-carte"></h1></div>
     <div>
 	    <!-- Check if the user is viewing their own collection -->
 	    <br>
 	    <h5 class="text-center" th:if="${from == 'myCollection'}">
-	        Totale carte possedute: <strong th:text="${totalCards}"></strong>
+	    	<span data-translate="totale-carte"></span><strong th:text="${totalCards}"></strong>
 	    </h5>
 	</div>
     <div class="row my-5">
-    <div class="col-2"></div>
-    <div class="col">
-    <!-- Button to open the filter menu -->
-    <button class="filter-button btn btn-primary" onclick="toggleFilterMenu()">Filtra</button>
 
-    <!-- Dropdown menu for filtering and sorting -->
-    <div id="filterMenu" class="filter-menu">
-        <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
-            <input type="hidden" name="from" th:value="${param.from}">
-            
-            <!-- Checkbox for "owned" filter -->
-            <div class="col-md-2">
-                <div class="form-check" id="owned-filter">
-                    <input class="btn-check" type="checkbox" id="owned" name="owned" th:checked="${param.owned == 'true'}">
-                    <label for="owned" class="btn btn-outline-success owned">Owned</label>
+        <div class="col-2"></div>
+        <div class="col">
+        <!-- Button to open the filter menu -->
+        <button class="filter-button btn btn-primary" onclick="toggleFilterMenu()" data-translate="filtra"></button>
+	
+    	<!-- Dropdown menu for filtering and sorting -->
+        <div id="filterMenu" class="filter-menu">
+            <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
+                <input type="hidden" name="from" th:value="${param.from}">
+                <div class="col-md-2">
+                    <div class="form-check" id="owned-filter">
+                        <input class="btn-check" type="checkbox" id="owned" name="owned" autocomplete="off">
+                        <label for="owned" class="btn btn-outline-success owned">Owned</label>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <!-- Select for sorting -->
+                    <div > <!-- Adds space only to the right of the select -->
+                        <label for="sort" class="form-label">Order:</label>
+                        <select id="sort" name="sort" class="form-select">
+                            <option value="name">Name</option>
+                            <option value="nationalPokedexNumbers">Pokedex n.</option>
+                            <option value="level">Level</option>
+                        </select>
+                    </div>
+                    <!-- Checkbox as a button for "desc" -->
+                    <div class="form-check">
+                        <input class="btn-check" type="checkbox" id="desc" name="desc" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="desc"><i class="bi bi-sort-up"></i></label>
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="col-md-2">
+                    <label for="set" class="form-label">Set:</label>
+                    <input type="text" class="form-control" id="set" name="set">
+                </div>
+                <div class="col-md-2">
+                    <label for="types" class="form-label">Choose a type:</label>
+                    <select name="types" id="types1" class="form-select">
+                        <option value=""></option>
+                        <option value="Colorless">Colorless</option>
+                        <option value="Grass">Grass</option>
+                        <option value="Fire">Fire</option>
+                        <option value="Water">Water</option>
+                        <option value="Lightning">Lightning</option>
+                        <option value="Fighting">Fighting</option>
+                        <option value="Psychic">Psychic</option>
+                        <option value="Darkness">Darkness</option>
+                        <option value="Metal">Metal</option>
+                        <option value="Dragon">Dragon</option>
+                        <option value="Fairy">Fairy</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="types2" class="form-label">Secondary type:</label>
+                    <select name="types2" id="types2" class="form-select">
+                        <option value=""></option>
+                        <option value="Colorless">Colorless</option>
+                        <option value="Grass">Grass</option>
+                        <option value="Fire">Fire</option>
+                        <option value="Water">Water</option>
+                        <option value="Lightning">Lightning</option>
+                        <option value="Fighting">Fighting</option>
+                        <option value="Psychic">Psychic</option>
+                        <option value="Darkness">Darkness</option>
+                        <option value="Metal">Metal</option>
+                        <option value="Dragon">Dragon</option>
+                        <option value="Fairy">Fairy</option>
+                    </select>
+                    <input type="hidden" name="types" id="types">
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <label for="rarity" class="form-label">Rarity:</label>
+                    <select id="rarity" name="rarity" th:value="${param.rarity}" class="form-select">
+                        <option value=""></option>
+                        <option value="Classic Collection">Classic Collection</option>
+                        <option value="Common">Common</option>
+                        <option value="LEGEND">LEGEND</option>
+                        <option value="Promo">Promo</option>
+                        <option value="Rare">Rare</option>
+                        <option value="Rare ACE">Rare ACE</option>
+                        <option value="Rare Holo">Rare Holo</option>
+                        <option value="Rare Holo EX">Rare Holo EX</option>
+                        <option value="Rare Holo GX">Rare Holo GX</option>
+                        <option value="Rare Holo LV.X">Rare Holo LV.X</option>
+                        <option value="Rare Holo Star">Rare Holo Star</option>
+                        <option value="Rare Holo V">Rare Holo V</option>
+                        <option value="Rare Holo VMAX">Rare Holo VMAX</option>
+                        <option value="Rare Holo VSTAR">Rare Holo VSTAR</option>
+                        <option value="Rare Prime">Rare Prime</option>
+                        <option value="Rare Rainbow">Rare Rainbow</option>
+                        <option value="Rare Secret">Rare Secret</option>
+                        <option value="Rare Shining">Rare Shining</option>
+                        <option value="Rare Shiny">Rare Shiny</option>
+                        <option value="Rare Shiny GX">Rare Shiny GX</option>
+                        <option value="Rare Ultra">Rare Ultra</option>
+                        <option value="Rare Prism Star">Rare Prism Star</option>
+                        <option value="Uncommon">Uncommon</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="supertype" class="form-label">Supertype:</label>
+                    <select id="supertype" name="supertype" class="form-select">
+                        <option value=""></option>
+                        <option value="Pokémon">Pokémon</option>
+                        <option value="Trainer">Trainer</option>
+                        <option value="Energy">Energy</option>
+                    </select>
                 </div>
             </div>
             
@@ -222,10 +344,16 @@
                     </select>
                 </div>
 
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
+
+
                 <!-- Checkbox for "desc" -->
                 <div class="form-check">
                     <input class="btn-check" type="checkbox" id="desc" name="desc" th:checked="${param.desc == 'true'}">
                     <label class="btn btn-outline-primary" for="desc"><i class="bi bi-sort-up"></i></label>
+
                 </div>
             </div>
 
@@ -332,13 +460,15 @@
 
      <!-- First page -->
     <a th:if="${currentPage > 1}" 
-       th:href="@{/cards(page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from},page=${param.page})}" 
-       class="btn btn-outline-primary mx-1">Prima pagina</a>
+
+       th:href="@{/cards(page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, page=${param.page})}" 
+       class="btn btn-outline-primary mx-1" data-translate="tasto-prima-pag"></a>
+
 
     <!-- Previous -->
     <a th:if="${currentPage > 1}" 
        th:href="@{/cards(page=${currentPage - 1},blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
-       class="btn btn-outline-primary mx-1">Prec</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-precedente-pag"></a>
 
     <!-- Ellissi for previous pages -->
     <span th:if="${inizioPagina > 1}"> 
@@ -361,12 +491,12 @@
     <!-- Next -->
     <a th:if="${currentPage + 1 <= totalPages}" 
        th:href="@{/cards(page=${currentPage + 1},  blocco=${((currentPage) / bloccoDimensione) + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
-       class="btn btn-outline-primary mx-1">Succ</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-successiva-pag"></a>
 
     <!-- Last page -->
     <a th:if="${finePagina < totalPages}" 
        th:href="@{/cards(page=${totalPages}, blocco=${(totalPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
-       class="btn btn-outline-primary mx-1">Ultima pagina</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-ultima-pag"></a>
 
 
 </div>
@@ -376,7 +506,7 @@
     <div class="col-1"></div>
     <div class="col card-container">
         <div th:if="${#lists.isEmpty(cards)}">
-            <p>No cards found</p>
+            <p data-translate="no-carte-trovate"></p>
         </div>
 
         <!-- Thymeleaf loop -->
@@ -539,14 +669,17 @@
 	            .done(function (data) {
 	                Toast.fire({
 	                    icon: "success",
-	                    title: "Aggiunta carta..."
+	                    title: toastTranslations.addSuccess
 	                });
 	                setTimeout(function () {
 	                    location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
 	                }, 1500);
 	            })
 	            .fail(function () {
-	                alert('Errore durante l\'aggiunta della carta.');
+	            	Toast.fire({
+	                    icon: "error",
+	                    title: toastTranslations.addError 
+	                });
 	            });
 	    });
 	
@@ -560,20 +693,23 @@
 	            .done(function (data) {
 	                Toast.fire({
 	                    icon: "error",
-	                    title: "Rimozione carta..."
+	                    title: toastTranslations.removeSuccess
 	                });
 	                setTimeout(function () {
 	                    location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
 	                }, 1500);
 	            })
 	            .fail(function () {
-	                alert('Errore durante la rimozione della carta.');
+	            	Toast.fire({
+	                    icon: "error",
+	                    title: toastTranslations.removeError 
+	                });
 	            });
 	        }
 	        else {
 	            Toast.fire({
 	                    icon: "question",
-	                    title: "Carta non presente"
+	                    title: toastTranslations.cardNotPresent 
 	                });
 	                setTimeout(function () {
 	                    //location.reload();  // Ricarica la pagina per aggiornare il numero di carte possedute
@@ -581,12 +717,13 @@
 	        }
 	    });
 	});
+	    </script>
+<script>
 	//Mostra la pagina della collezione personale
 	 document.addEventListener("DOMContentLoaded", function () {
 	     // Ottieni l'URL della pagina
 	     const urlParams = new URLSearchParams(window.location.search);
 	     const fromCollection = urlParams.get('from');
-	     const userId = document.querySelector("meta[name='user-id']").getAttribute("content");
 	  	
 	     // Cambia il titolo della pagina solo se 'from=myCollection' è presente
 	     if (fromCollection === 'myCollection') {
@@ -623,6 +760,7 @@
 
 </script>
 <script src="/script/script_cards.js"></script>
+<script src="/script/traduzioni.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- End script -->
 <!-- End of Body -->

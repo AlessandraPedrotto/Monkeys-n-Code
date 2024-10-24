@@ -33,6 +33,11 @@
             top: 0px;
         	background-color:red;
         }
+        .bandiera {
+		  width: 25px;
+		  height: 25px;
+		  margin-right: 10px;
+		}
     </style>
 </head>
 <body>
@@ -49,42 +54,62 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="http://localhost:8080/cards">Carte</a>
+                    <a class="nav-link active" href="http://localhost:8080/cards" data-translate="tasto-navbar-carte"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/decks">Mazzi</a>
+                    <a class="nav-link" href="http://localhost:8080/decks" data-translate="tasto-navbar-mazzi"></a>
                 </li>
                 <li>
-                    	<a class="nav-link" href="http://localhost:8080/profile">Profilo</a>
+                    	<a class="nav-link" href="http://localhost:8080/profile" data-translate="tasto-navbar-profilo"></a>
                 </li>
                 <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:8080/deckRules">Regolamento</a>
+                        <a class="nav-link" href="http://localhost:8080/deckRules" data-translate="tasto-navbar-regolamento"></a>
                 </li> 
                 <li class="nav-item">
-                     <a class="nav-link" href="http://localhost:8080/classification">Classifica</a>
+                     <a class="nav-link" href="http://localhost:8080/classification" data-translate="tasto-navbar-classifica"></a>
                 </li>
                 <li class="nav-item">
-                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat">Statistiche</a>
+                        <a class="nav-link" th:if="${session.role != null && session.role.contains('ROLE_ADMIN')}" href="http://localhost:8080/admin/formStat" data-translate="tasto-navbar-statistiche"></a>
                 </li>                
             </ul>
             <div class="ms-auto d-flex align-items-center">
 
-                <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.name}" style="margin-right: 15px;">User</a>
-                
-                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;">Logout</a>
+                <a id="userGreeting" class="nav-link" href="http://localhost:8080/profile" style="margin-right: 15px;">
+			        <!-- Italian Greeting -->
+			        <span data-lang="it" th:text="'Benvenuto, ' + ${session.name}" style="display: none;"></span>
+			        <!-- English Greeting -->
+			        <span data-lang="en" th:text="'Welcome, ' + ${session.name}" style="display: none;"></span>
+			        <!-- Spanish Greeting -->
+			        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
+			    </a>
+                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
             
             </div>
         </div>
     </div>
 </nav>
+<!-- Language Dropdown Outside Navbar -->
+<div class="language-dropdown" style="position: absolute; top: 120px; right: 0px;">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <span data-translate="menuLingua">Language</span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
+        </ul>
+    </div>
+</div>
 <br>
 <br>
 <!-- Main content -->
-<h1>404 - Pagina non trovata</h1>
-<p>La pagina che stai cercando non esiste.</p>
-<a href="/">Torna alla Home</a>
+<h1 data-translate="errore-pagina"></h1>
+<p data-translate="errore-spiega"></p>
+<a href="/" data-translate="tasto-indietro"></a>
 
 <!-- Bootstrap JS and Popper.js -->
+<script src="/script/traduzioni.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
