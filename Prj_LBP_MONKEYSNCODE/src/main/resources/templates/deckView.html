@@ -52,6 +52,13 @@
 		  height: 25px;
 		  margin-right: 10px;
 		}
+		#back-to-top {
+            z-index: 1000;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            /* Keep the button always visible */
+        }
 </style>
 <body>
     <!-- Begin body -->
@@ -115,6 +122,9 @@
     </div>
 </div>
 <!-- End navBar -->
+<a href="#" id="back-to-top" class="btn btn-primary btn-lg" role="button" style="position: fixed; bottom: 20px; right: 20px;">
+    <i class="bi bi-arrow-up-circle"></i>
+</a>
 <div class="row">
        
 <div class="container mt-5">
@@ -602,6 +612,13 @@
                         });
                     });
             });
+        });
+    </script>
+    <script>
+        // Scroll back to top when the button is clicked
+        document.getElementById("back-to-top").addEventListener("click", function (event) {
+            event.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
     <script src="/script/traduzioni.js"></script>
