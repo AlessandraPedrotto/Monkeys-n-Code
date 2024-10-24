@@ -331,123 +331,23 @@
                         <option value="Energy">Energy</option>
                     </select>
                 </div>
-            </div>
-            
-            <!-- Sorting options -->
-            <div class="col-md-4 d-flex align-items-end">
-                <div>
-                    <label for="sort" class="form-label">Order:</label>
-                    <select id="sort" name="sort" class="form-select" th:value="${param.sort}">
-                        <option value="name">Name</option>
-                        <option value="nationalPokedexNumbers">Pokedex n.</option>
-                        <option value="level">Level</option>
+                <div class="col-md-2">
+                    <label for="subtypes" class="form-label">Subtypes:</label>
+                    <select id="subtypes" name="subtypes" class="form-select">
+                        <option value=""></option>
+                        <option value="Basic">Basic</option>
+                        <option value="Stage 1">Stage 1</option>
+                        <option value="Stage 2">Stage 2</option>
+                        <option value="Baby">Baby</option>
+                        <option value="Item">Item</option>
+                        <option value="Special">Special</option>
                     </select>
                 </div>
-
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-primary">Search</button>
                     <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
-
-
-                <!-- Checkbox for "desc" -->
-                <div class="form-check">
-                    <input class="btn-check" type="checkbox" id="desc" name="desc" th:checked="${param.desc == 'true'}">
-                    <label class="btn btn-outline-primary" for="desc"><i class="bi bi-sort-up"></i></label>
-
                 </div>
-            </div>
-
-            <!-- Name filter -->
-            <div class="col-md-3">
-                <label for="name" class="form-label">Name:</label>
-                <input type="text" class="form-control" id="name" name="name" th:value="${param.name}">
-            </div>
-
-            <!-- Set filter -->
-            <div class="col-md-2">
-                <label for="set" class="form-label">Set:</label>
-                <input type="text" class="form-control" id="set" name="set" th:value="${param.set}">
-            </div>
-
-            <!-- Types filters -->
-            <div class="col-md-2">
-                <label for="types1" class="form-label">Choose a type:</label>
-                <select name="types1" id="types1" class="form-select" th:value="${param.types1}">
-                    <option value=""></option>
-                    <option value="Colorless">Colorless</option>
-                    <option value="Grass">Grass</option>
-                    <option value="Fire">Fire</option>
-                    <option value="Water">Water</option>
-                    <option value="Lightning">Lightning</option>
-                    <option value="Fighting">Fighting</option>
-                    <option value="Psychic">Psychic</option>
-                    <option value="Darkness">Darkness</option>
-                    <option value="Metal">Metal</option>
-                    <option value="Dragon">Dragon</option>
-                    <option value="Fairy">Fairy</option>
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <label for="types2" class="form-label">Secondary type:</label>
-                <select name="types2" id="types2" class="form-select" th:value="${param.types2}">
-                    <option value=""></option>
-                    <option value="Colorless">Colorless</option>
-                    <option value="Grass">Grass</option>
-                    <option value="Fire">Fire</option>
-                    <option value="Water">Water</option>
-                    <option value="Lightning">Lightning</option>
-                    <option value="Fighting">Fighting</option>
-                    <option value="Psychic">Psychic</option>
-                    <option value="Darkness">Darkness</option>
-                    <option value="Metal">Metal</option>
-                    <option value="Dragon">Dragon</option>
-                    <option value="Fairy">Fairy</option>
-                </select>
-                <input type="hidden" name="types" id="types" th:value="${param.types}">
-            </div>
-
-            <!-- Other filters like rarity, supertype, subtypes -->
-            <div class="col-md-2">
-                <label for="rarity" class="form-label">Rarity:</label>
-                <select id="rarity" name="rarity" class="form-select" th:value="${param.rarity}">
-                    <option value=""></option>
-                    <option value="Classic Collection">Classic Collection</option>
-                    <option value="Common">Common</option>
-                    <option value="LEGEND">LEGEND</option>
-                    <!-- Altre opzioni... -->
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <label for="supertype" class="form-label">Supertype:</label>
-                <select id="supertype" name="supertype" class="form-select" th:value="${param.supertype}">
-                    <option value=""></option>
-                    <option value="Pokémon">Pokémon</option>
-                    <option value="Trainer">Trainer</option>
-                    <option value="Energy">Energy</option>
-                </select>
-            </div>
-
-            <div class="col-md-2">
-                <label for="subtypes" class="form-label">Subtypes:</label>
-                <select id="subtypes" name="subtypes" class="form-select" th:value="${param.subtypes}">
-                    <option value=""></option>
-                    <option value="Basic">Basic</option>
-                    <option value="Stage 1">Stage 1</option>
-                    <option value="Stage 2">Stage 2</option>
-                    <option value="Baby">Baby</option>
-                    <option value="Item">Item</option>
-                    <!-- Altre opzioni... -->
-                </select>
-            </div>
-
-            <!-- Buttons -->
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary">Applica</button>
-                <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
-            </div>
-        </form>
+            </form>
     </div>
 </div>
 
@@ -537,22 +437,25 @@
             </div>
         </div>
 </div>
-    <div class="col-1"></div>
+
+<div class="col-1" ></div>
 </div>
 
 	<!-- Pagination -->
-	<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3"> 
+	<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3">
 
 
      <!-- First page -->
     <a th:if="${currentPage > 1}" 
-       th:href="@{/cards(page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
-       class="btn btn-outline-primary mx-1">Prima pagina</a>
+
+       th:href="@{/cards(page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, page=${param.page})}" 
+       class="btn btn-outline-primary mx-1" data-translate="tasto-prima-pag"></a>
+
 
     <!-- Previous -->
     <a th:if="${currentPage > 1}" 
-       th:href="@{/cards(page=${currentPage - 1},blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
-       class="btn btn-outline-primary mx-1">Prec</a>
+       th:href="@{/cards(page=${currentPage - 1},blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, page=${param.page})}" 
+       class="btn btn-outline-primary mx-1" data-translate="tasto-precedente-pag"></a>
 
     <!-- Ellissi for previous pages -->
     <span th:if="${inizioPagina > 1}"> 
@@ -575,15 +478,15 @@
     <!-- Next -->
     <a th:if="${currentPage + 1 <= totalPages}" 
        th:href="@{/cards(page=${currentPage + 1},  blocco=${((currentPage) / bloccoDimensione) + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
-       class="btn btn-outline-primary mx-1">Succ</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-successiva-pag"></a>
 
     <!-- Last page -->
     <a th:if="${finePagina < totalPages}" 
        th:href="@{/cards(page=${totalPages}, blocco=${(totalPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
-       class="btn btn-outline-primary mx-1">Ultima pagina</a>
+       class="btn btn-outline-primary mx-1" data-translate="tasto-ultima-pag"></a>
+
 
 </div>
-
 
 <!-- Begin script -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
