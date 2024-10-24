@@ -98,8 +98,7 @@
 	    </div>
 	</div>
     <!-- End navBar -->
-    <div class="container mt-5">
-    <!-- Sezione per visualizzare i parametri salvati -->
+
 
     <div class="container mt-5">
         <div class="row">
@@ -108,13 +107,11 @@
                 <div >
 	                <form action="/userCard" method="POST" class="mt-4">
 	                    <input type="hidden" name="cardId" th:value="${card.id}" />
-	                    <div class="mb-5">
+	                    <div class="mb-5 col-7">
 	                        <label for="quantity" class="form-label" data-translate="aggiorna-quantita"></label>
 	                        <input type="number" name="quantity" th:value="${inCollection}" id="quantity" class="form-control" min="0" required />
 	                    </div>
-
-	                    <button type="submit" class="btn btn-primary" data-translate="aggiungi-carta"></button>
-	                    <a href="http://localhost:8080/cards" class="btn btn-secondary btn-back" data-translate="tasto-indietro"></a>
+	                    
 
 	                     	<input type="hidden" name="from" th:value="${param.from != null ? param.from : ''}" />
                     		<input type="hidden" name="owned" th:value="${param.owned != null ? param.owned : false}" />
@@ -127,7 +124,7 @@
                     		<input type="hidden" name="sort" th:value="${param.sort != null ? param.sort : 'name'}" />
                    			<input type="hidden" name="desc" th:value="${param.desc != null ? param.desc : false}" />
                     		<input type="hidden" name="page" th:value="${param.page != null ? param.page : 1}" />
-	                   		<button type="submit" class="btn btn-primary">Aggiungi Carta</button>
+	                   		<button type="submit" class="btn btn-primary" data-translate="aggiungi-carta"></button>
                     	<a th:href="@{/cards(
    										 from=${param.from != null ? param.from : ''}, 
     									owned=${param.owned != null ? param.owned : false}, 
@@ -140,14 +137,13 @@
     									sort=${param.sort != null ? param.sort : 'name'}, 
    										desc=${param.desc != null ? param.desc : false}, 
     									page=${param.page != null ? param.page : 1})}" 
-   								 		class="btn btn-secondary btn-back">Torna a Carte</a>
+   								 		class="btn btn-secondary btn-back" data-translate="tasto-indietro"></a>
 
 
 	                </form>
                 </div>
             </div>
-            <div class="container mt-5">
-    </div>
+            
             <div class="col-lg-8 col-md-6 card-details">
                 <h2 data-translate="info-generali">Informazioni Generali</h2>
                 <p><strong ><span data-translate="nome"></span></strong> <span th:text="${card.name != null ? card.name : 'N/A'}"></span></p>
