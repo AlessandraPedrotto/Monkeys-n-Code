@@ -20,7 +20,6 @@ import com.monkeysncode.entites.User;
 import com.monkeysncode.services.CardService;
 import com.monkeysncode.services.UserCardsService;
 import com.monkeysncode.services.UserService;
-import com.nimbusds.jose.shaded.gson.Gson;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,81 +53,87 @@ public class CardController { // Controller who manages the user card collection
 	    @RequestParam(required = false, defaultValue = "name") String sort,
 	    @RequestParam(defaultValue = "false") boolean desc,
 	    @RequestParam(defaultValue = "1") int blocco,
-	    @RequestParam(defaultValue = "true") boolean grayFilter // Added grayFilter parameter to manage the gray effect
+	    @RequestParam(defaultValue = "false") boolean grayFilter // Added grayFilter parameter to manage gray effect
 	) {
-	    // Ensure the block is at least 1
+	    
+	    // Ensure that the block (blocco) value is at least 1
 	    if (blocco < 1) { 
-	        blocco = 1;
+	        blocco = 1; // Set to 1 if the provided block is less than 1
 	    }
 
-	    // Check and retrieve the authenticated user
+	    // Verify and retrieve the authenticated user
 	    User user = userService.userCheck(principal);
-	    int totalCards = usercardService.getTotalCards(user.getId());
+	    int totalCards = usercardService.getTotalCards(user.getId()); // Get the total number of cards owned by the user
 	    
-	    // Create a map to store the filter parameters
+	    // Create a map to store filter parameters
 	    HashMap<String, String> param = new HashMap<>();
-	    param.put("set", set);
-	    param.put("types", types);
-	    param.put("name", name);
-	    param.put("rarity", rarity);
-	    param.put("supertype", supertype);
-	    param.put("subtypes", subtypes);
-	    param.put("page", String.valueOf(page));
+	    param.put("set", set); // Add set parameter
+	    param.put("types", types); // Add types parameter
+	    param.put("name", name); // Add name parameter
+	    param.put("rarity", rarity); // Add rarity parameter
+	    param.put("supertype", supertype); // Add supertype parameter
+	    param.put("subtypes", subtypes); // Add subtypes parameter
+	    param.put("page", String.valueOf(page)); // Add current page number to the parameters
+	    param.put("grayFilter", grayFilter ? "true" : "false"); // Add grayFilter status to the parameters
 
-	    // Initialize card list
+	    // Initialize the list of cards
 	    List<Card> cards = new ArrayList<>();
 	    
-	    // Fetch the collection of owned cards for the user
-	    HashMap<String,Integer> ownedCards = usercardService.getCollectionById(user.getId());
-	    System.out.println(ownedCards);
+	    // Fetch the collection of cards owned by the user
+	    HashMap<String, Integer> ownedCards = usercardService.getCollectionById(user.getId());
+	    System.out.println(ownedCards); // Debugging line to print owned cards
 	    
-	    // Apply the filter based on the "owned" parameter
+	    // Apply filtering based on the "owned" parameter
 	    if (owned) {
+	        // If the user owns the cards, filter based on the owned collection
 	        cards = cardService.filterByParam(param, usercardService.getSortedCollection(user.getId(), sort, desc));
 	    } else {
+	        // Otherwise, filter the complete card list
 	        cards = cardService.filterByParam(param, cardService.findAllSorted(sort, desc));
 	    }
 
 	    // Pagination: Display 100 cards per page
 	    List<Card> allCards = cardService.getCardsByPage(cards, page, 100); 
-	    int totalPages = (int) Math.ceil((double) cards.size() / 100);
+	    int totalPages = (int) Math.ceil((double) cards.size() / 100); // Calculate total number of pages
 
-	    // Ensure current page is within valid bounds
+	    // Ensure the current page is within valid bounds
 	    if (page < 1) {
-	        page = 1;  // Set to first page
+	        page = 1; // Set to the first page if the current page is less than 1
 	    } else if (page > totalPages) {
-	        page = totalPages;  // Set to last page if exceeding bounds
+	        page = totalPages; // Set to the last page if the current page exceeds bounds
 	    }
 
 	    // Manage page blocks (e.g., 5 pages per block)
-	    int bloccoDimensione = 5;
-	    int inizioPagina = (blocco - 1) * bloccoDimensione + 1;
-	    int finePagina = Math.min(blocco * bloccoDimensione, totalPages);
-	    int ultimoBlocco = (int) Math.ceil((double) totalPages / bloccoDimensione);
+	    int bloccoDimensione = 5; // Size of the block (number of pages per block)
+	    int inizioPagina = (blocco - 1) * bloccoDimensione + 1; // Starting page number for the current block
+	    int finePagina = Math.min(blocco * bloccoDimensione, totalPages); // Ending page number for the current block
+	    int ultimoBlocco = (int) Math.ceil((double) totalPages / bloccoDimensione); // Total number of blocks
 
 	    // Add necessary attributes to the model for rendering in the view
-	    model.addAttribute("bloccoDimensione", bloccoDimensione);
-	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("bloccoDimensione", bloccoDimensione); // Block size (e.g., 5 pages per block)
+	    model.addAttribute("totalPages", totalPages); // Total number of pages
 	    model.addAttribute("cards", allCards); // Filtered and paginated cards
 	    model.addAttribute("ownedCards", ownedCards); // Cards owned by the user
-	    model.addAttribute("from", from);
+	    model.addAttribute("from", from); // Original page or referrer
 	    model.addAttribute("totalCards", totalCards); // Total number of cards the user owns
 	    model.addAttribute("currentPage", page); // Current page number
 	    model.addAttribute("inizioPagina", inizioPagina); // Start of the current block
 	    model.addAttribute("finePagina", finePagina); // End of the current block
-	    model.addAttribute("bloccoCorrente", blocco); // Current block
-	    model.addAttribute("ultimoBlocco", ultimoBlocco); // Last block
-	    model.addAttribute("grayFilter", grayFilter); // Add grayFilter to the model to handle gray effect
+	    model.addAttribute("bloccoCorrente", blocco); // Current block number
+	    model.addAttribute("ultimoBlocco", ultimoBlocco); // Last block number
+	    model.addAttribute("grayFilter", grayFilter); // Add grayFilter to the model for handling gray effect in view
 
 	    // Add filter parameters to the model to maintain their state
-	    param.put("sort", sort);
-	    param.put("desc", desc ? "true" : "false");
-	    param.put("owned", owned ? "true" : "false");
-	    model.addAttribute("param", param);
+	    param.put("sort", sort); // Add sorting parameter
+	    param.put("desc", desc ? "true" : "false"); // Add descending order parameter
+	    param.put("owned", owned ? "true" : "false"); // Add ownership filter parameter
+	    model.addAttribute("param", param); // Add all parameters to the model
 
 	    // Return the view for displaying the cards
-	    return "cards";
+	    return "cards"; // Return the name of the view to render
 	}
+
+
 
 	
 	@PostMapping("/collection/add")

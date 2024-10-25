@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${card != null ? card.id : 'Dettagli Carta'}"></title>
+  <title th:text="${card != null ? card.name : 'Dettagli Carta'}"></title>
     <link rel="icon" sizes="48x48" href="/icona_pokedecks.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -100,49 +100,50 @@
     <!-- End navBar -->
 
 
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-3 card-image">
-                <img th:src="@{${card.img}}" alt="Immagine della carta" class="img-fluid" style="margin-bottom: 50px;">
-                <div >
-	                <form action="/userCard" method="POST" class="mt-4">
-	                    <input type="hidden" name="cardId" th:value="${card.id}" />
-	                    <div class="mb-5 col-7">
-	                        <label for="quantity" class="form-label" data-translate="aggiorna-quantita"></label>
-	                        <input type="number" name="quantity" th:value="${inCollection}" id="quantity" class="form-control" min="0" required />
-	                    </div>
-	                    
+   <div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-3 card-image">
+            <img th:src="@{${card.img}}" alt="Immagine della carta" class="img-fluid" style="margin-bottom: 50px;">
+            <div>
+                <form action="/userCard" method="POST" class="mt-4">
+                    <input type="hidden" name="cardId" th:value="${card.id}" />
+                    <div class="mb-5 col-7">
+                        <label for="quantity" class="form-label" data-translate="aggiorna-quantita"></label>
+                        <input type="number" name="quantity" th:value="${inCollection}" id="quantity" class="form-control" min="0" required />
+                    </div>
 
-	                     	<input type="hidden" name="from" th:value="${param.from != null ? param.from : ''}" />
-                    		<input type="hidden" name="owned" th:value="${param.owned != null ? param.owned : false}" />
-                    		<input type="hidden" name="name" th:value="${param.name != null ? param.name : ''}" />
-                    		<input type="hidden" name="set" th:value="${param.set != null ? param.set : ''}" />
-                    		<input type="hidden" name="types" th:value="${param.types != null ? param.types : ''}" />
-                    		<input type="hidden" name="rarity" th:value="${param.rarity != null ? param.rarity : ''}" />
-                    		<input type="hidden" name="supertype" th:value="${param.supertype != null ? param.supertype : ''}" />
-                    		<input type="hidden" name="subtypes" th:value="${param.subtypes != null ? param.subtypes : ''}" />
-                    		<input type="hidden" name="sort" th:value="${param.sort != null ? param.sort : 'name'}" />
-                   			<input type="hidden" name="desc" th:value="${param.desc != null ? param.desc : false}" />
-                    		<input type="hidden" name="page" th:value="${param.page != null ? param.page : 1}" />
-	                   		<button type="submit" class="btn btn-primary" data-translate="aggiungi-carta"></button>
-                    	<a th:href="@{/cards(
-   										 from=${param.from != null ? param.from : ''}, 
-    									owned=${param.owned != null ? param.owned : false}, 
-    									name=${param.name != null ? param.name : ''}, 
-    									set=${param.set != null ? param.set : ''}, 
-    									types=${param.types != null ? param.types : ''}, 
-    									rarity=${param.rarity != null ? param.rarity : ''}, 
-    									supertype=${param.supertype != null ? param.supertype : ''}, 
-    									subtypes=${param.subtypes != null ? param.subtypes : ''}, 
-    									sort=${param.sort != null ? param.sort : 'name'}, 
-   										desc=${param.desc != null ? param.desc : false}, 
-    									page=${param.page != null ? param.page : 1})}" 
-   								 		class="btn btn-secondary btn-back" data-translate="tasto-indietro"></a>
+                    <!-- Hidden inputs for parameters with grayFilter included -->
+                    <input type="hidden" name="from" th:value="${param.from != null ? param.from : ''}" />
+                    <input type="hidden" name="owned" th:value="${param.owned != null ? param.owned : false}" />
+                    <input type="hidden" name="name" th:value="${param.name != null ? param.name : ''}" />
+                    <input type="hidden" name="set" th:value="${param.set != null ? param.set : ''}" />
+                    <input type="hidden" name="types" th:value="${param.types != null ? param.types : ''}" />
+                    <input type="hidden" name="rarity" th:value="${param.rarity != null ? param.rarity : ''}" />
+                    <input type="hidden" name="supertype" th:value="${param.supertype != null ? param.supertype : ''}" />
+                    <input type="hidden" name="subtypes" th:value="${param.subtypes != null ? param.subtypes : ''}" />
+                    <input type="hidden" name="sort" th:value="${param.sort != null ? param.sort : 'name'}" />
+                    <input type="hidden" name="desc" th:value="${param.desc != null ? param.desc : false}" />
+                    <input type="hidden" name="page" th:value="${param.page != null ? param.page : 1}" />
+                    <input type="hidden" name="grayFilter" th:value="${param.grayFilter != null ? param.grayFilter : false}" />
 
-
-	                </form>
-                </div>
+                    <button type="submit" class="btn btn-primary" data-translate="aggiungi-carta"></button>
+                    <a th:href="@{/cards(
+                        from=${param.from != null ? param.from : ''}, 
+                        owned=${param.owned != null ? param.owned : false}, 
+                        name=${param.name != null ? param.name : ''}, 
+                        set=${param.set != null ? param.set : ''}, 
+                        types=${param.types != null ? param.types : ''}, 
+                        rarity=${param.rarity != null ? param.rarity : ''}, 
+                        supertype=${param.supertype != null ? param.supertype : ''}, 
+                        subtypes=${param.subtypes != null ? param.subtypes : ''}, 
+                        sort=${param.sort != null ? param.sort : 'name'}, 
+                        desc=${param.desc != null ? param.desc : false}, 
+                        page=${param.page != null ? param.page : 1}, 
+                        grayFilter=${param.grayFilter != null ? param.grayFilter : false})}" 
+                       class="btn btn-secondary btn-back" data-translate="tasto-indietro"></a>
+                </form>
             </div>
+        </div>
             
             <div class="col-lg-8 col-md-6 card-details">
                 <h2 data-translate="info-generali">Informazioni Generali</h2>
@@ -168,7 +169,7 @@
 
 <script>
 function addCard(cardId) {
-    console.log("Adding card with ID:", cardId);  // Stampa il cardId prima di inviare la richiesta
+    console.log("Adding card with ID:", cardId);  // Log the cardId before sending the request
     $.post('/collection/add', {
         cardId: cardId,
         owned: '${param.owned}',
@@ -180,15 +181,15 @@ function addCard(cardId) {
         subtypes: '${param.subtypes}',
         sort: '${param.sort}',
         desc: '${param.desc}',
-        page: '${param.page}'
+        page: '${param.page}',
+        grayFilter: '${param.grayFilter}' // Include grayFilter in the AJAX request
     }).done(function(response) {
-        console.log("Response from addCard:", response);  // Stampa la risposta nella console
+        console.log("Response from addCard:", response);  // Log the response
         updateParams(response);
     }).fail(function(error) {
-        console.error("Error while adding card:", error);  // Stampa l'errore in caso di fallimento
+        console.error("Error while adding card:", error);  // Log the error on failure
     });
 }
-
 function removeCard(cardId) {
     $.post('/collection/remove', {
         cardId: cardId,
@@ -201,26 +202,14 @@ function removeCard(cardId) {
         subtypes: '${param.subtypes}',
         sort: '${param.sort}',
         desc: '${param.desc}',
-        page: '${param.page}'
+        page: '${param.page}',
+        grayFilter: '${param.grayFilter}' // Include grayFilter in the AJAX request
     }).done(function(response) {
-        // Aggiorna i parametri sulla pagina in base alla risposta
+        // Update parameters on the page based on the response
         updateParams(response);
     }).fail(function(error) {
         console.error("Errore durante la rimozione della carta:", error);
     });
-}
-
-function updateParams(response) {
-    // Aggiorna i parametri sulla pagina
-    console.log(response);
-    
-    // Qui puoi aggiornare la tua UI o fare altre operazioni necessarie
-    // Esempio:
-    $('#owned').val(response.owned);
-    $('#name').val(response.name);
-    $('#set').val(response.set);
-    $('#types').val(response.types);
-    // Continua per gli altri parametri
 }
 </script>
 

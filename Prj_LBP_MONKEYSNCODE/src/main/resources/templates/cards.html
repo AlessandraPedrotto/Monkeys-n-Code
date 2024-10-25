@@ -235,92 +235,101 @@
         <div class="col">
 
         <!-- Button to open the filter menu -->
-        <button class="filter-button btn btn-primary" onclick="toggleFilterMenu()" data-translate="filtra"></button>
-	
-    	<!-- Dropdown menu for filtering and sorting -->
-        <div id="filterMenu" class="filter-menu">
-         <form action="/cards" method="GET">
-		    <input type="hidden" name="grayFilter" th:value="${grayFilter ? 'false' : 'true'}" />
-		    <button type="submit" 
-		            class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-2"
-		            th:text="${grayFilter ? 'Disattiva Filtro Grigio' : 'Attiva Filtro Grigio'}">
-		    </button>
-		</form>
-            <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
-                <input type="hidden" name="from" th:value="${param.from}">
-                <div class="col-md-2">
-                    <div class="form-check" id="owned-filter">
-                        <input class="btn-check" type="checkbox" id="owned" name="owned" autocomplete="off">
-                        <label for="owned" class="btn btn-outline-success owned">Owned</label>
-                    </div>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <!-- Select for sorting -->
-                    <div > <!-- Adds space only to the right of the select -->
-                        <label for="sort" class="form-label">Order:</label>
-                        <select id="sort" name="sort" class="form-select">
-                            <option value="name">Name</option>
-                            <option value="nationalPokedexNumbers">Pokedex n.</option>
-                            <option value="level">Level</option>
-                        </select>
-                    </div>
-                   
-                    
-                    <!-- Checkbox as a button for "desc" -->
-                    <div class="form-check">
-                        <input class="btn-check" type="checkbox" id="desc" name="desc" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="desc"><i class="bi bi-sort-up"></i></label>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <label for="name" class="form-label">Name:</label>
-                    <input type="text" class="form-control" id="name" name="name">
-                </div>
-                <div class="col-md-2">
-                    <label for="set" class="form-label">Set:</label>
-                    <input type="text" class="form-control" id="set" name="set">
-                </div>
-                <div class="col-md-2">
-                    <label for="types" class="form-label">Choose a type:</label>
-                    <select name="types" id="types1" class="form-select">
-                        <option value=""></option>
-                        <option value="Colorless">Colorless</option>
-                        <option value="Grass">Grass</option>
-                        <option value="Fire">Fire</option>
-                        <option value="Water">Water</option>
-                        <option value="Lightning">Lightning</option>
-                        <option value="Fighting">Fighting</option>
-                        <option value="Psychic">Psychic</option>
-                        <option value="Darkness">Darkness</option>
-                        <option value="Metal">Metal</option>
-                        <option value="Dragon">Dragon</option>
-                        <option value="Fairy">Fairy</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label for="types2" class="form-label">Secondary type:</label>
-                    <select name="types2" id="types2" class="form-select">
-                        <option value=""></option>
-                        <option value="Colorless">Colorless</option>
-                        <option value="Grass">Grass</option>
-                        <option value="Fire">Fire</option>
-                        <option value="Water">Water</option>
-                        <option value="Lightning">Lightning</option>
-                        <option value="Fighting">Fighting</option>
-                        <option value="Psychic">Psychic</option>
-                        <option value="Darkness">Darkness</option>
-                        <option value="Metal">Metal</option>
-                        <option value="Dragon">Dragon</option>
-                        <option value="Fairy">Fairy</option>
-                    </select>
-                    <input type="hidden" name="types" id="types">
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <label for="rarity" class="form-label">Rarity:</label>
-                    <select id="rarity" name="rarity" th:value="${param.rarity}" class="form-select">
-                        <option value=""></option>
+		<button class="filter-button btn btn-primary" onclick="toggleFilterMenu()" data-translate="filtra"></button>
+
+		<!-- Dropdown menu for filtering and sorting -->
+<div id="filterMenu" class="filter-menu">
+    <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
+        <input type="hidden" name="from" th:value="${param.from}">
+
+<div class="form-check" id="gray-filter">
+    <input class="btn-check" type="checkbox" id="gray" name="grayFilter" autocomplete="off" th:checked="${grayFilter}">
+    <label for="gray" class="btn btn-outline-secondary grayFilter">gray filter</label>
+</div>
+
+        <!-- Other Filter Options -->
+        <div class="col-md-2">
+            <div class="form-check" id="owned-filter">
+                <input class="btn-check" type="checkbox" id="owned" name="owned" autocomplete="off">
+                <label for="owned" class="btn btn-outline-success owned">Owned</label>
+            </div>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <!-- Select for sorting -->
+            <div>
+                <label for="sort" class="form-label">Order:</label>
+                <select id="sort" name="sort" class="form-select">
+                    <option value="name">Name</option>
+                    <option value="nationalPokedexNumbers">Pokedex n.</option>
+                    <option value="level">Level</option>
+                </select>
+            </div>
+
+            <!-- Descending Order Toggle as Checkbox Button -->
+            <div class="form-check">
+                <input class="btn-check" type="checkbox" id="desc" name="desc" autocomplete="off">
+                <label class="btn btn-outline-primary" for="desc"><i class="bi bi-sort-up"></i></label>
+            </div>
+        </div>
+
+        <!-- Additional Filters -->
+        <div class="col-md-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="col-md-2">
+            <label for="set" class="form-label">Set:</label>
+            <input type="text" class="form-control" id="set" name="set">
+        </div>
+
+        <!-- Selettore per il primo tipo -->
+        <div class="col-md-2">
+            <label for="types1" class="form-label">Choose a type:</label>
+            <select name="types" id="types1" class="form-select">
+                <option value=""></option>
+                <option value="Colorless">Colorless</option>
+                <option value="Grass">Grass</option>
+                <option value="Fire">Fire</option>
+                <option value="Water">Water</option>
+                <option value="Lightning">Lightning</option>
+                <option value="Fighting">Fighting</option>
+                <option value="Psychic">Psychic</option>
+                <option value="Darkness">Darkness</option>
+                <option value="Metal">Metal</option>
+                <option value="Dragon">Dragon</option>
+                <option value="Fairy">Fairy</option>
+            </select>
+        </div>
+
+        <!-- Selettore per il secondo tipo -->
+        <div class="col-md-2">
+            <label for="types2" class="form-label">Secondary type:</label>
+            <select name="types2" id="types2" class="form-select">
+                <option value=""></option>
+                <option value="Colorless">Colorless</option>
+                <option value="Grass">Grass</option>
+                <option value="Fire">Fire</option>
+                <option value="Water">Water</option>
+                <option value="Lightning">Lightning</option>
+                <option value="Fighting">Fighting</option>
+                <option value="Psychic">Psychic</option>
+                <option value="Darkness">Darkness</option>
+                <option value="Metal">Metal</option>
+                <option value="Dragon">Dragon</option>
+                <option value="Fairy">Fairy</option>
+            </select>
+        </div>
+
+        <!-- Campo nascosto per memorizzare i tipi combinati -->
+        <input type="hidden" id="types" name="types" value="">
+
+
+        <div class="col-md-2">
+            <label for="rarity" class="form-label">Rarity:</label>
+            <select id="rarity" name="rarity" class="form-select">
+                <option value=""></option>
+                    <option value=""></option>
                         <option value="Classic Collection">Classic Collection</option>
                         <option value="Common">Common</option>
                         <option value="LEGEND">LEGEND</option>
@@ -344,85 +353,85 @@
                         <option value="Rare Ultra">Rare Ultra</option>
                         <option value="Rare Prism Star">Rare Prism Star</option>
                         <option value="Uncommon">Uncommon</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label for="supertype" class="form-label">Supertype:</label>
-                    <select id="supertype" name="supertype" class="form-select">
-                        <option value=""></option>
-                        <option value="Pokémon">Pokémon</option>
-                        <option value="Trainer">Trainer</option>
-                        <option value="Energy">Energy</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label for="subtypes" class="form-label">Subtypes:</label>
-                    <select id="subtypes" name="subtypes" class="form-select">
-                        <option value=""></option>
-                        <option value="Basic">Basic</option>
-                        <option value="Stage 1">Stage 1</option>
-                        <option value="Stage 2">Stage 2</option>
-                        <option value="Baby">Baby</option>
-                        <option value="Item">Item</option>
-                        <option value="Special">Special</option>
-                    </select>
-                </div>
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">Search</button>
-                    <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
-                </div>
-            </form>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="supertype" class="form-label">Supertype:</label>
+            <select id="supertype" name="supertype" class="form-select">
+                <option value=""></option>
+                <option value="Pokémon">Pokémon</option>
+                <option value="Trainer">Trainer</option>
+                <option value="Energy">Energy</option>
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <label for="subtypes" class="form-label">Subtypes:</label>
+            <select id="subtypes" name="subtypes" class="form-select">
+                <option value=""></option>
+                <option value="Basic">Basic</option>
+                <option value="Stage 1">Stage 1</option>
+                <option value="Stage 2">Stage 2</option>
+                <option value="Baby">Baby</option>
+                <option value="Item">Item</option>
+                <option value="Special">Special</option>
+            </select>
+        </div>
+
+        <!-- Submit and Reset Buttons -->
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
+</div>
+
 
     </div>
 </div>
 
 <div class="col-2" ></div>
-</div>
 
-	<!-- Pagination -->
-	<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3">
-
-
-     <!-- First page -->
+<!-- Pagination -->
+<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3">
+ <!-- First page -->
     <a th:if="${currentPage > 1}" 
-
-       th:href="@{/cards(page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, page=${param.page})}" 
+       th:href="@{/cards(page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
        class="btn btn-outline-primary mx-1" data-translate="tasto-prima-pag"></a>
-
 
     <!-- Previous -->
     <a th:if="${currentPage > 1}" 
-       th:href="@{/cards(page=${currentPage - 1},blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
+       th:href="@{/cards(page=${currentPage - 1}, blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
        class="btn btn-outline-primary mx-1" data-translate="tasto-precedente-pag"></a>
 
-    <!-- Ellissi for previous pages -->
+    <!-- Ellipsis for previous pages -->
     <span th:if="${inizioPagina > 1}"> 
-        <a class="btn btn-outline-primary mx-1" th:href="@{/cards(page=${currentPage}, blocco=${bloccoCorrente - 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}">...</a>
+        <a class="btn btn-outline-primary mx-1" th:href="@{/cards(page=${currentPage}, blocco=${bloccoCorrente - 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}">...</a>
     </span>
 
     <!-- Numbered pages -->
     <span th:each="i : ${#numbers.sequence(inizioPagina, finePagina)}">
-        <a th:href="@{/cards(page=${i}, blocco=${bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
+        <a th:href="@{/cards(page=${i}, blocco=${bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
            th:text="${i}" 
            class="btn btn-outline-primary mx-1" 
            th:classappend="${i  == currentPage} ? 'btn-primary text-white' : ''"></a>
     </span>
 
-    <!-- Ellissi for next pages -->
+    <!-- Ellipsis for next pages -->
     <span th:if="${finePagina < totalPages}">
-        <a class="btn btn-outline-primary mx-1" th:href="@{/cards(page=${currentPage}, blocco=${bloccoCorrente + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}">...</a>
+        <a class="btn btn-outline-primary mx-1" th:href="@{/cards(page=${currentPage}, blocco=${bloccoCorrente + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}">...</a>
     </span>
 
     <!-- Next -->
     <a th:if="${currentPage + 1 <= totalPages}" 
-       th:href="@{/cards(page=${currentPage + 1},  blocco=${((currentPage) / bloccoDimensione) + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
+       th:href="@{/cards(page=${currentPage + 1}, blocco=${((currentPage) / bloccoDimensione) + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
        class="btn btn-outline-primary mx-1" data-translate="tasto-successiva-pag"></a>
 
     <!-- Last page -->
     <a th:if="${finePagina < totalPages}" 
-       th:href="@{/cards(page=${totalPages}, blocco=${(totalPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
+       th:href="@{/cards(page=${totalPages}, blocco=${(totalPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
        class="btn btn-outline-primary mx-1" data-translate="tasto-ultima-pag"></a>
-
 
 </div>
 
@@ -446,7 +455,8 @@
                     subtypes=${param.subtypes}, 
                     sort=${param.sort}, 
                     desc=${param.desc}, 
-                    page=${param.page})}">
+                    page=${param.page}, 
+                    grayFilter=${param.grayFilter})}">
                     <img th:src="${card.img}"  th:classappend="${grayFilter and !ownedCards.containsKey(card.id)} ? 'gray-filter'"  alt="Card Image"/>
                 </a>
 
@@ -468,49 +478,44 @@
 </div>
 
 	<!-- Pagination -->
-	<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3">
-
-
-     <!-- First page -->
+<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3">
+ <!-- First page -->
     <a th:if="${currentPage > 1}" 
-
-       th:href="@{/cards(page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, page=${param.page})}" 
+       th:href="@{/cards(page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
        class="btn btn-outline-primary mx-1" data-translate="tasto-prima-pag"></a>
-
 
     <!-- Previous -->
     <a th:if="${currentPage > 1}" 
-       th:href="@{/cards(page=${currentPage - 1},blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, page=${param.page})}" 
+       th:href="@{/cards(page=${currentPage - 1}, blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
        class="btn btn-outline-primary mx-1" data-translate="tasto-precedente-pag"></a>
 
-    <!-- Ellissi for previous pages -->
+    <!-- Ellipsis for previous pages -->
     <span th:if="${inizioPagina > 1}"> 
-        <a class="btn btn-outline-primary mx-1" th:href="@{/cards(page=${currentPage}, blocco=${bloccoCorrente - 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}">...</a>
+        <a class="btn btn-outline-primary mx-1" th:href="@{/cards(page=${currentPage}, blocco=${bloccoCorrente - 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}">...</a>
     </span>
 
     <!-- Numbered pages -->
     <span th:each="i : ${#numbers.sequence(inizioPagina, finePagina)}">
-        <a th:href="@{/cards(page=${i}, blocco=${bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
+        <a th:href="@{/cards(page=${i}, blocco=${bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
            th:text="${i}" 
            class="btn btn-outline-primary mx-1" 
            th:classappend="${i  == currentPage} ? 'btn-primary text-white' : ''"></a>
     </span>
 
-    <!-- Ellissi for next pages -->
+    <!-- Ellipsis for next pages -->
     <span th:if="${finePagina < totalPages}">
-        <a class="btn btn-outline-primary mx-1" th:href="@{/cards(page=${currentPage}, blocco=${bloccoCorrente + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}">...</a>
+        <a class="btn btn-outline-primary mx-1" th:href="@{/cards(page=${currentPage}, blocco=${bloccoCorrente + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}">...</a>
     </span>
 
     <!-- Next -->
     <a th:if="${currentPage + 1 <= totalPages}" 
-       th:href="@{/cards(page=${currentPage + 1},  blocco=${((currentPage) / bloccoDimensione) + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
+       th:href="@{/cards(page=${currentPage + 1}, blocco=${((currentPage) / bloccoDimensione) + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
        class="btn btn-outline-primary mx-1" data-translate="tasto-successiva-pag"></a>
 
     <!-- Last page -->
     <a th:if="${finePagina < totalPages}" 
-       th:href="@{/cards(page=${totalPages}, blocco=${(totalPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
+       th:href="@{/cards(page=${totalPages}, blocco=${(totalPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from}, grayFilter=${param.grayFilter})}" 
        class="btn btn-outline-primary mx-1" data-translate="tasto-ultima-pag"></a>
-
 
 </div>
 
@@ -518,56 +523,62 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-        //filtri passati alla pagina in forma di hashmap
-        var name = "[[${param.name}]]";
-        var set = "[[${param.set}]]";
-        var supertype = "[[${param.supertype}]]";
-        var subtypes = "[[${param.subtypes}]]";
-        var rarity = "[[${param.rarity}]]";
-        var sort = "[[${param.sort}]]";
-        var desc = "[[${param.desc}]]";
-        var types = "[[${param.types}]]";
-        var owned = "[[${param.owned}]]";
-        var page = "[[${param.page}]]";
-        
-        //collezione passata alla pagina in forma di stringa
-        var collection = JSON.parse(ricodifica("[[${ownedCards}]]"));
-        var ownedCards = Object.keys(collection);
-        
-        //questa funzione formatta la stringa ricevuta dal controller in modo che sia utilizzabile da javascript
-        function ricodifica(input) {
-            let senzaParentesi = input.slice(1, -1);
-            let risultato = senzaParentesi
-                .split(', ')
-                .map(item => {
-                    let [chiave, valore] = item.split('=');
-                    return `"${chiave}":${valore}`;
-                })
-                .join(',');
-            return `{${risultato}}`;
-        }
+//Filtri passati alla pagina in forma di hashmap
+var name = "[[${param.name}]]";
+var set = "[[${param.set}]]";
+var supertype = "[[${param.supertype}]]";
+var subtypes = "[[${param.subtypes}]]";
+var rarity = "[[${param.rarity}]]";
+var sort = "[[${param.sort}]]";
+var desc = "[[${param.desc}]]"; // Aggiunta della variabile desc
+var types = "[[${param.types}]]";
+var owned = "[[${param.owned}]]";
+var page = "[[${param.page}]]";
+var grayFilter = "[[${grayFilter}]]"; // Aggiunta della variabile grayFilter
 
+// Collezione passata alla pagina in forma di stringa
+var collection = JSON.parse(ricodifica("[[${ownedCards}]]"));
+var ownedCards = Object.keys(collection);
 
-        //i valori dei singoli filtri vengono usati per settare il default al menù, mostrando i paarmetri dell'ultima ricerca
-		document.getElementById("name").value = name;
-		document.getElementById("set").value = set;
-		document.getElementById("supertype").value = supertype;
-		document.getElementById("subtypes").value = subtypes;
-		document.getElementById("rarity").value = rarity;
-		document.getElementById("sort").value = sort;
-		if(desc)
-		    document.getElementById("desc").checked = true;
-		else document.getElementById("desc").checked = false;
-		if(owned)
-		    document.getElementById("owned").checked = true;
-		else document.getElementById("owned").checked = false;
-		if(types.length > 10){
-		    types= types.split(', ');
-		    document.getElementById("types1").value = types[0];
-		    document.getElementById("types2").value = types[1];
-		}
-		else document.getElementById("types1").value = types;
-		
+// Questa funzione formatta la stringa ricevuta dal controller in modo che sia utilizzabile da javascript
+function ricodifica(input) {
+    let senzaParentesi = input.slice(1, -1);
+    let risultato = senzaParentesi
+        .split(', ')
+        .map(item => {
+            let [chiave, valore] = item.split('=');
+            return `"${chiave}":${valore}`;
+        })
+        .join(',');
+    return `{${risultato}}`;
+}
+
+// I valori dei singoli filtri vengono usati per settare il default al menù, mostrando i parametri dell'ultima ricerca
+document.getElementById("name").value = name;
+document.getElementById("set").value = set;
+document.getElementById("supertype").value = supertype;
+document.getElementById("subtypes").value = subtypes;
+document.getElementById("rarity").value = rarity;
+document.getElementById("sort").value = sort;
+
+// Imposta il checkbox per la variabile desc
+document.getElementById("desc").checked = (desc === 'true');
+
+// Imposta il checkbox per la variabile owned
+document.getElementById("owned").checked = (owned === 'true');
+
+// Imposta il checkbox per il Gray Filter
+document.getElementById("gray").checked = (grayFilter === 'true'); 
+
+// Gestisci il valore dei tipi
+if (types.length > 10) { // Supponendo che la lunghezza rappresenti una condizione per il tipo
+    types = types.split(', ');
+    document.getElementById("types1").value = types[0];
+    document.getElementById("types2").value = types[1];
+} else {
+    document.getElementById("types1").value = types;
+}
+
 		
 	    $(document).ready(function () {
 	    // Configurazione per SweetAlert2 Toast
@@ -667,24 +678,44 @@
 	     }
 	 });
 	
-	 function resetFilters(){
-	    var ownedField = document.getElementById('owned').value;
-	    document.getElementById('filter').reset();
-	    setTimeout(function() {
-	    	const urlParams = new URLSearchParams(window.location.search);
-	    	const fromCollection = urlParams.get('from');
-	        if (fromCollection === 'myCollection') {
-	        	document.getElementById('owned').checked = ownedField;
-	        }
-	      }, 0);
-	 }
+	 document.getElementById('filter').addEventListener('submit', function(event) {
+		    event.preventDefault(); // Impedisce l'invio automatico del modulo
+		    var type1 = document.getElementById('types1').value; // Ottieni il valore del primo tipo
+		    var type2 = document.getElementById('types2').value; // Ottieni il valore del secondo tipo
+		    
+		    // Combina i tipi
+		    var types = type1 && type2 ? type1 + ',' + type2 : (type1 || type2);
+		    document.getElementById('types').value = types; // Imposta il valore combinato nel campo nascosto
 
-	    document.getElementById('filter').addEventListener('submit', function() {
-	        var type1 = document.getElementById('types1').value;
-	        var type2 = document.getElementById('types2').value;
-	        var types = type1 && type2 ? type1 + ',' + type2 : (type1 || type2);
-	        document.getElementById('types').value = types;
-	    });
+		    // Invia il modulo dopo aver impostato i valori
+		    this.submit();
+		});
+
+		// Funzione per resettare i filtri
+		function resetFilters() {
+		    // Ottieni il valore del checkbox "owned" e "gray" prima di resettare
+		    var ownedField = document.getElementById('owned').checked;
+		    var grayField = document.getElementById('gray').checked;
+
+		    // Resetta il modulo
+		    document.getElementById('filter').reset();
+
+		    // Usa setTimeout per garantire che il reset avvenga prima di verificare i parametri dell'URL
+		    setTimeout(function() {
+		        const urlParams = new URLSearchParams(window.location.search);
+		        const fromCollection = urlParams.get('from');
+		        
+		        // Se l'URL ha il parametro "from" uguale a "myCollection", ripristina il valore del checkbox "owned"
+		        if (fromCollection === 'myCollection') {
+		            document.getElementById('owned').checked = ownedField;
+		        }
+
+		        // Mantieni il valore del checkbox "gray" se è presente nei parametri dell'URL
+		        if (urlParams.has('grayFilter')) {
+		            document.getElementById('gray').checked = urlParams.get('grayFilter') === 'true';
+		        }
+		    }, 0);
+		}
 	
 	  
 	    document.addEventListener("DOMContentLoaded", function() {
@@ -711,7 +742,7 @@
 	            toggleButton.textContent = grayCardsVisible ? 'Nascondi carte non possedute' : 'Mostra carte non possedute';
 	        });
 	    });
-	
+	    
 
 </script>
 <script>
