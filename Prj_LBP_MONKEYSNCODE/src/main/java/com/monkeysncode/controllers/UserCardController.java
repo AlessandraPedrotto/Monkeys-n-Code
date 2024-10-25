@@ -45,7 +45,8 @@ public class UserCardController {  // Controller who manages the card quantity
 	        @RequestParam(required = false) String subtypes,
 	        @RequestParam(required = false) String sort,
 	        @RequestParam(required = false) Boolean desc,
-	        @RequestParam(required = false) Integer page) {
+	        @RequestParam(required = false) Integer page,
+	        @RequestParam(required = false) Boolean grayFilter) { // Add grayFilter parameter
 
 	    // Check the authenticated user
 	    User user = userService.userCheck(principal);
@@ -57,7 +58,7 @@ public class UserCardController {  // Controller who manages the card quantity
 	        // Add or update the card in the user's collection
 	        usercardsService.addOrUpdateCard(user, card.get(), quantity);
 
-	        // Create the redirect URL with filter parameters
+	        // Create the redirect URL with filter parameters, including grayFilter
 	        String redirectUrl = "redirect:/card/" + card.get().getId() +
 	                             "?from=" + (from != null ? from : "") +
 	                             "&owned=" + (owned != null ? owned : false) +
@@ -69,7 +70,8 @@ public class UserCardController {  // Controller who manages the card quantity
 	                             "&subtypes=" + (subtypes != null ? subtypes : "") +
 	                             "&sort=" + (sort != null ? sort : "name") +
 	                             "&desc=" + (desc != null ? desc : false) +
-	                             "&page=" + (page != null ? page : 1);
+	                             "&page=" + (page != null ? page : 1) +
+	                             "&grayFilter=" + (grayFilter != null ? grayFilter : false); // Add grayFilter to the URL
 
 	        // Redirect to the card page with filter parameters
 	        return redirectUrl;
@@ -78,6 +80,7 @@ public class UserCardController {  // Controller who manages the card quantity
 	        return "Error";
 	    }
 	}
+
 
 
 	@GetMapping("/users/{userId}/totalCards")
