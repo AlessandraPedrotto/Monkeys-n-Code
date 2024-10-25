@@ -233,16 +233,19 @@
 
         <div class="col-2"></div>
         <div class="col">
-         <form action="/cards" method="GET">
-    		<input type="hidden" name="grayFilter" th:value="${grayFilter ? 'false' : 'true'}" />
-   			 <button type="submit" th:text="${grayFilter ? 'Disattiva Filtro Grigio' : 'Attiva Filtro Grigio'}"></button>
-		</form>
 
         <!-- Button to open the filter menu -->
         <button class="filter-button btn btn-primary" onclick="toggleFilterMenu()" data-translate="filtra"></button>
 	
     	<!-- Dropdown menu for filtering and sorting -->
         <div id="filterMenu" class="filter-menu">
+         <form action="/cards" method="GET">
+		    <input type="hidden" name="grayFilter" th:value="${grayFilter ? 'false' : 'true'}" />
+		    <button type="submit" 
+		            class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-2"
+		            th:text="${grayFilter ? 'Disattiva Filtro Grigio' : 'Attiva Filtro Grigio'}">
+		    </button>
+		</form>
             <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
                 <input type="hidden" name="from" th:value="${param.from}">
                 <div class="col-md-2">
