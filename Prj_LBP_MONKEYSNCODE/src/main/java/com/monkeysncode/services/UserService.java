@@ -341,4 +341,13 @@ public class UserService implements UserDetailsService {
         // Trova tutti gli utenti e ordina per vittorie in ordine decrescente
         return userDAO.findAll(Sort.by(Sort.Direction.DESC, "win"));
     }
+    public int getUserPosition(String userId) {
+        List<User> users = getAllUsersOrderedByWin();
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId().equals(userId)) {
+                return i + 1; // position is 1-based index
+            }
+        }
+        return -1; // User not found
+    }
 }

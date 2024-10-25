@@ -35,7 +35,9 @@ public class FollowersController { // Controller that manages followers
 	public String user(@AuthenticationPrincipal Object principal, @PathVariable String userId, Model model) {
 		User user = userService.getUserById(userId);
 		User loggedUser = userService.userCheck(principal);
+		int position = userService.getUserPosition(userId);
 		model.addAttribute("user", user);
+		model.addAttribute("position", position);
 		model.addAttribute("followers", userService.getNumFollowers(userId));
 		model.addAttribute("following", userService.getNumFollowing(userId));
 		model.addAttribute("isFollowing", userService.isFollowing(loggedUser.getId(), userId));

@@ -55,22 +55,8 @@ function changeLanguage(lang) {
 	  updateLabels(lang);
       // Change the slogan image based on the selected language
       const sloganImage = document.getElementById("immagine-slogan");
-      if (lang === 'it') {
-        sloganImage.src = '/image/slogan-italiano.png';
-      } else if (lang === 'en') {
-        sloganImage.src = '/image/slogan-inglese.png';
-      } else if (lang === 'es') {
-        sloganImage.src = '/image/slogan-spagnolo.png';
-      }
+      if (sloganImage) sloganImage.src = `/image/slogan-${lang}.png?${new Date().getTime()}`;
 
-      const seguiciImage = document.getElementById("immagine-seguici");
-      if (lang === 'it') {
-        seguiciImage.src = '/image/seguici-italiano.png';
-      } else if (lang === 'en') {
-        seguiciImage.src = '/image/seguici-inglese.png';
-      } else if (lang === 'es') {
-        seguiciImage.src = '/image/seguici-spagnolo.png';
-      }
     })
     .catch(error => console.error('Errore nel caricamento delle traduzioni:', error));
 }

@@ -33,6 +33,7 @@
         <ul class="dropdown-menu" aria-labelledby="languageDropdown">
             <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
             <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('fr')"><img src="/image/bandiera-francia.png" alt="Français" class="bandiera" data-translate="francese">Français</a></li>
             <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
         </ul>
     </div>
@@ -93,7 +94,7 @@
 						            <img th:src="@{${userCard.card.img}}" alt="Card Image" class="img-fluid card-image" style="width: 100%; height: auto;" /> <!-- 100% per occupare l'intera larghezza -->
 						       
 						        <div th:text="${userCard.card.name}" class="text-center mt-1"></div> <!-- Nome carta sotto l'immagine -->
-						        <div th:text="'Quantità: ' + ${userCard.cardQuantity}" class="text-center"></div> <!-- Quantità sotto il nome -->
+						        <div> <span data-translate="quantita"></span><span th:text="${userCard.cardQuantity}" class="text-center"></span></div> <!-- Quantità sotto il nome -->
 						    </div>
 						</div>
                         

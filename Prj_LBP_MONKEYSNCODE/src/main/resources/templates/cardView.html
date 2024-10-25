@@ -78,6 +78,8 @@
 				        <span data-lang="en" th:text="'Welcome, ' + ${session.name}" style="display: none;"></span>
 				        <!-- Spanish Greeting -->
 				        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
+				    	<!-- French Greeting -->
+			        	<span data-lang="fr" th:text="'Bienvenue, ' + ${session.name}" style="display: none;"></span>
 				    </a>
                     <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
                 </div>
@@ -93,6 +95,7 @@
 	        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
 	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
 	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
+	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('fr')"><img src="/image/bandiera-francia.png" alt="Français" class="bandiera" data-translate="francese">Français</a></li>
 	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
 	        </ul>
 	    </div>
