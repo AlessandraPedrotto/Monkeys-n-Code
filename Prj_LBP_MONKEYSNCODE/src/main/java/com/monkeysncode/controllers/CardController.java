@@ -52,13 +52,13 @@ public class CardController { // Controller who manages the user card collection
 	    @RequestParam(required = false) String subtypes,
 	    @RequestParam(required = false, defaultValue = "name") String sort,
 	    @RequestParam(defaultValue = "false") boolean desc,
-	    @RequestParam(defaultValue = "1") int blocco,
+	    @RequestParam(defaultValue = "1") int bloccoCorrente,
 	    @RequestParam(defaultValue = "false") boolean grayFilter // Added grayFilter parameter to manage gray effect
 	) {
 	    
 	    // Ensure that the block (blocco) value is at least 1
-	    if (blocco < 1) { 
-	        blocco = 1; // Set to 1 if the provided block is less than 1
+	    if (bloccoCorrente < 1) { 
+	        bloccoCorrente = 1; // Set to 1 if the provided block is less than 1
 	    }
 
 	    // Verify and retrieve the authenticated user
@@ -105,10 +105,12 @@ public class CardController { // Controller who manages the user card collection
 
 	    // Manage page blocks (e.g., 5 pages per block)
 	    int bloccoDimensione = 5; // Size of the block (number of pages per block)
-	    int inizioPagina = (blocco - 1) * bloccoDimensione + 1; // Starting page number for the current block
-	    int finePagina = Math.min(blocco * bloccoDimensione, totalPages); // Ending page number for the current block
+	    bloccoCorrente = (page - 1) / bloccoDimensione + 1; 
+	    int inizioPagina = (bloccoCorrente - 1) * bloccoDimensione + 1; // Starting page number for the current block
+	    int finePagina = Math.min(bloccoCorrente * bloccoDimensione, totalPages); // Ending page number for the current block
 	    int ultimoBlocco = (int) Math.ceil((double) totalPages / bloccoDimensione); // Total number of blocks
 
+	    
 	    // Add necessary attributes to the model for rendering in the view
 	    model.addAttribute("bloccoDimensione", bloccoDimensione); // Block size (e.g., 5 pages per block)
 	    model.addAttribute("totalPages", totalPages); // Total number of pages
@@ -119,7 +121,7 @@ public class CardController { // Controller who manages the user card collection
 	    model.addAttribute("currentPage", page); // Current page number
 	    model.addAttribute("inizioPagina", inizioPagina); // Start of the current block
 	    model.addAttribute("finePagina", finePagina); // End of the current block
-	    model.addAttribute("bloccoCorrente", blocco); // Current block number
+	    model.addAttribute("bloccoCorrente", bloccoCorrente); // Current block number
 	    model.addAttribute("ultimoBlocco", ultimoBlocco); // Last block number
 	    model.addAttribute("grayFilter", grayFilter); // Add grayFilter to the model for handling gray effect in view
 
