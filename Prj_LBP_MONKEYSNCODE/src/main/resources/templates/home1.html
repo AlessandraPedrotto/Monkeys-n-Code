@@ -19,6 +19,7 @@
         <div class="opzioni-lingua" >
             <a href="javascript:void(0);" onclick="changeLanguage('it')"><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera" data-translate="italiano">Italiano</a>
             <a href="javascript:void(0);" onclick="changeLanguage('en')"><img src="/image/bandiera-uk.png" alt="English" class="bandiera" data-translate="inglese">English</a>
+            <a href="javascript:void(0);" onclick="changeLanguage('fr')"><img src="/image/bandiera-francia.png" alt="Français" class="bandiera" data-translate="francese">Français</a>
             <a href="javascript:void(0);" onclick="changeLanguage('es')"><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera" data-translate="spagnolo">Español</a>
         </div>
 
@@ -26,37 +27,37 @@
     </div>
     <!-- Begin alert -->
     <div th:if="${param.logout}" class="alert alert-success alert-dismissible fade show text-center" role="alert">
-     		<p>Logout effettuato con successo.</p>
+     		<p data-translate="alert-logut"></p>
      		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           	</button>
     </div>
     <div th:if="${success}" class="alert alert-success alert-dismissible fade show text-center" role="alert">
-          <p>Cambio password effettuato con successo.</p>
+          <p data-translate="alert-cambio-pass"></p>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           </button>
     </div>
     <div th:if="${exist}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-     		<p>La mail esiste già, prova con un'altra.</p>
+     		<p data-translate="alert-mail"></p>
      		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           	</button>
     </div>
     <div th:if="${passInvalid}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-     		<p>Password non valida. Servono: minimo 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale.</p>
+     		<p data-translate="alert-idonea-pass"></p>
      		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           	</button>
     </div>
     <div th:if="${regiSuccess}" class="alert alert-success alert-dismissible fade show text-center" role="alert">
-          <p>Registrazione effettuata con successo, ora fai il login.</p>
+          <p data-translate="alert-registrazione"></p>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           </button>
     </div>
     <div th:if="${wrongPass}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-     		<p>Password e/o mail sbagliate.</p>
+     		<p data-translate="alert-pass-sbagliata"></p>
      		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           	</button>
     </div>
     <div th:if="${loginSuccess}" class="alert alert-success alert-dismissible fade show text-center" role="alert">
-          <p>Login effettuato con successo.</p>
+          <p data-translate="alert-login"></p>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           </button>
     </div>
@@ -78,6 +79,8 @@
 				        <span data-lang="en" th:text="'Welcome, ' + ${session.name}" style="display: none;"></span>
 				        <!-- Spanish Greeting -->
 				        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
+				    	<!-- French Greeting -->
+			        	<span data-lang="fr" th:text="'Bienvenue, ' + ${session.name}" style="display: none;"></span>
 				    </a>
 		            <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.role}" style="margin-right: 15px;">User</a>
 		            <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
@@ -128,16 +131,16 @@
 	          	<div class="mb-3">
 			        <label for="email" class="form-label">Email    </label>
 				    <input type="text" class="form-control" id="email" name="email"  required>
-				</div>
-	            <div class="mb-3">
+				
 			        <label for="password" class="form-label">Password</label>
 				    <input type="password" class="form-control" id="password" name="password"  required>
             	</div>
             	<button type="submit" class="btn btn-primary w-100" data-translate="accesso"></button>
             </div>
-            <div class="d-flex justify-content-between mt-3 container-bottoni-registrazione1">
-            <button type="button" class="bottone-chiudi" onclick="toggleSidebar2()">Chiudi</button>
-	            <a href="/oauth2/authorization/google" class="bottone-google">Login con Google</a>
+            <div class="d-flex justify-content-between mt-3 ">
+            <button type="button" class="btn btn-danger me-3" onclick="toggleSidebar2()" style="width: 180px;" data-translate="tasto-indietro"></button>
+            
+	            <a href="/oauth2/authorization/google" class="btn btn-danger" style="width: 180px;" data-translate="accesso-google">Login con Google</a>
 	        </div>
           </form>
         </div>
@@ -154,20 +157,20 @@
 	          	<div class="mb-3">
 			        <label for="name" class="form-label">Nickname</label>
 	            	<input type="text" class="form-control" id="name" name="name" required>
-	            <div class="mb-3">
+	            
 			        <label for="email" class="form-label">Email</label>
 	            	<input type="email" class="form-control" id="email" name="email"  required>
-	            </div>
-	            <div class="mb-3">	
+	            
 	            	<label for="password" class="form-label">Password</label>
 	            	<input th:text="${exist}" type="password" class="form-control" id="password" name="password" required>
             	</div>
-            
             	<button type="submit" class="btn btn-primary w-100" data-translate="registrati"></button>
+            	
             </div>
-            <div class="d-flex justify-content-between mt-3 container-bottoni-registrazione2">
-            <button type="button" class="bottone-chiudi" onclick="toggleSidebar3()">Chiudi</button>
-	            <a href="/oauth2/authorization/google" class="bottone-google">Login con Google</a>
+            <div class="d-flex justify-content-between mt-3 ">
+            <button type="button" class="btn btn-danger  me-3" onclick="toggleSidebar3()" style="width: 180px;" data-translate="tasto-indietro"></button>
+            
+	            <a href="/oauth2/authorization/google" class="btn btn-danger " style="width: 180px;" data-translate="accesso-google">Login con Google</a>
 	        </div>
           </form>
         </div>
