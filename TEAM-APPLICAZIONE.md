@@ -15,6 +15,7 @@ Ci chiamiamo Monkey's n Code e il team è formato da:
 ###PokeDecks - Organizza, colleziona e domina
 
 *Scopo dell'applicazione:*
+
 Il cliente ha richiesto che venisse creata un'applicazione dedicata al gioco di carte Pokémon che permettesse di fare team building ai suoi dipendenti, unendoli tramite un'attività esterna al lavoro. Ci ha fornito un file .csv che conteneva tutte le informazioni sulle carte con relative immagini.
 Durante il colloquio ci è stato spiegato quali fossero i punti fondamentali da dover portare a termine:
 
