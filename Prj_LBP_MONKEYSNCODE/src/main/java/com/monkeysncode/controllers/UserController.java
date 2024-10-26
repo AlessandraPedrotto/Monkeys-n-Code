@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Map;
 
 
@@ -42,6 +44,8 @@ public class UserController // Controller who manages the user profile
 	@Autowired
 	private UserCardDAO userCardDAO;
 	
+	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$"; //static variable where the regex for the password is set
+
 
 	Deck deck = new Deck();
 	
@@ -150,6 +154,10 @@ public class UserController // Controller who manages the user profile
                 redirectAttributes.addFlashAttribute("error", "Le nuove password non corrispondono.");
                 return "redirect:/profile/change-password";
             }
+            if(!isValidPassword(newPassword)) {
+            	redirectAttributes.addFlashAttribute("error", "La password deve contenere almeno 8 caratteri, una lettera maiuscola, minuscola, numero e carattere speciale");
+        		return "redirect:/profile/change-password";
+            }
             
             userService.changePassword(user.getId(), oldPassword, newPassword);
 
@@ -161,6 +169,12 @@ public class UserController // Controller who manages the user profile
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/profile/change-password";
         }
+    }
+    private boolean isValidPassword(String password) //Method to convalidate the regex password
+    {
+        Pattern pattern = Pattern.compile(REGEX_PASSWORD);  // compile the regex to create pattern
+        Matcher matcher = pattern.matcher(password); // Used to search for the pattern
+        return matcher.matches(); // Return a string for a match against a regular expression
     }
 
     // Confirmation method to delete your account
