@@ -29,7 +29,9 @@ Durante il colloquio ci è stato spiegato quali fossero i punti fondamentali da 
 - Sviluppare l’applicazione in Java
 
 *Come abbiamo soddisfatto la richiesta:*
+
 Oltre alle richieste base, abbiamo deciso di aggiungere altre funzionalità per arricchire il progetto e renderlo più unico. 
+
 Partendo dalla base abbiamo:
 
 1. **Registrazione Utenti:** Abbiamo implementato un'iscrizione "classica" con nickname (non univoco), email e password.
