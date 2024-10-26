@@ -27,9 +27,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Recupera i dati delle statistiche utente per visualizzazione.  
 
-**Parametri**: 
-    - **query**: Variabile che viene utilizzata nel form come ricerca per email ed è opzionale
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+**Parametri**: <br>
+    - **query**: Variabile che viene utilizzata nel form come ricerca per email ed è opzionale <br>
+    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
 
 **Ritorna**: Restituisce la vista con le statistiche.
 
@@ -45,11 +45,11 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Aggiorna le statistiche di uno specifico utente.  
 
-**Parametri**: 
-    - **userId**: Id dell'user.
-    - **win**: Corrisponde alle vittorie dello user.
-    - **lose**: Corrisponde alle sconfitte dello user.
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+**Parametri**: <br>
+    - **userId**: Id dell'user. <br>
+    - **win**: Corrisponde alle vittorie dello user. <br>
+    - **lose**: Corrisponde alle sconfitte dello user. <br>
+    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
 
 **Ritorna**: Restituisce un messaggio di successo se è andato a buon fine oppure un messaggio di errore.
 
@@ -101,8 +101,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Pagina di registrazione.  
 
-**Parametri**: 
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+**Parametri**: <br>
+    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
 
 **Ritorna**: Reindirizza alla pagina di registrazione.
 
@@ -115,8 +115,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Gestisce la registrazione utente.  
 
-**Parametri**: 
-    - **user**: Oggetto User associato tramite @ModelAttribute per mappare automaticamente i dati dal form HTML al modello.
+**Parametri**: <br>
+    - **user**: Oggetto User associato tramite @ModelAttribute per mappare automaticamente i dati dal form HTML al modello. <br>
     - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Reindirizza alla pagina di login.
@@ -128,7 +128,7 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Gestisce la validazione della password.  
 
-**Parametri**: 
+**Parametri**: <br>
     - **password**: Viene utilizzata come confronto per la regex.
 
 **Ritorna**: true se la password rispetta la regex, false altrimenti.
@@ -196,21 +196,21 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Imposta i filtri per le carte.  
 
-**Parametri**:
+**Parametri**: <br>
 
- - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
- - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
- - **page**: Singola pagina della collezione, impostata a 1.
- - **owned**: Carte possedute, impostato a false.
- - **from**: Ordine delle carte (nome, numero pokedex o livello), opzionale.
- - **set**: Set da cui provengono le carte, opzionale.
- - **types**: Tipi delle carte, opzionale.
- - **name**: Nome delle carte, opzionale.
- - **rarity**: Rarità delle carte (ex, shiny), opzionale.
- - **supertype**: Supertipo delle carte (pokemon, allenatore, energia), opzionale.
- - **subtypes**: Sottotipo delle carte (base, speciale etc.), opzionale.
- - **desc**: Tipo di ordinamento delle carte, impostato a false.
- - **blocco**: Paginazione delle carte, impostato a 1.
+ - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+ - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
+ - **page**: Singola pagina della collezione, impostata a 1. <br>
+ - **owned**: Carte possedute, impostato a false. <br>
+ - **from**: Ordine delle carte (nome, numero pokedex o livello), opzionale. <br>
+ - **set**: Set da cui provengono le carte, opzionale.  <br>
+ - **types**: Tipi delle carte, opzionale. <br>
+ - **name**: Nome delle carte, opzionale. <br>
+ - **rarity**: Rarità delle carte (ex, shiny), opzionale. <br>
+ - **supertype**: Supertipo delle carte (pokemon, allenatore, energia), opzionale. <br>
+ - **subtypes**: Sottotipo delle carte (base, speciale etc.), opzionale. <br>
+ - **desc**: Tipo di ordinamento delle carte, impostato a false <br>
+ - **blocco**: Paginazione delle carte, impostato a 1. <br>
  - **greyFilter**: Filtro grigio che viene inizialmente dato alle carte, impostato a true.
 
 **Ritorna**: Reinderizza alla pagina di visualizzazione delle carte.
@@ -224,8 +224,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Aggiunge carte alla collezione dell'utente specificato.  
 
-**Parametri**: 
-    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
+**Parametri**: <br>
+    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente <br>
     - **cardId**: id della carta da aggiungere.
 
 **Ritorna**: Restituisce la collezione con la carta aggiunta.
@@ -239,9 +239,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Rimuove carte alla collezione dell'utente specificato.  
 
-**Parametri**: 
-    - `principal`: Oggetto che contiene le informazioni per l'accesso dell'utente.
-    - `cardId`: Id della carta da rimuovere.
+**Parametri**:<br>
+    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+    - **cardId**: Id della carta da rimuovere.
 
 **Ritorna**: Restituisce la collezione con la carta rimossa.
 
@@ -254,9 +254,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Visualizza i dettagli di una carta specificata, inclusa la quantità posseduta, se applicabile..  
 
-**Parametri**: 
-    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+**Parametri**: <br>
+    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
     - **cardId**: Id della carta da visualizzare.
 
 **Ritorna**: Restituisce i dettagli della carta se presente oppure restituisce un messaggio di errore se non trovata.
@@ -295,9 +295,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Recupera le statistiche aggiornate dell'utente per la classifica.  
 
-**Parametri**:
+**Parametri**: <br>
 
- - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
+ - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
  - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Reinderizza i dati all'interno della classifica.
@@ -311,8 +311,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Aggiorna le statistiche dell'utente nella classifica e visualizza i dati aggiornati.  
 
-**Parametri**: 
-    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
+**Parametri**: <br>
+    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
     - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 
@@ -338,7 +338,7 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Gestisce errori HTTP se la pagina non trovata.  
 
-**Parametri**:
+**Parametri**: <br>
 
  - **request**: Oggetto HttpServletRequest che fornisce informazioni dettagliate sulla richiesta HTTP, inclusi eventuali codici di stato di errore.
  
@@ -392,9 +392,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Effettua la validazione per ogni deck.  
 
-**Parametri**:
+**Parametri**: <br>
 
- - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
+ - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
  - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Restituisce la visualizzazione dei deck se la validazione è andata a buon fine, altrimenti restituisce messaggio di errore.
@@ -408,7 +408,7 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Recupera le immagini del profilo dal DB.
 
-**Parametri**: 
+**Parametri**: <br>
     - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Reindirizza le immagini all'interno dell'html.
@@ -422,7 +422,7 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Crea un deck con immagine profilo.
 
-**Parametri**: 
+**Parametri**: <br>
     - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Reindirizza all'html dopo aver selezionato l'immagine e salvato le modifiche, altrimenti da errore.
@@ -436,8 +436,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Permette di cancellare un deck tramite Id.
 
-**Parametri**: 
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+**Parametri**: <br>
+    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
     - **deckId**: Id deck.
 
 **Ritorna**: Reindirizza alla pagina di cancellazione.
@@ -451,8 +451,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Conferma cancellazione del deck.
 
-**Parametri**: 
-    - **confirm**: Variabile di conferma per la cancellazione.
+**Parametri**: <br>
+    - **confirm**: Variabile di conferma per la cancellazione. <br>
     - **deckId**: Id deck.
 
 **Ritorna**: Ritorna alla visualizzazione dei Deck.
@@ -466,20 +466,20 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Visualizzazione delle carte nel deck con filtri e della paginazione.
 
-**Parametri**: 
+**Parametri**: <br>
 
- - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
- - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
- - **page**: Singola pagina della collezione, impostata a 1.
- - **owned**: Carte possedute, impostato a false.
- - **from**: Ordine delle carte (nome, numero pokedex o livello), opzionale.
- - **set**: Set da cui provengono le carte, opzionale.
- - **types**: Tipi delle carte, opzionale.
- - **name**: Nome delle carte, opzionale.
- - **rarity**: Rarità delle carte (ex, shiny), opzionale.
- - **supertype**: Supertipo delle carte (pokemon, allenatore, energia), opzionale.
- - **subtypes**: Sottotipo delle carte (base, speciale etc.), opzionale.
- - **desc**: Tipo di ordinamento delle carte, impostato a false.
+ - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente <br>
+ - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
+ - **page**: Singola pagina della collezione, impostata a 1. <br>
+ - **owned**: Carte possedute, impostato a false. <br>
+ - **from**: Ordine delle carte (nome, numero pokedex o livello), opzionale. <br>
+ - **set**: Set da cui provengono le carte, opzionale. <br>
+ - **types**: Tipi delle carte, opzionale. <br>
+ - **name**: Nome delle carte, opzionale. <br>
+ - **rarity**: Rarità delle carte (ex, shiny), opzionale. <br>
+ - **supertype**: Supertipo delle carte (pokemon, allenatore, energia), opzionale. <br>
+ - **subtypes**: Sottotipo delle carte (base, speciale etc.), opzionale. <br>
+ - **desc**: Tipo di ordinamento delle carte, impostato a false. <br>
  - **blocco**: Paginazione delle carte, impostato a 1.
 
 **Ritorna**:  Vista aggiornata del deck filtrato.
@@ -493,9 +493,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Permette di aggiungere nel deck una carta in modo asincrono
 
-**Parametri**: 
+**Parametri**: <br>
 
- - **deckId**: Id deck
+ - **deckId**: Id deck <br>
  - **cardId**: Id card
 
 **Ritorna**: Restituisce il deck aggiornato con la carta aggiunta
@@ -509,9 +509,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Permette di rimuovere una carta dal deck in modo asincrono
 
-**Parametri**: 
+**Parametri**: <br>
 
- - **deckId**: Id deck
+ - **deckId**: Id deck <br>
  - **cardId**: Id card
 
 **Ritorna**: Restituisce il deck aggiornato con la carta rimossa
@@ -525,9 +525,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Permette di convalidare il deck
 
-**Parametri**: 
+**Parametri**: <br>
 
- - **deckIdValidate**: Id deck da convalidare
+ - **deckIdValidate**: Id deck da convalidare <br>
  - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
 
 **Ritorna**: Restituisce il deck convalidato
@@ -541,9 +541,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Permette di modificare il deck
 
-**Parametri**: 
+**Parametri**: <br>
 
- - **deckId**: Id deck 
+ - **deckId**: Id deck <br>
  - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Restituisce la vista per modificare il deck
@@ -557,11 +557,11 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Permette di aggiornare il deck
 
-**Parametri**: 
+**Parametri**: <br>
 
- - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
- - **deckId**: Id deck 
- - **deckName**: Nome deck
+ - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+ - **deckId**: Id deck <br>
+ - **deckName**: Nome deck <br>
  - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Restituisce la vista con il deck aggiornato
@@ -621,11 +621,11 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Se l'utente è gia registrato allora mi reindirizza al profilo dell'utente, altrimenti mi reindirizza al profilo dell'admin.
 
-**Parametri**: 
+**Parametri**: <br>
 
- - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
- - **userId**: Id user 
- - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+ - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+ - **userId**: Id user <br>
+ - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
 
 **Ritorna**: Restituisce la vista con del profilo con aggiunta il conteggio di seguiti e follower.
 
@@ -638,9 +638,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Gestisce l’azione quando viene premuto il tasto "follow".
 
-**Parametri**: 
+**Parametri**: <br>
 
- - `principal`: Identifica l'utente autenticato che effettua l'azione di follow.
+ - `principal`: Identifica l'utente autenticato che effettua l'azione di follow. <br>
  - `user`: Id dell'utente che verrà seguito.
 
 **Ritorna**: Restituisce la vista aggiornata dell'utente seguito
@@ -654,9 +654,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Permette di visualizzare i follower di un utente specificato
 
-**Parametri**: 
+**Parametri**: <br>
 
-- **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+- **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
 - **userId**: Id dell'utente di cui visualizzare i follower.
 
 **Ritorna**: La vista con l'elenco dei follower dell'utente.
@@ -670,9 +670,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**:  Consente la visualizzazione degli utenti seguiti dall'utente specificato.
 
-**Parametri**: 
+**Parametri**: <br>
 
-- **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+- **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
 - **userId**:  Id dell'utente di cui visualizzare i seguiti.
 
 **Ritorna**: La vista con l'elenco degli utenti seguiti.
@@ -686,9 +686,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Gestisce la logica quando viene premuto il tasto "unfollow".
 
-**Parametri**: 
+**Parametri**: <br>
 
-- **principal**: Identifica l'utente autenticato che esegue l'azione di unfollow.
+- **principal**: Identifica l'utente autenticato che esegue l'azione di unfollow. <br>
 - **user**: Id dell'utente che verrà smesso di seguire.
 
 **Ritorna**: Restituisce la vista aggiornata dell'utente che è stato smesso di seguire.
@@ -702,9 +702,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Visualizazione delle carte nel deck degli utenti seguiti.
 
-**Parametri**: 
+**Parametri**: <br>
 
-- **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+- **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
 - **deckId**: Id deck
 
 **Ritorna**: Restituisce la visualizzazione del deck.
@@ -790,21 +790,21 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Aggiunge una carta alla collezione dell'utente utilizzando una serie di filtri di ricerca per visualizzare e selezionare le carte.
 
-**Parametri**
+**Parametri** <br>
 
- - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
- - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
- - **page**: Singola pagina della collezione, impostata a 1.
- - **owned**: Carte possedute, impostato a false.
- - **from**: Ordine delle carte (nome, numero pokedex o livello), opzionale.
- - **set**: Set da cui provengono le carte, opzionale.
- - **types**: Tipi delle carte, opzionale.
- - **name**: Nome delle carte, opzionale.
- - **rarity**: Rarità delle carte (ex, shiny), opzionale.
- - **supertype**: Supertipo delle carte (pokemon, allenatore, energia), opzionale.
- - **subtypes**: Sottotipo delle carte (base, speciale etc.), opzionale.
- - **desc**: Tipo di ordinamento delle carte, impostato a false.
- - **blocco**: Paginazione delle carte, impostato a 1.
+ - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+ - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
+ - **page**: Singola pagina della collezione, impostata a 1. <br>
+ - **owned**: Carte possedute, impostato a false. <br>
+ - **from**: Ordine delle carte (nome, numero pokedex o livello), opzionale. <br>
+ - **set**: Set da cui provengono le carte, opzionale. <br>
+ - **types**: Tipi delle carte, opzionale. <br>
+ - **name**: Nome delle carte, opzionale. <br>
+ - **rarity**: Rarità delle carte (ex, shiny), opzionale. <br>
+ - **supertype**: Supertipo delle carte (pokemon, allenatore, energia), opzionale. <br>
+ - **subtypes**: Sottotipo delle carte (base, speciale etc.), opzionale. <br>
+ - **desc**: Tipo di ordinamento delle carte, impostato a false. <br>
+ - **blocco**: Paginazione delle carte, impostato a 1. <br>
  - **greyFilter**: Filtro grigio che viene inizialmente dato alle carte, impostato a true.
 
 **Ritorna**: Restituisce la vista delle carte filtrate altrimenti errore.
@@ -818,7 +818,7 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Calcola e restituisce il totale delle carte possedute da uno specifico utente.
 
-**Parametri**
+**Parametri** <br>
 
 - **userId**: Id dell'utente di cui si vogliono contare le carte possedute.
  
@@ -857,9 +857,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Mostra il profilo dell'utente specificato (Deck, statistiche, email etc)
 
-**Parametri**
+**Parametri** <br>
 
- - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
+ - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
  - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
  
 **Ritorna**: Restituisce la vista del profilo
@@ -873,10 +873,10 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Aggiorna l'immagine profilo.
 
-**Parametri**
+**Parametri** <br>
 
-- **userId**: Id dell'utente specificato
-- **imageId**: Id dell'immagine del profilo.
+- **userId**: Id dell'utente specificato <br>
+- **imageId**: Id dell'immagine del profilo. <br>
 - **redirectAttributes**: Attributi che vengono usati per gestire messaggi di errore o di successo.
 
 **Ritorna**: Restituisce la vista del profilo con l'immagine aggiornata.
@@ -890,7 +890,7 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Imposta un immagine profilo presa da una lista random.
 
-**Parametri**
+**Parametri** <br>
 
 - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
@@ -905,9 +905,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Mostra la pagina per cambiare password.
 
-**Parametri**
+**Parametri** <br>
 
-- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
+- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
 - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Restituisce la vista per il cambio password.
@@ -924,11 +924,11 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Controlla la password nuova se viene inserita correttamente
 
-**Parametri**
+**Parametri** <br>
 
-- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
-- **formData**: Struttura dati che raccoglie i dati da un modulo HTML tramite POST.
-- **redirectAttributes**: Attributi che vengono usati per gestire messaggi di errore o di successo.
+- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+- **formData**: Struttura dati che raccoglie i dati da un modulo HTML tramite POST. <br>
+- **redirectAttributes**: Attributi che vengono usati per gestire messaggi di errore o di successo. <br>
 - **session**: Gestisce la sessione utente.
 
 **Ritorna**: Reindirizza la vista per il login se la nuova password è scritta correttamente altrimenti compare messaggio di errore e reindirizza alla vista del cambio password.
@@ -942,9 +942,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Mostra pagina di eliminazione profilo e quello che stai per cancellare dal profilo.
 
-**Parametri**
+**Parametri** <br>
 
-- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
+- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
 - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Reindirizza la vista per eliminazione account.
@@ -958,7 +958,7 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Conferma per cancellare il profilo.
 
-**Parametri**
+**Parametri** <br>
 
 - **userId**: Id utente a cui si sta cancellando il profilo.
 
@@ -973,10 +973,10 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Modifica username
 
-**Parametri**
+**Parametri** <br>
 
-- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
-- **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+- **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
 - **request**: Oggetto HttpServletRequest che fornisce informazioni dettagliate sulla richiesta HTTP, inclusi eventuali codici di stato di errore.
 
 **Ritorna**: Reindirizza la vista per modificare l'username.
@@ -991,10 +991,10 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Aggiorna l'username
 
-**Parametri**
+**Parametri** <br>
 
-- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente.
-- **request**: Oggetto HttpServletRequest che fornisce informazioni dettagliate sulla richiesta HTTP, inclusi eventuali codici di stato di errore.
+- **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+- **request**: Oggetto HttpServletRequest che fornisce informazioni dettagliate sulla richiesta HTTP, inclusi eventuali codici di stato di errore. <br>
 - **requestBody**: Restituisce direttamente un map.
 
 **Ritorna**: Reindirizza la vista del profilo con username aggiornato.
