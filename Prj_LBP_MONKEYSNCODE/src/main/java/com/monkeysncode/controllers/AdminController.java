@@ -106,6 +106,6 @@ public class AdminController {
         }
 
         // Return to the form-stat.html page
-        return "formStat";
+        return "redirect:/admin/formStat";
     }
 }

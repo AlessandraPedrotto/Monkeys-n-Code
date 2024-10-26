@@ -18,7 +18,7 @@ import com.monkeysncode.services.UserService;
 public class AuthController { // Controller who manages the user authentication 
 	
 	private static final String REGEX_PASSWORD = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\p{Punct}])(?=\\S+$).{8,}$"; //static variable where the regex for the password is set
-
+	private static final String REGEX_EMAIL="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     @Autowired
 	UserService userService;
 	
@@ -44,6 +44,12 @@ public class AuthController { // Controller who manages the user authentication
     	}
     	
     	String password = user.getPassword().trim(); // Removes white spaces
+    	String email = user.getEmail().trim();
+    	if(!isValidEmail(email)) //Validation for the regex password
+    	{
+    		model.addAttribute("emailInvalid", "La mail non è valida");
+    		return "home1";
+    	}
     	if(!isValidPassword(password)) //Validation for the regex password
     	{
     		model.addAttribute("passInvalid", "La password deve contenere almeno 8 caratteri, una lettera maiuscola, minuscola, numero e carattere speciale");
@@ -61,6 +67,12 @@ public class AuthController { // Controller who manages the user authentication
     {
         Pattern pattern = Pattern.compile(REGEX_PASSWORD);  // compile the regex to create pattern
         Matcher matcher = pattern.matcher(password); // Used to search for the pattern
+        return matcher.matches(); // Return a string for a match against a regular expression
+    }
+    private boolean isValidEmail(String email) //Method to convalidate the regex password
+    {
+        Pattern pattern = Pattern.compile(REGEX_EMAIL);  // compile the regex to create pattern
+        Matcher matcher = pattern.matcher(email); // Used to search for the pattern
         return matcher.matches(); // Return a string for a match against a regular expression
     }
     

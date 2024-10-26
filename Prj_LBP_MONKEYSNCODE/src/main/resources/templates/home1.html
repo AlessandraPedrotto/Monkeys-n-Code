@@ -42,11 +42,17 @@
      		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           	</button>
     </div>
+    <div th:if="${emailInvalid}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+     		<p data-translate="alert-idonea-email"></p>
+     		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          	</button>
+    </div>
     <div th:if="${passInvalid}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
      		<p data-translate="alert-idonea-pass"></p>
      		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
           	</button>
     </div>
+    
     <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show text-center" role="alert">
      		<p data-translate="done-modified"></p>
      		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
