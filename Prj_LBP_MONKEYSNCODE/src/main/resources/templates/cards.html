@@ -127,10 +127,12 @@
             text-align: center;
             padding-top: 100px;
         }
-        .owned{
+        .owned, .grayFilter{
         	margin-top: 20px;
-            margin-left: 10px;
         }
+        #owned-filter{
+        padding-left: 0;
+         }
         .swal2-popup {
             width: 250px !important;
             height: auto;
@@ -243,24 +245,24 @@
 		<button class="filter-button btn btn-primary" onclick="toggleFilterMenu()" data-translate="filtra"></button>
 
 		<!-- Dropdown menu for filtering and sorting -->
-<div id="filterMenu" class="filter-menu">
-    <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
-        <input type="hidden" name="from" th:value="${param.from}">
+        <div id="filterMenu" class="filter-menu">
+            <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
+                <input type="hidden" name="from" th:value="${param.from}">
 
-<div class="form-check" id="gray-filter">
-    <input class="btn-check" type="checkbox" id="gray" name="grayFilter" autocomplete="off" th:checked="${grayFilter}">
-    <label for="gray" class="btn btn-outline-secondary grayFilter">gray filter</label>
-</div>
+        <div class="col-md-2 form-check" id="gray-filter">
+            <input class="btn-check" type="checkbox" id="gray" name="grayFilter" autocomplete="off" th:checked="${grayFilter}">
+            <label for="gray" class="btn btn-outline-secondary grayFilter">Color owned cards</label>
+        </div>
 
         <!-- Other Filter Options -->
         <div class="col-md-2">
             <div class="form-check" id="owned-filter">
                 <input class="btn-check" type="checkbox" id="owned" name="owned" autocomplete="off">
-                <label for="owned" class="btn btn-outline-success owned">Owned</label>
+                <label for="owned" class="btn btn-outline-success owned">Show owned Cards</label>
             </div>
         </div>
 
-        <div class="col-md-4 d-flex align-items-end">
+        <div class="col-md-3 d-flex align-items-end">
             <!-- Select for sorting -->
             <div>
                 <label for="sort" class="form-label">Order:</label>
@@ -279,7 +281,7 @@
         </div>
 
         <!-- Additional Filters -->
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="name" class="form-label">Name:</label>
             <input type="text" class="form-control" id="name" name="name">
         </div>
