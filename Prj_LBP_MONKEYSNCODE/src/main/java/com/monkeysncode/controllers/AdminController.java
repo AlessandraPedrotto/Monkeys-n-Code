@@ -30,6 +30,9 @@ public class AdminController {
             // Perform search by partial email match
         	users = userDAO.findByEmailContainingIgnoreCase(query);
             model.addAttribute("users", users);
+        }else {
+        	users = userDAO.findAll();
+            model.addAttribute("users", users);
         }
         model.addAttribute("query", query);
         
@@ -70,7 +73,7 @@ public class AdminController {
         }
 
         // Return to the form-stat.html page with success or error message
-        return "formStat";
+        return "redirect:/admin/formStat";
     }
     @PostMapping("/changeStat")
     public String changeStatistics(@RequestParam String userId,
