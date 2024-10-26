@@ -20,6 +20,7 @@
             <a href="javascript:void(0);" onclick="changeLanguage('it')"><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera" data-translate="italiano">Italiano</a>
             <a href="javascript:void(0);" onclick="changeLanguage('en')"><img src="/image/bandiera-uk.png" alt="English" class="bandiera" data-translate="inglese">English</a>
             <a href="javascript:void(0);" onclick="changeLanguage('fr')"><img src="/image/bandiera-francia.png" alt="Français" class="bandiera" data-translate="francese">Français</a>
+            <a href="javascript:void(0);" onclick="changeLanguage('de')"><img src="/image/bandiera-germania.png" alt="Deutsch" class="bandiera" data-translate="tedesco">Deutsch</a>
             <a href="javascript:void(0);" onclick="changeLanguage('es')"><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera" data-translate="spagnolo">Español</a>
         </div>
 
@@ -68,11 +69,11 @@
                 <div class="toggle-btn" onclick="toggleSidebar()">&#9664;</div>
             </div>
             <!-- User section: shows username and logout button if the user is logged in -->
-            <div th:if="${session.name}!=null" class="ms-auto utente sidebar-content" >
+            <div th:if="${session.name}!=null" class="ms-auto utente sidebar-content"style="width: 90%;" >
             	
-		        <div class="ms-auto d-flex align-items-center">
+		        <div class=" d-flex align-items-center justify-content-between mx-auto" >
 		
-		            <a id="userGreeting" class="nav-link" href="http://localhost:8080/profile" style="margin-right: 15px;">
+		            <a id="userGreeting" class="nav-link text-center mx-auto" href="http://localhost:8080/profile" style="margin-right: 15px;">
 				        <!-- Italian Greeting -->
 				        <span data-lang="it" th:text="'Benvenuto, ' + ${session.name}" style="display: none;"></span>
 				        <!-- English Greeting -->
@@ -81,9 +82,11 @@
 				        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
 				    	<!-- French Greeting -->
 			        	<span data-lang="fr" th:text="'Bienvenue, ' + ${session.name}" style="display: none;"></span>
+			        	<!-- German Greeting -->
+			        	<span data-lang="de" th:text="'Willkommen, ' + ${session.name}" style="display: none;"></span>
 				    </a>
-		            <a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.role}" style="margin-right: 15px;">User</a>
-		            <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
+		            <!--<a class="nav-link" href="http://localhost:8080/profile" th:text="'Benvenuto, ' + ${session.role}" style="margin-right: 15px;">User</a>-->
+		            <a href="http://localhost:8080/logout" class="btn btn-outline-danger ms-auto" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
 		        
 		        </div>
 		    </div>

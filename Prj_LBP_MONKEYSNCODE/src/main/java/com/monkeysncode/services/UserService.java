@@ -1,10 +1,12 @@
 package com.monkeysncode.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -337,9 +339,12 @@ public class UserService implements UserDetailsService {
             .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato")); // Ensure the user exists
         return user.getFollowing().size(); // Return the count of users followed
     }
+    // Sort users based on calculated points not wins
     public List<User> getAllUsersOrderedByWin() {
-        // Trova tutti gli utenti e ordina per vittorie in ordine decrescente
-        return userDAO.findAll(Sort.by(Sort.Direction.DESC, "win"));
+    	List<User> allUsers = userDAO.findAll();
+        return allUsers.stream()
+                .sorted(Comparator.comparingInt(user -> ((((User) user).getWin() * 50) - (((User) user).getLose() * 10))).reversed())
+                .collect(Collectors.toList());
     }
     public int getUserPosition(String userId) {
         List<User> users = getAllUsersOrderedByWin();
