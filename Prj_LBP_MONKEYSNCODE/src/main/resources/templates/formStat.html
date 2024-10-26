@@ -55,6 +55,8 @@
 				        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
 				    	<!-- French Greeting -->
 			        	<span data-lang="fr" th:text="'Bienvenue, ' + ${session.name}" style="display: none;"></span>
+			        	<!-- German Greeting -->
+			        	<span data-lang="de" th:text="'Willkommen, ' + ${session.name}" style="display: none;"></span>
 				    </a>
 	                <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
 	            
@@ -72,6 +74,7 @@
 	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
 	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
 	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('fr')"><img src="/image/bandiera-francia.png" alt="Français" class="bandiera" data-translate="francese">Français</a></li>
+	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('de')" ><img src="/image/bandiera-germania.png" alt="Deutsch" class="bandiera"> Deutsch</a></li>
 	            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
 	        </ul>
 	    </div>
@@ -106,7 +109,7 @@
                         <strong><span data-translate="sconfitte"></span></strong> <span th:text=" ${user.lose}"></span>
                         <strong><span data-translate="totale-punti"></span></strong> <span th:text=" (${user.win}*50)-(${user.lose}*10)"></span>
                     </div>
-                        
+                    <div class="mb-2">
                     <form th:action="@{/admin/formStat}" method="post" class="d-flex align-items-center">
                         <input type="hidden" name="userId" th:value="${user.id}" />
                         <div class="input-group me-3">
@@ -117,8 +120,24 @@
                             <label for="lose" class="visually-hidden" data-translate="aggiungi-sconfitte"></label>
                             <input type="number" name="lose" class="form-control" min="0" data-translate="aggiungi-sconfitte" placeholder="aggiungi sconfitte" required />
                         </div>
-                        <button class="btn btn-success" type="submit" data-translate="invia"></button>
-                    </form>
+                        <button class="w-50 btn btn-success" type="submit" data-translate="aggiungi" ></button>
+                </form>
+                
+                </br>
+					 <div >
+                <!-- Form for Modifying Wins and Losses -->
+                <form th:action="@{/admin/changeStat}" method="post" class="d-flex align-items-center">
+                    <input type="hidden" name="userId" th:value="${user.id}" />
+                    <div class="input-group me-3">
+                        <label for="modifyWin" class="visually-hidden" data-translate="modifica-vittorie"></label>
+                        <input type="number" name="win" class="form-control" min="0" data-translate="modifica-vittorie" placeholder="Modifica vittorie" required />
+                    </div>
+                    <div class="input-group me-3">
+                        <label for="modifyLose" class="visually-hidden" data-translate="modifica-sconfitte"></label>
+                        <input type="number" name="lose" class="form-control" min="0" data-translate="modifica-sconfitte" placeholder="Modifica sconfitte" required />
+                    </div>
+                    <button class="w-50 btn btn-danger" type="submit" data-translate="tasto-modifica" ></button>
+                </form>
                 </li>
             </ul>
             
@@ -127,6 +146,7 @@
 
     
     <script src="/script/traduzioni.js"></script>
+    
     <!-- Bootstrap JS (Optional, needed for certain features) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

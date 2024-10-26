@@ -72,4 +72,37 @@ public class AdminController {
         // Return to the form-stat.html page with success or error message
         return "formStat";
     }
+    @PostMapping("/changeStat")
+    public String changeStatistics(@RequestParam String userId,
+                                   @RequestParam int win,
+                                   @RequestParam int lose,
+                                   Model model) {
+        try {
+            Optional<User> userOpt = userDAO.findById(userId);
+            if (!userOpt.isPresent()) {
+                throw new EntityNotFoundException("User not found with ID: " + userId);
+            }
+
+            User user = userOpt.get();
+            // Set wins and losses to the new values directly from the input
+            user.setWin(win);
+            user.setLose(lose);
+
+            // Calculate total points based on the new values
+            int totalPoints = (user.getWin() * 50) - (user.getLose() * 10);
+            userDAO.save(user); // Save updated user
+
+            // Add success message to the model
+            model.addAttribute("success-stat", "User statistics changed successfully!");
+            model.addAttribute("user", user);
+            model.addAttribute("totalPoints", totalPoints);
+
+        } catch (Exception e) {
+            // Handle exceptions
+            model.addAttribute("error-stat", e.getMessage());
+        }
+
+        // Return to the form-stat.html page
+        return "formStat";
+    }
 }

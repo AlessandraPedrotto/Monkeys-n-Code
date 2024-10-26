@@ -103,6 +103,8 @@
 			        <span data-lang="es" th:text="'Bienvenido, ' + ${session.name}" style="display: none;"></span>
 			    	<!-- French Greeting -->
 			        <span data-lang="fr" th:text="'Bienvenue, ' + ${session.name}" style="display: none;"></span>
+			        <!-- German Greeting -->
+			        <span data-lang="de" th:text="'Willkommen, ' + ${session.name}" style="display: none;"></span>
 			    </a>
                 <a href="http://localhost:8080/logout" class="btn btn-outline-danger" style="transition: background-color 0.3s, color 0.3s;" data-translate="tasto-navbar-logout"></a>
             
@@ -120,6 +122,7 @@
             <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('it')" ><img src="/image/bandiera-italia.png" alt="Italiano" class="bandiera"> Italiano</a></li>
             <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('en')" ><img src="/image/bandiera-uk.png" alt="English" class="bandiera"> English</a></li>
             <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('fr')"><img src="/image/bandiera-francia.png" alt="Français" class="bandiera" data-translate="francese">Français</a></li>
+            <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('de')" ><img src="/image/bandiera-germania.png" alt="Deutsch" class="bandiera"> Deutsch</a></li>
             <li><a class="dropdown-item" href="javascript:void(0);" onclick="changeLanguage('es')" ><img src="/image/bandiera-spagna.png" alt="Español" class="bandiera"> Español</a></li>
         </ul>
     </div>
@@ -467,12 +470,55 @@
     </div>
 </div>
 
-<div class="row my-5">
+<div class="container my-5">
     <div class="col-1"></div>
     <div class="col card-container">
         <div th:if="${#lists.isEmpty(cards)}">
             <p data-translate="no-carte-trovate"></p>
         </div>
+<!-- Pagination -->
+<div th:if="${!#lists.isEmpty(cards)}" class="d-flex justify-content-center my-3"> 
+
+    <!-- First pages -->
+    <a th:if="${currentPage > 1}" 
+       th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=1, blocco=1, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}" 
+       class="btn btn-outline-primary mx-1" data-translate="tasto-prima-pag"></a>
+
+    <!-- Previous -->
+    <a th:if="${currentPage > 1}" 
+       th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${currentPage - 1},blocco=${(currentPage - 1) % bloccoDimensione == 0 ? bloccoCorrente - 1 : bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned}, from=${param.from})}" 
+       class="btn btn-outline-primary mx-1" data-translate="tasto-precedente-pag"></a>
+
+
+    <!-- Ellissi for the previous pages -->
+    <span th:if="${inizioPagina > 1}"> 
+        <a class="btn btn-outline-primary mx-1" th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${currentPage}, blocco=${bloccoCorrente - 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}">...</a>
+    </span>
+
+    <!-- Numbered pages -->
+    <span th:each="i : ${#numbers.sequence(inizioPagina, finePagina)}">
+        <a th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${i}, blocco=${bloccoCorrente}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}" 
+           th:text="${i}" 
+           class="btn btn-outline-primary mx-1" 
+           th:classappend="${i == currentPage} ? 'btn-primary text-white' : ''"></a>
+    </span>
+
+    <!-- Ellissi for the next pages -->
+    <span th:if="${finePagina < totPages}">
+        <a class="btn btn-outline-primary mx-1" th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${currentPage}, blocco=${bloccoCorrente + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}">...</a>
+    </span>
+
+    <!-- Next -->
+    <a th:if="${currentPage < totPages}" 
+       th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${currentPage + 1},  blocco=${((currentPage) / bloccoDimensione) + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}" 
+       class="btn btn-outline-primary mx-1" data-translate="tasto-successiva-pag"></a>
+
+    <!-- Last page -->
+    <a th:if="${finePagina < totPages}" 
+       th:href="@{/decks/yourdeck/{page}/{deckId}(deckId=${deckId},page=${totPages }, blocco=${(totPages - 1) / bloccoDimensione + 1}, set=${param.set}, types=${param.types}, name=${param.name}, rarity=${param.rarity}, supertype=${param.supertype}, subtypes=${param.subtypes}, sort=${param.sort}, desc=${param.desc}, owned=${param.owned})}" 
+       class="btn btn-outline-primary mx-1" data-translate="tasto-ultima-pag"></a>
+
+</div>
         
 <!-- Begin script for handling asynchronous operations -->
     <script>

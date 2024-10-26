@@ -53,10 +53,7 @@ function changeLanguage(lang) {
                 }
             });
 	  updateLabels(lang);
-      // Change the slogan image based on the selected language
-      const sloganImage = document.getElementById("immagine-slogan");
-      if (sloganImage) sloganImage.src = `/image/slogan-${lang}.png?${new Date().getTime()}`;
-
+      
     })
     .catch(error => console.error('Errore nel caricamento delle traduzioni:', error));
 }
