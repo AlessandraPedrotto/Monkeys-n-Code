@@ -127,10 +127,12 @@
             text-align: center;
             padding-top: 100px;
         }
-        .owned{
+        .owned, .grayFilter{
         	margin-top: 20px;
-            margin-left: 10px;
         }
+        #owned-filter{
+        padding-left: 0;
+         }
         .swal2-popup {
             width: 250px !important;
             height: auto;
@@ -234,6 +236,7 @@
 	    	<span data-translate="totale-carte"></span><strong th:text="${totalCards}"></strong>
 	    </h5>
 	</div>
+	
     <div class="container my-5">
 
         <div class="col-2"></div>
@@ -243,27 +246,27 @@
 		<button class="filter-button btn btn-primary" onclick="toggleFilterMenu()" data-translate="filtra"></button>
 
 		<!-- Dropdown menu for filtering and sorting -->
-<div id="filterMenu" class="filter-menu">
-    <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
-        <input type="hidden" name="from" th:value="${param.from}">
+        <div id="filterMenu" class="filter-menu">
+            <form id="filter" th:action="@{/cards}" method="get" class="row g-3">
+                <input type="hidden" name="from" th:value="${param.from}">
 
-<div class="form-check" id="gray-filter">
-    <input class="btn-check" type="checkbox" id="gray" name="grayFilter" autocomplete="off" th:checked="${grayFilter}">
-    <label for="gray" class="btn btn-outline-secondary grayFilter">gray filter</label>
-</div>
+        <div class="col-md-2 form-check" id="gray-filter">
+            <input class="btn-check" type="checkbox" id="gray" name="grayFilter" autocomplete="off" th:checked="${grayFilter}">
+            <label for="gray" class="btn btn-outline-secondary grayFilter" data-translate="grayFilter">Color</label>
+        </div>
 
         <!-- Other Filter Options -->
         <div class="col-md-2">
             <div class="form-check" id="owned-filter">
                 <input class="btn-check" type="checkbox" id="owned" name="owned" autocomplete="off">
-                <label for="owned" class="btn btn-outline-success owned">Owned</label>
+                <label for="owned" class="btn btn-outline-success owned" data-translate="owned">Owned</label>
             </div>
         </div>
 
-        <div class="col-md-4 d-flex align-items-end">
+        <div class="col-md-3 d-flex align-items-end">
             <!-- Select for sorting -->
             <div>
-                <label for="sort" class="form-label">Order:</label>
+                <label for="sort" class="form-label" data-translate="order">Order by</label>
                 <select id="sort" name="sort" class="form-select">
                     <option value="name">Name</option>
                     <option value="nationalPokedexNumbers">Pokedex n.</option>
@@ -280,7 +283,7 @@
 
         <!-- Additional Filters -->
         <div class="col-md-3">
-            <label for="name" class="form-label">Name:</label>
+            <label for="name" class="form-label" data-translate="name">Name:</label>
             <input type="text" class="form-control" id="name" name="name">
         </div>
         <div class="col-md-2">
@@ -290,7 +293,7 @@
 
         <!-- Selettore per il primo tipo -->
         <div class="col-md-2">
-            <label for="types1" class="form-label">Choose a type:</label>
+            <label for="types1" class="form-label" data-translate="type">Choose a type:</label>
             <select name="types" id="types1" class="form-select">
                 <option value=""></option>
                 <option value="Colorless">Colorless</option>
@@ -309,7 +312,7 @@
 
         <!-- Selettore per il secondo tipo -->
         <div class="col-md-2">
-            <label for="types2" class="form-label">Secondary type:</label>
+            <label for="types2" class="form-label" data-translate="type2">Type:</label>
             <select name="types2" id="types2" class="form-select">
                 <option value=""></option>
                 <option value="Colorless">Colorless</option>
@@ -328,10 +331,10 @@
 
         <!-- Campo nascosto per memorizzare i tipi combinati -->
         <input type="hidden" id="types" name="types" value="">
-
+		<div class="col-md-1"></div>
 
         <div class="col-md-2">
-            <label for="rarity" class="form-label">Rarity:</label>
+            <label for="rarity" class="form-label" data-translate="rarity">Rarity:</label>
             <select id="rarity" name="rarity" class="form-select">
                 <option value=""></option>
                     <option value=""></option>
@@ -362,7 +365,7 @@
         </div>
 
         <div class="col-md-2">
-            <label for="supertype" class="form-label">Supertype:</label>
+            <label for="supertype" class="form-label" data-translate="supertype">Supertype:</label>
             <select id="supertype" name="supertype" class="form-select">
                 <option value=""></option>
                 <option value="Pokémon">Pokémon</option>
@@ -372,7 +375,7 @@
         </div>
 
         <div class="col-md-2">
-            <label for="subtypes" class="form-label">Subtypes:</label>
+            <label for="subtypes" class="form-label" data-translate="subtype">Subtypes:</label>
             <select id="subtypes" name="subtypes" class="form-select">
                 <option value=""></option>
                 <option value="Basic">Basic</option>
@@ -386,8 +389,8 @@
 
         <!-- Submit and Reset Buttons -->
         <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Search</button>
-            <button type="button" onclick="resetFilters()" class="btn btn-secondary">Reset</button>
+            <button type="submit" class="btn btn-primary" data-translate="search">Search</button>
+            <button type="button" onclick="resetFilters()" class="btn btn-secondary" data-translate="reset">Reset</button>
         </div>
     </form>
 </div>
