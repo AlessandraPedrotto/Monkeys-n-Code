@@ -161,14 +161,14 @@
                 <div class="col-md-2">
                     <div class="form-check">
                         <input class="btn-check" type="checkbox" id="owned" name="owned" autocomplete="off">
-                        <label for="owned" class="btn btn-outline-success owned">Owned</label>
+                        <label for="owned" class="btn btn-outline-success owned" data-translate="owned">Owned</label>
                     </div>
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-4 d-flex align-items-end">
                      <!-- Select for sorting -->
                     <div > <!-- Adds space only to the right of the select -->
-                        <label for="sort" class="form-label">Order:</label>
+                        <label for="sort" class="form-label" data-translate="order">Order:</label>
                         <select id="sort" name="sort" class="form-select">
                             <option value="name">Name</option>
                             <option value="nationalPokedexNumbers">Pokedex n.</option>
@@ -183,7 +183,7 @@
                 </div>
                 
                 <div class="col-md-3">
-                    <label for="name" class="form-label">Name:</label>
+                    <label for="name" class="form-label" data-translate="name">Name:</label>
                     <input type="text" class="form-control" id="name" name="name">
                 </div>
                 <div class="col-md-2">
@@ -191,7 +191,7 @@
                     <input type="text" class="form-control" id="set" name="set">
                 </div>
                 <div class="col-md-2">
-                    <label for="types" class="form-label">Choose a type:</label>
+                    <label for="types" class="form-label" data-translate="type">Choose a type:</label>
                     <select name="types" id="types1" class="form-select">
                         <option value=""></option>
                         <option value="Colorless">Colorless</option>
@@ -208,7 +208,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label for="types2" class="form-label">Secondary type:</label>
+                    <label for="types2" class="form-label" data-translate="type2">Secondary type:</label>
                     <select name="types2" id="types2" class="form-select">
                         <option value=""></option>
                         <option value="Colorless">Colorless</option>
@@ -227,7 +227,7 @@
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
-                    <label for="rarity" class="form-label">Rarity:</label>
+                    <label for="rarity" class="form-label" data-translate="rarity">Rarity:</label>
                     <select id="rarity" name="rarity" th:value="${param.rarity}" class="form-select">
                         <option value=""></option>
                         <option value="Classic Collection">Classic Collection</option>
@@ -256,7 +256,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label for="supertype" class="form-label">Supertype:</label>
+                    <label for="supertype" class="form-label" data-translate="supertype">Supertype:</label>
                     <select id="supertype" name="supertype" class="form-select">
                         <option value=""></option>
                         <option value="Pokémon">Pokémon</option>
@@ -265,7 +265,7 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label for="subtypes" class="form-label">Subtypes:</label>
+                    <label for="subtypes" class="form-label" data-translate="subtype">Subtypes:</label>
                     <select id="subtypes" name="subtypes" class="form-select">
                         <option value=""></option>
                         <option value="Basic">Basic</option>
@@ -277,8 +277,8 @@
                     </select>
                 </div>
                 <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">Applica</button>
-                    <button type="reset" class="btn btn-secondary">Reset</button>
+                    <button type="submit" class="btn btn-primary" data-translate="search">Applica</button>
+                    <button type="reset" class="btn btn-secondary" data-translate="reset">Reset</button>
                 </div>
             </form>
         </div>
