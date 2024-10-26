@@ -126,9 +126,9 @@
                             <td th:text="${iterStat.index + 1}"></td> <!-- Position -->
                             <td><a th:href="@{/user/{userId}(userId=${user.id})}" th:text="${user.name}"></a></td> <!-- Username -->
                             <td th:text="${user.email}"></td> <!-- Email -->
-                            <td th:text="${user.win}"></td> <!-- Victories -->
-                            <td th:text="${user.lose}"></td> <!-- Loses -->
-                            <td th:text="(${user.win}*50)-(${user.lose}*10)"></td> <!-- Points -->
+                            <td th:text="${user.win == 0} ? '-' : ${user.win}"></td> <!-- Victories -->
+                            <td th:text="${user.lose == 0} ? '-' : ${user.lose}"></td> <!-- Loses -->
+                            <td th:text="${user.win == 0} ? '-' : (${user.win} * 50) - (${user.lose} * 10)"></td> <!-- Points -->
                         </tr>
                     </tbody>
                 </table>
