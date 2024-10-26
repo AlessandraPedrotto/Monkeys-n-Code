@@ -28,8 +28,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Recupera i dati delle statistiche utente per visualizzazione.  
 
 **Parametri**: <br>
-    - **query**: Variabile che viene utilizzata nel form come ricerca per email ed è opzionale <br>
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
+
+   - **query**: Variabile che viene utilizzata nel form come ricerca per email ed è opzionale <br>
+   - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
 
 **Ritorna**: Restituisce la vista con le statistiche.
 
@@ -46,10 +47,11 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Aggiorna le statistiche di uno specifico utente.  
 
 **Parametri**: <br>
-    - **userId**: Id dell'user. <br>
-    - **win**: Corrisponde alle vittorie dello user. <br>
-    - **lose**: Corrisponde alle sconfitte dello user. <br>
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
+ 
+   - **userId**: Id dell'user. <br>
+   - **win**: Corrisponde alle vittorie dello user. <br>
+   - **lose**: Corrisponde alle sconfitte dello user. <br>
+   - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
 
 **Ritorna**: Restituisce un messaggio di successo se è andato a buon fine oppure un messaggio di errore.
 
@@ -102,7 +104,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Pagina di registrazione.  
 
 **Parametri**: <br>
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
+
+   - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. 
 
 **Ritorna**: Reindirizza alla pagina di registrazione.
 
@@ -116,8 +119,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Gestisce la registrazione utente.  
 
 **Parametri**: <br>
-    - **user**: Oggetto User associato tramite @ModelAttribute per mappare automaticamente i dati dal form HTML al modello. <br>
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+
+   - **user**: Oggetto User associato tramite @ModelAttribute per mappare automaticamente i dati dal form HTML al modello. <br>
+   - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Reindirizza alla pagina di login.
 
@@ -129,7 +133,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Gestisce la validazione della password.  
 
 **Parametri**: <br>
-    - **password**: Viene utilizzata come confronto per la regex.
+
+   - **password**: Viene utilizzata come confronto per la regex.
 
 **Ritorna**: true se la password rispetta la regex, false altrimenti.
 
@@ -225,8 +230,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Aggiunge carte alla collezione dell'utente specificato.  
 
 **Parametri**: <br>
-    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente <br>
-    - **cardId**: id della carta da aggiungere.
+
+   - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente <br>
+   - **cardId**: id della carta da aggiungere.
 
 **Ritorna**: Restituisce la collezione con la carta aggiunta.
 
@@ -239,9 +245,10 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 ```
 **Descrizione**: Rimuove carte alla collezione dell'utente specificato.  
 
-**Parametri**:<br>
-    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
-    - **cardId**: Id della carta da rimuovere.
+**Parametri**: <br>
+
+  - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+  - **cardId**: Id della carta da rimuovere.
 
 **Ritorna**: Restituisce la collezione con la carta rimossa.
 
@@ -255,9 +262,10 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Visualizza i dettagli di una carta specificata, inclusa la quantità posseduta, se applicabile..  
 
 **Parametri**: <br>
-    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
-    - **cardId**: Id della carta da visualizzare.
+
+   - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+   - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
+   - **cardId**: Id della carta da visualizzare.
 
 **Ritorna**: Restituisce i dettagli della carta se presente oppure restituisce un messaggio di errore se non trovata.
 
@@ -312,8 +320,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Aggiorna le statistiche dell'utente nella classifica e visualizza i dati aggiornati.  
 
 **Parametri**: <br>
-    - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+
+   - **principal**: Oggetto che contiene le informazioni per l'accesso dell'utente. <br>
+   - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 
 **Ritorna**: Restituisce la vista con la classifica.
@@ -423,7 +432,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Crea un deck con immagine profilo.
 
 **Parametri**: <br>
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
+
+  - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html.
 
 **Ritorna**: Reindirizza all'html dopo aver selezionato l'immagine e salvato le modifiche, altrimenti da errore.
 
@@ -437,8 +447,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Permette di cancellare un deck tramite Id.
 
 **Parametri**: <br>
-    - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
-    - **deckId**: Id deck.
+   
+  - **model**: Oggetto che viene usato per visualizzare i dati nella pagina html. <br>
+  - **deckId**: Id deck.
 
 **Ritorna**: Reindirizza alla pagina di cancellazione.
 
@@ -452,8 +463,9 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 **Descrizione**: Conferma cancellazione del deck.
 
 **Parametri**: <br>
-    - **confirm**: Variabile di conferma per la cancellazione. <br>
-    - **deckId**: Id deck.
+
+   - **confirm**: Variabile di conferma per la cancellazione. <br>
+   - **deckId**: Id deck.
 
 **Ritorna**: Ritorna alla visualizzazione dei Deck.
 
@@ -640,8 +652,8 @@ Ecco un markdown leggibile e capibile riguardo il funzionamento dei controller.
 
 **Parametri**: <br>
 
- - `principal`: Identifica l'utente autenticato che effettua l'azione di follow. <br>
- - `user`: Id dell'utente che verrà seguito.
+ - **principal**: Identifica l'utente autenticato che effettua l'azione di follow. <br>
+ - **user**: Id dell'utente che verrà seguito.
 
 **Ritorna**: Restituisce la vista aggiornata dell'utente seguito
 
