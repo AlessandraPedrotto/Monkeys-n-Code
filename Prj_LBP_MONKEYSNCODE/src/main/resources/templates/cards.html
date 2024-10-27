@@ -551,8 +551,13 @@ var page = "[[${param.page}]]";
 var grayFilter = "[[${grayFilter}]]"; // Aggiunta della variabile grayFilter
 
 // Collezione passata alla pagina in forma di stringa
-var collection = JSON.parse(ricodifica("[[${ownedCards}]]"));
-var ownedCards = Object.keys(collection);
+if("[[${ownedCards}]]" != "{}"){
+	var collection = JSON.parse(ricodifica("[[${ownedCards}]]"));
+	var ownedCards = Object.keys(collection);
+} else{
+	var ownedCards =  "";
+}
+
 
 // Questa funzione formatta la stringa ricevuta dal controller in modo che sia utilizzabile da javascript
 function ricodifica(input) {
