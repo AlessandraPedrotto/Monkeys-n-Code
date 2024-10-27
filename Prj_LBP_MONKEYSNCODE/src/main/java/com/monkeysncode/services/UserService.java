@@ -107,7 +107,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(password);
         user.setUserImg(imgDefault);
         List<Role> roles = new ArrayList<>();
-        //roles.add(new Role("1", "ROLE_USER"));
+        //roles.add(new Role("2", "ROLE_ADMIN")); //comment the next line and uncommet this one to create an admin
         roles.add(new Role("1", "ROLE_USER"));
         user.setRoles(roles);
         user.setOnline(true);

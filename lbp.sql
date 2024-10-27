@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ott 16, 2024 alle 17:21
+-- Creato il: Ott 27, 2024 alle 15:14
 -- Versione del server: 10.4.28-MariaDB
 -- Versione PHP: 8.2.4
 
@@ -17529,15 +17529,6 @@ CREATE TABLE `decks` (
   `deck_img_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dump dei dati per la tabella `decks`
---
-
-INSERT INTO `decks` (`id`, `name_deck`, `valid`, `user_id`, `deck_img_id`) VALUES
-(28, 'la medda', b'0', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80', 1),
-(29, 'ciao', b'0', '114350838580273554970', 2),
-(30, 'ciao', b'0', '114350838580273554970', 2);
-
 -- --------------------------------------------------------
 
 --
@@ -17550,29 +17541,6 @@ CREATE TABLE `deck_cards` (
   `card_id` varchar(255) DEFAULT NULL,
   `deck_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `deck_cards`
---
-
-INSERT INTO `deck_cards` (`id`, `card_quantity`, `card_id`, `deck_id`) VALUES
-(21, 1, 'swsh10-97', 28),
-(22, 9, 'dp2-19', 28),
-(23, 1, 'sm4-34', 28),
-(24, 1, 'sm5-38', 28),
-(25, 2, 'dp7-12', 28),
-(26, 2, 'sv2-11', 29),
-(27, 1, 'dp7-12', 29),
-(28, 1, 'dp2-19', 29),
-(29, 1, 'xy8-40', 29),
-(30, 1, 'bw10-26', 29),
-(31, 1, 'sm11-42', 29),
-(32, 1, 'base5-49', 29),
-(33, 1, 'base6-67', 29),
-(34, 1, 'ecard1-93', 29),
-(35, 1, 'sv3pt5-63', 29),
-(36, 1, 'ex3-1', 29),
-(37, 1, 'bw9-67', 29);
 
 -- --------------------------------------------------------
 
@@ -17593,6 +17561,17 @@ INSERT INTO `deck_img` (`id`, `img_deck_path`) VALUES
 (1, '/images/retro-carta-pokemon.png'),
 (2, '/images/retro-carta-pokemon-2.png'),
 (3, '/images/retro-carta-pokemon-3.png');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `follows`
+--
+
+CREATE TABLE `follows` (
+  `follower_id` varchar(255) NOT NULL,
+  `following_id` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -17624,16 +17603,18 @@ CREATE TABLE `users` (
   `email` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `user_img_id` bigint(20) DEFAULT NULL
+  `user_img_id` bigint(20) DEFAULT NULL,
+  `online` bit(1) NOT NULL,
+  `win` int(11) NOT NULL,
+  `lose` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dump dei dati per la tabella `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `name`, `password`, `user_img_id`) VALUES
-('114350838580273554970', 'catalingrumeza1@gmail.com', 'Catalin Grumeza', NULL, 5121),
-('c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80', '1@1', 'suca', '$2a$10$05ISD9QT4uCk.ee8dN3juOorWIuVJsB9ugRpg6VOyRr7CwZPvEbAW', 4097);
+INSERT INTO `users` (`id`, `email`, `name`, `password`, `user_img_id`, `online`, `win`, `lose`) VALUES
+('a3e5e869-ca68-49f1-8da7-a040bd05e727', 'admin@admin', 'Admin', '$2a$10$3v8JwDiXpOQQObEt6Ub0h.7yomfF09pIXQIpAFjzToD9RJLHamRUa', 5121, b'1', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -17647,20 +17628,6 @@ CREATE TABLE `user_cards` (
   `card_id` varchar(255) DEFAULT NULL,
   `user_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `user_cards`
---
-
-INSERT INTO `user_cards` (`id`, `card_quantity`, `card_id`, `user_id`) VALUES
-(42, 9, 'pl2-88', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80'),
-(43, 1, 'sm6-4', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80'),
-(44, 1, 'dp2-19', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80'),
-(45, 1, 'dp7-12', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80'),
-(46, 1, 'sm5-38', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80'),
-(47, 1, 'sv2-11', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80'),
-(48, 1, 'xy8-40', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80'),
-(49, 8, 'sm4-12', 'c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80');
 
 -- --------------------------------------------------------
 
@@ -18722,8 +18689,7 @@ CREATE TABLE `user_roles` (
 --
 
 INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
-('c4cd55a8-5b98-4352-b3a2-b5ecfeb34d80', '1'),
-('114350838580273554970', '1');
+('a3e5e869-ca68-49f1-8da7-a040bd05e727', '2');
 
 --
 -- Indici per le tabelle scaricate
@@ -18756,6 +18722,13 @@ ALTER TABLE `deck_cards`
 --
 ALTER TABLE `deck_img`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indici per le tabelle `follows`
+--
+ALTER TABLE `follows`
+  ADD PRIMARY KEY (`follower_id`,`following_id`),
+  ADD KEY `following_id` (`following_id`);
 
 --
 -- Indici per le tabelle `role`
@@ -18799,13 +18772,13 @@ ALTER TABLE `user_roles`
 -- AUTO_INCREMENT per la tabella `decks`
 --
 ALTER TABLE `decks`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT per la tabella `deck_cards`
 --
 ALTER TABLE `deck_cards`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT per la tabella `deck_img`
@@ -18817,7 +18790,7 @@ ALTER TABLE `deck_img`
 -- AUTO_INCREMENT per la tabella `user_cards`
 --
 ALTER TABLE `user_cards`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT per la tabella `user_img`
@@ -18842,6 +18815,13 @@ ALTER TABLE `decks`
 ALTER TABLE `deck_cards`
   ADD CONSTRAINT `FK3g7jrlmm3h536e2w9v0vm9ufn` FOREIGN KEY (`deck_id`) REFERENCES `decks` (`id`),
   ADD CONSTRAINT `FK3rbh4k5sk5oh41good8sdycqk` FOREIGN KEY (`card_id`) REFERENCES `cards` (`id`);
+
+--
+-- Limiti per la tabella `follows`
+--
+ALTER TABLE `follows`
+  ADD CONSTRAINT `follows_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `follows_ibfk_2` FOREIGN KEY (`following_id`) REFERENCES `users` (`id`);
 
 --
 -- Limiti per la tabella `users`
