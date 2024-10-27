@@ -18,7 +18,7 @@ import com.monkeysncode.services.UserService;
 import com.monkeysncode.entites.Card;
 
 @Controller
-public class UserCardController {  // Controller who manages the card quantity
+public class UserCardController {  // Controller that manages the card quantity
 	
     @Autowired
     private UserService userService;

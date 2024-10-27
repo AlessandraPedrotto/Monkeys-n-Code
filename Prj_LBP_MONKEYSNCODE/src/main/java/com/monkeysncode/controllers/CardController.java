@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-public class CardController { // Controller who manages the user card collection
+public class CardController { // Controller that manages the user card collection
 	
 	@Autowired
 	private CardService cardService;

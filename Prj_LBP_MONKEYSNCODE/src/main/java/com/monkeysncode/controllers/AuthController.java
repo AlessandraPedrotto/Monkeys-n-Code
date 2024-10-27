@@ -45,7 +45,7 @@ public class AuthController { // Controller who manages the user authentication
     	
     	String password = user.getPassword().trim(); // Removes white spaces
     	String email = user.getEmail().trim();
-    	if(!isValidEmail(email)) //Validation for the regex password
+    	if(!isValidEmail(email)) //Validation for the regex email
     	{
     		model.addAttribute("emailInvalid", "La mail non è valida");
     		return "home1";
@@ -69,11 +69,11 @@ public class AuthController { // Controller who manages the user authentication
         Matcher matcher = pattern.matcher(password); // Used to search for the pattern
         return matcher.matches(); // Return a string for a match against a regular expression
     }
-    private boolean isValidEmail(String email) //Method to convalidate the regex password
+    private boolean isValidEmail(String email) //Method to convalidate the regex email
     {
-        Pattern pattern = Pattern.compile(REGEX_EMAIL);  // compile the regex to create pattern
-        Matcher matcher = pattern.matcher(email); // Used to search for the pattern
-        return matcher.matches(); // Return a string for a match against a regular expression
+        Pattern pattern = Pattern.compile(REGEX_EMAIL);  
+        Matcher matcher = pattern.matcher(email); 
+        return matcher.matches(); 
     }
     
 

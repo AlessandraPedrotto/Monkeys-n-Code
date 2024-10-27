@@ -36,7 +36,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/profile")
-public class UserController // Controller who manages the user profile
+public class UserController // Controller that manages the user profile
 {
 	@Autowired
 	private UserService userService;

@@ -44,14 +44,14 @@ public class Card
 	private String evolvesTo;
 	
 	 @Column(length = 700)
-	private String abilities; /*see and convert to HashMap*/
+	private String abilities;
 	
 	@Column(length = 900)
-	private String attacks; /*see and convert to HashMap*/
+	private String attacks;
 	
-	private String weakness; /*see and convert to HashMap*/
+	private String weakness; 
 	
-	private String retreatCost; /*see and convert to HashMap*/
+	private String retreatCost; 
 	
 	private String converted; 
 	
@@ -62,16 +62,16 @@ public class Card
 	@Column(name="nationalPokedexNumbers")
 	private String nationalPokedexNumbers; 
 	
-	private String legalities; /*see and convert to HashMap*/
+	private String legalities; 
 	
-	private String resistances; /*see and convert to HashMap*/
+	private String resistances; 
 	
 	 @Column(length = 700)
 	private String rules;
 	
 	private String regulationMark; 
 	
-	private String ancientTrait;  /*see and convert to HashMap*/
+	private String ancientTrait;  
 	
 	private String img;
 

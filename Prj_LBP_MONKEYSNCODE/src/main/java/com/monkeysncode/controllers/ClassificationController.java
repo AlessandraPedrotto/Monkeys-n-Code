@@ -38,7 +38,7 @@ public class ClassificationController { // Controller that manage the classifica
 		
 	}
 	
-	// Shows the classification
+	// Shows the ranking
 	@PostMapping("/classification")
 	public String postClassification(@AuthenticationPrincipal Object principal, Model model)
 	{

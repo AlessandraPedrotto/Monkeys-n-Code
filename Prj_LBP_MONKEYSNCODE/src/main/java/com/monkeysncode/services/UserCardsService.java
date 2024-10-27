@@ -39,7 +39,7 @@ public class UserCardsService {
         return dao.findByUserId(userId);  // Return all cards for the given user
     }
     
-    
+ // Method to get a list of card IDs owned by the user
     public HashMap<String,Integer> getCollectionById(String userId) {
         List<UserCards> userCards = dao.findByUserId(userId);
         HashMap<String,Integer> ownedCards = new HashMap<String, Integer>();
@@ -49,15 +49,6 @@ public class UserCardsService {
         return ownedCards;
     }
     
-    // Method to get a list of card IDs owned by the user
-    public List<String> getCollectionBy(String userId) {
-        List<UserCards> userCards = dao.findByUserId(userId);
-        List<String> ids = new ArrayList<>();
-        for (UserCards userCard : userCards) {
-            ids.add(userCard.getCard().getId());  // Add card ID to the list
-        }
-        return ids;
-    }
 
     // Method to get the user's card collection, sorted by a specified parameter
     public List<Card> getSortedCollection(String userId, String sort, boolean desc) {

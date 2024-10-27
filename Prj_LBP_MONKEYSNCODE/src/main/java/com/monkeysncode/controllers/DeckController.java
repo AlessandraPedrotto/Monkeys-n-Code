@@ -31,7 +31,7 @@ import com.monkeysncode.services.UserService;
 
 @Controller
 @RequestMapping("/decks")
-public class DeckController { // Controller who manages the user deck
+public class DeckController { // Controller that manages the user deck
     @Autowired
     private DeckCardsService deckCardsService;
     

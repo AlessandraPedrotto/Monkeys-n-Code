@@ -54,17 +54,17 @@ public class SecurityConfig {
                     .loginProcessingUrl("/login")
                     .usernameParameter("email")  // Sets email as username
                     .passwordParameter("password")
-                    .successHandler(customAuthenticationSuccessHandler())
+                    .successHandler(customAuthenticationSuccessHandler())//calls the custom successhandler for form registration
                     .permitAll()
                 )
                 .oauth2Login(oauth -> oauth
                     .loginPage("/login")
-                    .successHandler(oAuth2AuthenticationSuccessHandler())
+                    .successHandler(oAuth2AuthenticationSuccessHandler())//calls the custom successhandler for Google registration
                 )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/?logout")
-                        .invalidateHttpSession(true)  
-                        .deleteCookies("JSESSIONID")
+                .logout(logout -> logout//logout
+                        .logoutSuccessUrl("/?logout")//redirect to home with ?logout in the url
+                        .invalidateHttpSession(true)  //invalidates session
+                        .deleteCookies("JSESSIONID")// delets cookies
                         .addLogoutHandler((request, response, authentication) -> {
                             if (authentication != null) {
                             	User user=serviceUser.userCheck(authentication.getPrincipal());
@@ -86,25 +86,25 @@ public class SecurityConfig {
         return (request, response, authentication) -> {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
             serviceUser.saveOrUpdateUser(oAuth2User);
-            if(serviceUser.findByEmail(oAuth2User.getAttribute("email"))!=null) {
+            if(serviceUser.findByEmail(oAuth2User.getAttribute("email"))!=null) {//if user already exists it merges the 2 users
 
             	String username=serviceUser.findByEmail(oAuth2User.getAttribute("email")).getName();
             	String userId=serviceUser.findByEmail(oAuth2User.getAttribute("email")).getId();
             	List<Role> role =serviceUser.findByEmail(oAuth2User.getAttribute("email")).getRoles();
             	User user=serviceUser.findById(userId);
-            	user.setOnline(true);
+            	user.setOnline(true);//sets online
             	userDAO.save(user);
-            	request.getSession().setAttribute("name", username);
+            	request.getSession().setAttribute("name", username);// Puts in session the user
             	request.getSession().setAttribute("userId", userId);
             	request.getSession().setAttribute("role", role);
             }else {
-            	String username = oAuth2User.getAttribute("name");// Puts in session the user name
+            	String username = oAuth2User.getAttribute("name");
             	String userId = oAuth2User.getAttribute("userId");
             	String role = oAuth2User.getAttribute("role");
             	User user=serviceUser.findById(userId);
-            	user.setOnline(true);
+            	user.setOnline(true);//sets online
             	userDAO.save(user);
-            	request.getSession().setAttribute("name", username);
+            	request.getSession().setAttribute("name", username);// Puts in session the user
             	request.getSession().setAttribute("userId", userId);
             	request.getSession().setAttribute("role", role);
             }
